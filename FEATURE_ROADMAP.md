@@ -1,6 +1,6 @@
 # XIV Dye Tools - Feature Roadmap
 
-> Last Updated: December 5, 2024
+> Last Updated: December 5, 2025
 
 This document outlines planned features for the XIV Dye Tools monorepo, prioritized by implementation phase.
 
@@ -12,7 +12,7 @@ This document outlines planned features for the XIV Dye Tools monorepo, prioriti
 
 | Feature | Platform | Core Changes | Effort | Status |
 |---------|----------|--------------|--------|--------|
-| Multi-Color Palette Extraction | Web + Bot | Yes | Medium-High | Planned |
+| Multi-Color Palette Extraction | Web + Bot | Yes | Medium-High | ✅ Done |
 | Seasonal/Themed Preset Palettes | Web + Bot | Yes | Medium | ✅ Done |
 | Dye Collections/Favorites | Web + Bot | No | Medium | ✅ Done |
 | Budget-Aware Dye Suggestions | Web + Bot | Optional | Medium | Planned |
@@ -250,13 +250,44 @@ See [PRESET_PALETTES.md](./PRESET_PALETTES.md) for detailed specification.
 
 ---
 
-#### 7. Multi-Color Palette Extraction
+#### 7. Multi-Color Palette Extraction ✅
 Extract multiple dominant colors from an image (3-5 colors) instead of just one.
 
 **User Value:**
 - Match entire glamour screenshots, not just single pieces
 - Create palettes from inspiration images
 - Capture the "vibe" of an image with a full palette
+
+**Core Library Implementation (Complete):**
+- ✅ `PaletteService` - K-means++ clustering algorithm for dominant color extraction
+- ✅ `extractPalette()` - Extract N dominant colors with dominance percentages
+- ✅ `extractAndMatchPalette()` - Extract and match to closest FFXIV dyes
+- ✅ `pixelDataToRGB()` / `pixelDataToRGBFiltered()` - Canvas data conversion helpers
+- ✅ Configurable: colorCount (3-5), maxIterations, convergenceThreshold, maxSamples
+
+**Web App Implementation (Complete):**
+- ✅ Extraction mode toggle (Single Color / Palette Mode) in Color Matcher
+- ✅ Color count slider (3-5 colors)
+- ✅ "Extract Palette" button with loading state
+- ✅ Visual sampling indicators - circles on image showing where colors were sampled
+- ✅ Palette results with color bar visualization
+- ✅ Individual color entries showing extracted → matched dye with dominance %
+- ✅ Copy hex buttons for each matched dye
+- ✅ 6-language localization (en, ja, de, fr, ko, zh)
+
+**Discord Bot Implementation (Complete):**
+- ✅ `/match_image colors:[1-5]` - Optional parameter for multi-color extraction
+- ✅ Palette grid renderer with extracted colors and matched dyes
+- ✅ Visual sampling indicators on source image preview
+- ✅ Canvas-rendered output showing image + palette grid
+- ✅ 6-language localization
+
+**Files created/modified:**
+- Core: `xivdyetools-core/src/services/PaletteService.ts` (new)
+- Web: `xivdyetools-web-app/src/components/color-matcher-tool.ts` - Added palette mode
+- Web: `xivdyetools-web-app/src/locales/*.json` - Added 14 translation keys (6 files)
+- Bot: `xivdyetools-discord-bot/src/renderers/palette-grid.ts` - Added sampling indicators
+- Bot: `xivdyetools-discord-bot/src/commands/match-image.ts` - Added multi-color extraction
 
 See [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) for detailed specification.
 
@@ -302,8 +333,8 @@ Find dyes similar to a target color within a budget.
 
 ### Core Library Changes
 Features requiring core library modifications:
-- Multi-color extraction → Add clustering algorithm
-- Preset palettes → Add `PresetService` or extend `DyeService`
+- ~~Multi-color extraction → Add clustering algorithm~~ ✅ Done (`PaletteService`)
+- ~~Preset palettes → Add `PresetService` or extend `DyeService`~~ ✅ Done (`PresetService`)
 - Budget filtering → Optional enhancement to `DyeService`
 
 ### Platform Parity
