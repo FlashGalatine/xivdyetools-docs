@@ -14,7 +14,7 @@ This document outlines planned features for the XIV Dye Tools monorepo, prioriti
 |---------|----------|--------------|--------|--------|
 | Multi-Color Palette Extraction | Web + Bot | Yes | Medium-High | Planned |
 | Seasonal/Themed Preset Palettes | Web + Bot | Yes | Medium | Planned |
-| Dye Collections/Favorites | Web + Bot | No | Medium | Web ✅ / Bot Planned |
+| Dye Collections/Favorites | Web + Bot | No | Medium | ✅ Done |
 | Budget-Aware Dye Suggestions | Web + Bot | Optional | Medium | Planned |
 
 ### Quick Wins
@@ -148,7 +148,7 @@ Add Universalis price data to existing commands.
 
 ---
 
-#### 5. Dye Collections / Favorites (Web App ✅, Discord Bot Planned)
+#### 5. Dye Collections / Favorites ✅
 Save favorite dyes and organize into named collections.
 
 **Web App Implementation (Complete):**
@@ -170,7 +170,7 @@ Save favorite dyes and organize into named collections.
 - ✅ Keyboard shortcut: `C` to open add-to-collection menu
 - ✅ "Manage Collections" button in favorites panel header
 
-**Files created/modified:**
+**Web App Files created/modified:**
 - `xivdyetools-web-app/src/services/collection-service.ts` - Core service
 - `xivdyetools-web-app/src/components/collection-manager-modal.ts` (new)
 - `xivdyetools-web-app/src/components/add-to-collection-menu.ts` (new)
@@ -178,10 +178,36 @@ Save favorite dyes and organize into named collections.
 - `xivdyetools-web-app/src/components/dye-selector.ts` - Added manage button
 - `xivdyetools-web-app/src/locales/en.json` - i18n keys (already present)
 
-**Discord Bot (Planned):**
-- `/favorites` commands (add, remove, list, clear)
-- `/collection` commands (create, delete, add, remove, show, list)
-- Redis storage for user collections
+**Discord Bot Implementation (Complete):**
+
+*Favorites Commands:*
+- ✅ `/favorites add <dye>` - Add a dye to favorites
+- ✅ `/favorites remove <dye>` - Remove from favorites (autocomplete shows only favorites)
+- ✅ `/favorites list` - Show all favorite dyes with emoji swatches
+- ✅ `/favorites clear` - Clear all favorites
+
+*Collection Commands:*
+- ✅ `/collection create <name> [description]` - Create new collection
+- ✅ `/collection delete <name>` - Delete a collection
+- ✅ `/collection add <collection> <dye>` - Add dye to collection
+- ✅ `/collection remove <collection> <dye>` - Remove dye from collection
+- ✅ `/collection show <name>` - Display collection contents
+- ✅ `/collection list` - List all user collections
+- ✅ `/collection rename <old_name> <new_name>` - Rename a collection
+
+*Features:*
+- ✅ Redis storage with in-memory fallback (no TTL - permanent user data)
+- ✅ Same limits as web app: 20 favorites, 50 collections, 20 dyes per collection
+- ✅ Autocomplete for dye names and collection names
+- ✅ Context-aware autocomplete (remove shows only dyes in collection)
+- ✅ 6-language localization (en, ja, de, fr, ko, zh)
+
+**Discord Bot Files created/modified:**
+- `xivdyetools-discord-bot/src/services/collection-storage.ts` (new) - Redis storage service
+- `xivdyetools-discord-bot/src/commands/favorites.ts` (new) - /favorites command
+- `xivdyetools-discord-bot/src/commands/collection.ts` (new) - /collection command
+- `xivdyetools-discord-bot/src/index.ts` - Registered new commands
+- `xivdyetools-discord-bot/src/i18n/translations/*.json` - Added `favorites` and `collection` sections (6 files)
 
 See [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) for full specification.
 
