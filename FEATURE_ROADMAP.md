@@ -301,16 +301,27 @@ Find dyes similar to a target color within a budget.
 - Find affordable alternatives for expensive dyes
 - Plan glamours within budget constraints
 
-**Web App Implementation:**
-- Budget slider/input in Color Matcher
-- "Find cheaper alternatives" button on match results
-- Sort results by: Best Match, Lowest Price, Best Value
-- Show savings compared to exact match
+**Web App Implementation (Planned):**
+- Budget toggle + price slider (logarithmic scale) in Color Matcher
+- Datacenter selector for price lookup
+- Sort options: Best Match, Lowest Price, Best Value
+- "Find Cheaper" button on dye cards
+- Alternatives modal showing similar dyes with price/savings
+- 6-language localization
 
-**Discord Bot Implementation:**
+**Discord Bot Implementation (Planned):**
 - `/match [color] max_price:[amount]` - Optional budget filter
-- `/dye alternatives [dye_name]` - Show cheaper similar dyes
-- Include price + color distance in results
+- `/dye alternatives [dye_name] count:[1-10]` - Show cheaper similar dyes
+- Price + color distance + savings in results
+- Fallback handling when prices unavailable
+
+**Technical Approach:**
+- Use existing `PriceService` with RedisCacheBackend (10-min TTL)
+- Batch price fetches to Universalis API
+- Value score: weighted combination of color distance and price
+- No core library changes required initially
+
+See [BUDGET_AWARE_SUGGESTIONS.md](./BUDGET_AWARE_SUGGESTIONS.md) for detailed specification.
 
 ---
 
@@ -347,3 +358,4 @@ All features developed for both platforms simultaneously where applicable.
 - [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) - Technical spec for palette extraction
 - [PRESET_PALETTES.md](./PRESET_PALETTES.md) - Preset data structure and palette list
 - [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) - Collections/favorites feature spec
+- [BUDGET_AWARE_SUGGESTIONS.md](./BUDGET_AWARE_SUGGESTIONS.md) - Budget-aware dye suggestions spec
