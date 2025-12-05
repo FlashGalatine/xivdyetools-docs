@@ -14,7 +14,7 @@ This document outlines planned features for the XIV Dye Tools monorepo, prioriti
 |---------|----------|--------------|--------|--------|
 | Multi-Color Palette Extraction | Web + Bot | Yes | Medium-High | Planned |
 | Seasonal/Themed Preset Palettes | Web + Bot | Yes | Medium | Planned |
-| Dye Collections/Favorites | Web + Bot | No | Medium | Planned |
+| Dye Collections/Favorites | Web + Bot | No | Medium | Web ✅ / Bot Planned |
 | Budget-Aware Dye Suggestions | Web + Bot | Optional | Medium | Planned |
 
 ### Quick Wins
@@ -148,16 +148,42 @@ Add Universalis price data to existing commands.
 
 ---
 
-#### 5. Dye Collections / Favorites (Web App first, then Discord Bot)
+#### 5. Dye Collections / Favorites (Web App ✅, Discord Bot Planned)
 Save favorite dyes and organize into named collections.
 
-**Features:**
-- Star/favorite individual dyes (quick access)
-- Create named collections ("My Red Mage palette", "Casual looks")
-- Import/export collections as JSON
-- Quick-add from any dye selector
+**Web App Implementation (Complete):**
 
-See [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) for detailed specification.
+*Phase 1 - Favorites:*
+- ✅ `CollectionService` - Full favorites/collections API with localStorage persistence
+- ✅ Favorite star buttons on every dye card (appears on hover, filled when favorited)
+- ✅ Collapsible favorites panel at top of dye selector
+- ✅ Toast notifications for add/remove actions
+- ✅ Keyboard shortcut: `F` to toggle favorite on focused dye
+- ✅ Maximum 20 favorites with warning toast
+
+*Phase 2 - Collections:*
+- ✅ Collection Manager Modal - view, create, edit, delete collections
+- ✅ Add to Collection menu - folder icon on dye cards, dropdown with collection list
+- ✅ Create collection dialog with name and description
+- ✅ Edit collection dialog with removable dye tags
+- ✅ Import/Export collections as JSON
+- ✅ Keyboard shortcut: `C` to open add-to-collection menu
+- ✅ "Manage Collections" button in favorites panel header
+
+**Files created/modified:**
+- `xivdyetools-web-app/src/services/collection-service.ts` - Core service
+- `xivdyetools-web-app/src/components/collection-manager-modal.ts` (new)
+- `xivdyetools-web-app/src/components/add-to-collection-menu.ts` (new)
+- `xivdyetools-web-app/src/components/dye-grid.ts` - Added collection button
+- `xivdyetools-web-app/src/components/dye-selector.ts` - Added manage button
+- `xivdyetools-web-app/src/locales/en.json` - i18n keys (already present)
+
+**Discord Bot (Planned):**
+- `/favorites` commands (add, remove, list, clear)
+- `/collection` commands (create, delete, add, remove, show, list)
+- Redis storage for user collections
+
+See [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) for full specification.
 
 ---
 
