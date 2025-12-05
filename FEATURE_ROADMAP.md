@@ -1,6 +1,6 @@
 # XIV Dye Tools - Feature Roadmap
 
-> Last Updated: December 4, 2024
+> Last Updated: December 5, 2024
 
 This document outlines planned features for the XIV Dye Tools monorepo, prioritized by implementation phase.
 
@@ -24,7 +24,7 @@ This document outlines planned features for the XIV Dye Tools monorepo, prioriti
 | Random Dye Button | Web App | Low | ✅ Done |
 | Market Prices in Commands | Discord Bot | Low | ✅ Done |
 | Copy Dye Info Buttons | Web App | Low | ✅ Done |
-| Copy Dye Info Buttons | Discord Bot | Low | Planned |
+| Copy Dye Info Buttons | Discord Bot | Low | ✅ Done |
 
 ### Housekeeping
 
@@ -79,7 +79,24 @@ One-click copy buttons for dye information.
 **Files modified:**
 - `xivdyetools-web-app/src/components/color-display.ts` - Added `data-copy` attributes to RGB/HSV values
 
-**Discord Bot:** Planned - Formatted embed fields for easy mobile copy
+**Implemented (Discord Bot):**
+- ✅ Copy Hex button - sends ephemeral message with code-blocked hex value
+- ✅ Copy RGB button - calculates and sends `RGB(r, g, b)` format
+- ✅ Copy HSV button - calculates and sends `HSV(h°, s%, v%)` format
+- ✅ Mobile-friendly ephemeral responses with copy hint
+- ✅ 6-language localization (en, ja, de, fr, ko, zh)
+- ✅ Buttons on `/dye info`, `/dye random`, `/match`, `/match_image`, `/harmony`
+
+**Files created/modified:**
+- `xivdyetools-discord-bot/src/utils/button-builder.ts` (new)
+- `xivdyetools-discord-bot/src/handlers/button-handler.ts` (new)
+- `xivdyetools-discord-bot/src/index.ts` - Added button interaction routing
+- `xivdyetools-discord-bot/src/services/i18n-service.ts` - Added ButtonInteraction type
+- `xivdyetools-discord-bot/src/commands/dye.ts` - Added buttons to info/random
+- `xivdyetools-discord-bot/src/commands/match.ts` - Added buttons
+- `xivdyetools-discord-bot/src/commands/match-image.ts` - Added buttons
+- `xivdyetools-discord-bot/src/commands/harmony.ts` - Added buttons
+- `xivdyetools-discord-bot/src/i18n/translations/*.json` - Added `buttons` section (6 files)
 
 ---
 
