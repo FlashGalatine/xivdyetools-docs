@@ -13,7 +13,7 @@ This document outlines planned features for the XIV Dye Tools monorepo, prioriti
 | Feature | Platform | Core Changes | Effort | Status |
 |---------|----------|--------------|--------|--------|
 | Multi-Color Palette Extraction | Web + Bot | Yes | Medium-High | Planned |
-| Seasonal/Themed Preset Palettes | Web + Bot | Yes | Medium | Planned |
+| Seasonal/Themed Preset Palettes | Web + Bot | Yes | Medium | ✅ Done |
 | Dye Collections/Favorites | Web + Bot | No | Medium | ✅ Done |
 | Budget-Aware Dye Suggestions | Web + Bot | Optional | Medium | Planned |
 
@@ -215,7 +215,7 @@ See [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) for full specification.
 
 ### Phase 3: Major Features (2-3 weeks)
 
-#### 6. Seasonal/Themed Preset Palettes
+#### 6. Seasonal/Themed Preset Palettes ✅
 Pre-made color palettes for common themes.
 
 **Preset Categories:**
@@ -224,6 +224,27 @@ Pre-made color palettes for common themes.
 - **Seasons:** Spring, Summer, Autumn, Winter
 - **FFXIV Events:** Starlight, Moonfire, Rising
 - **Aesthetics:** Gothic, Pastel, Military, Royal
+
+**Web App Implementation (Complete):**
+- ✅ `preset-browser-tool.ts` - Full preset browser with category tabs
+- ✅ Category filter buttons with icon badges
+- ✅ Preset card grid with color swatch strips
+- ✅ Detail view with full dye list and tags
+- ✅ Back navigation from detail to grid
+
+**Discord Bot Implementation (Complete):**
+- ✅ `/preset list [category]` - List presets by category
+- ✅ `/preset show <name>` - Show preset with swatch image
+- ✅ `/preset random [category]` - Random preset for inspiration
+- ✅ Autocomplete for preset names
+- ✅ Canvas-rendered swatch images
+- ✅ 6-language localization
+
+**Files:**
+- Core: `PresetService`, `presetData` (already in xivdyetools-core)
+- Web: `xivdyetools-web-app/src/components/preset-browser-tool.ts`
+- Bot: `xivdyetools-discord-bot/src/commands/preset.ts`
+- Bot: `xivdyetools-discord-bot/src/renderers/preset-swatch.ts`
 
 See [PRESET_PALETTES.md](./PRESET_PALETTES.md) for detailed specification.
 
