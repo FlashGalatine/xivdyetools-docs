@@ -76,7 +76,7 @@
 | # | Project | Issue | Effort | Status |
 |---|---------|-------|--------|--------|
 | 24 | discord-worker | Duplicate DiscordInteraction types | 1 hour | ⬜ |
-| 25 | discord-worker | Redundant locale resolution | 30 min | ✅ |
+| 25 | discord-worker | Redundant locale resolution | 30 min | ✅ (regression test added) |
 | 26 | web-app | Giant monolithic components (1200+ lines) | 4 hours | ✅ |
 
 ### 🟡 LOW PRIORITY (P3) - Fix When Convenient
