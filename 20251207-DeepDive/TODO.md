@@ -54,20 +54,20 @@
 | # | Project | Issue | File | Effort |
 |---|---------|-------|------|--------|
 | 12 | presets-api | LIKE wildcards not escaped | `src/services/preset-service.ts:75-78` | 15 min | ✅ |
-| 13 | presets-api | Race condition in vote duplicate check | `src/handlers/votes.ts:25-30` | 30 min |
-| 14 | oauth | Token revocation is a no-op | `src/handlers/refresh.ts:173-181` | 1 hour |
-| 15 | oauth | CORS too permissive (localhost) | `src/index.ts:36-38` | 15 min |
-| 16 | web-app | innerHTML with user content | Multiple locations | 1 hour |
-| 17 | core | maxIterations not clamped (DoS potential) | `src/services/PaletteService.ts:343` | 10 min |
+| 13 | presets-api | Race condition in vote duplicate check | `src/handlers/votes.ts:25-30` | 30 min | ✅ |
+| 14 | oauth | Token revocation is a no-op | `src/handlers/refresh.ts:173-181` | 1 hour | ✅ |
+| 15 | oauth | CORS too permissive (localhost) | `src/index.ts:36-38` | 15 min | ✅ |
+| 16 | web-app | innerHTML with user content | Multiple locations | 1 hour | ✅ |
+| 17 | core | maxIterations not clamped (DoS potential) | `src/services/PaletteService.ts:343` | 10 min | ✅ |
 
 #### Performance Issues
 
 | # | Project | Issue | File | Effort |
 |---|---------|-------|------|--------|
-| 18 | presets-api | Vote operations execute 4-5 queries | `src/handlers/votes.ts:20-79` | 30 min |
-| 19 | presets-api | Categories endpoint JOINs every request | `src/handlers/categories.ts:19-51` | 1 hour |
-| 20 | presets-api | Regex recompilation per request | `src/services/moderation-service.ts:23-37` | 20 min |
-| 21 | core | Sequential batch API calls | `src/services/APIService.ts:626-637` | 1 hour |
+| 18 | presets-api | Vote operations execute 4-5 queries | `src/handlers/votes.ts:20-79` | 30 min | ✅ |
+| 19 | presets-api | Categories endpoint JOINs every request | `src/handlers/categories.ts:19-51` | 1 hour | ✅ |
+| 20 | presets-api | Regex recompilation per request | `src/services/moderation-service.ts:23-37` | 20 min | ✅ |
+| 21 | core | Sequential batch API calls | `src/services/APIService.ts:626-637` | 1 hour | ✅ |
 | 22 | web-app | setTimeout without cleanup | Multiple locations | 30 min |
 | 23 | web-app | Duplicate service instantiation | Multiple components | 30 min |
 
@@ -81,19 +81,19 @@
 
 ### 🟡 LOW PRIORITY (P3) - Fix When Convenient
 
-| # | Project | Issue | Effort |
-|---|---------|-------|--------|
-| 27 | presets-api | Missing security headers | 15 min |
-| 28 | presets-api | Error details in production logs | 15 min |
-| 29 | presets-api | No public rate limits | 1 hour |
-| 30 | presets-api | Hardcoded CORS domain | 10 min |
-| 31 | oauth | No rate limiting on auth endpoints | 1 hour |
-| 32 | oauth | Potential info leakage in logs | 15 min |
-| 33 | discord-worker | Webhook secret timing attack | 30 min |
-| 34 | discord-worker | No request body size limit | 15 min |
-| 35 | core | Cache key injection | 15 min |
-| 36 | web-app | Missing ARIA accessibility attributes | 1 hour |
-| 37 | web-app | HTML in translation strings | 30 min |
+| # | Project | Issue | Effort | Status |
+|---|---------|-------|--------|--------|
+| 27 | presets-api | Missing security headers | 15 min | ✅ |
+| 28 | presets-api | Error details in production logs | 15 min | ✅ |
+| 29 | presets-api | No public rate limits | 1 hour | ✅ |
+| 30 | presets-api | Hardcoded CORS domain | 10 min | ✅ |
+| 31 | oauth | No rate limiting on auth endpoints | 1 hour | ✅ |
+| 32 | oauth | Potential info leakage in logs | 15 min | ✅ |
+| 33 | discord-worker | Webhook secret timing attack | 30 min | ✅ |
+| 34 | discord-worker | No request body size limit | 15 min | ✅ |
+| 35 | core | Cache key injection | 15 min | ✅ |
+| 36 | web-app | Missing ARIA accessibility attributes | 1 hour | ⬜ |
+| 37 | web-app | HTML in translation strings | 30 min | ✅ |
 
 ---
 
