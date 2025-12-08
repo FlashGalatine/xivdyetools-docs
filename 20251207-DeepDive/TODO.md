@@ -68,8 +68,8 @@
 | 19 | presets-api | Categories endpoint JOINs every request | `src/handlers/categories.ts:19-51` | 1 hour | ✅ |
 | 20 | presets-api | Regex recompilation per request | `src/services/moderation-service.ts:23-37` | 20 min | ✅ |
 | 21 | core | Sequential batch API calls | `src/services/APIService.ts:626-637` | 1 hour | ✅ |
-| 22 | web-app | setTimeout without cleanup | Multiple locations | 30 min |
-| 23 | web-app | Duplicate service instantiation | Multiple components | 30 min |
+| 22 | web-app | setTimeout without cleanup | Multiple locations | 30 min | ✅ |
+| 23 | web-app | Duplicate service instantiation | Multiple components | 30 min | ✅ |
 
 #### Code Quality Issues
 
@@ -92,7 +92,7 @@
 | 33 | discord-worker | Webhook secret timing attack | 30 min | ✅ |
 | 34 | discord-worker | No request body size limit | 15 min | ✅ |
 | 35 | core | Cache key injection | 15 min | ✅ |
-| 36 | web-app | Missing ARIA accessibility attributes | 1 hour | ⬜ |
+| 36 | web-app | Missing ARIA accessibility attributes | 1 hour | ✅ |
 | 37 | web-app | HTML in translation strings | 30 min | ✅ |
 
 ---
