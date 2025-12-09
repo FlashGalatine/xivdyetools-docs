@@ -10,13 +10,13 @@ This repository contains planning documents, feature specifications, and design 
 
 ### Feature Specifications
 
-| Document | Description |
-|----------|-------------|
-| [COMMUNITY_PRESETS_SPEC.md](./COMMUNITY_PRESETS_SPEC.md) | Community preset submission, voting, and moderation system |
-| [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) | User collections feature for organizing favorite dyes |
-| [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) | K-means++ palette extraction from images |
-| [PRESET_PALETTES.md](./PRESET_PALETTES.md) | Curated preset color palettes |
-| [BUDGET_AWARE_SUGGESTIONS.md](./BUDGET_AWARE_SUGGESTIONS.md) | Price-conscious dye recommendations |
+| Document | Description | Status |
+|----------|-------------|--------|
+| [COMMUNITY_PRESETS_SPEC.md](./COMMUNITY_PRESETS_SPEC.md) | Community preset submission, voting, and moderation system | ✅ Complete |
+| [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) | User collections feature for organizing favorite dyes | ✅ Complete |
+| [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) | K-means++ palette extraction from images | ✅ Complete |
+| [PRESET_PALETTES.md](./PRESET_PALETTES.md) | Curated preset color palettes | ✅ Complete |
+| [BUDGET_AWARE_SUGGESTIONS.md](./BUDGET_AWARE_SUGGESTIONS.md) | Price-conscious dye recommendations | 📋 Planned |
 
 ### Roadmaps
 
@@ -36,14 +36,15 @@ This repository contains planning documents, feature specifications, and design 
 
 This documentation covers the following projects:
 
-| Project | Description |
-|---------|-------------|
-| **xivdyetools-core** | Core color algorithms and dye database (npm library) |
-| **xivdyetools-web-app** | Interactive web-based color tools |
-| **xivdyetools-discord-bot** | Traditional Discord bot (Discord.js + Gateway) |
-| **xivdyetools-discord-worker** | Serverless Discord bot (Cloudflare Workers) |
-| **xivdyetools-oauth** | Discord OAuth authentication worker |
-| **xivdyetools-presets-api** | Community presets REST API |
+| Project | Version | Description |
+|---------|---------|-------------|
+| **xivdyetools-core** | v1.3.7 | Core color algorithms and dye database (npm library) |
+| **xivdyetools-web-app** | v2.6.0 | Interactive web-based color tools |
+| **xivdyetools-discord-worker** | v2.0.1 | Serverless Discord bot (Cloudflare Workers) |
+| **xivdyetools-oauth** | v1.1.0 | Discord OAuth authentication worker |
+| **xivdyetools-presets-api** | v1.1.0 | Community presets REST API |
+
+> **Note**: The original `xivdyetools-discord-bot` (Discord.js + Gateway) has been deprecated and replaced by `xivdyetools-discord-worker`.
 
 ## Contributing
 
