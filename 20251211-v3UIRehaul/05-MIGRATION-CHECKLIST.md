@@ -1,21 +1,35 @@
 # v3.0.0 UI Migration Checklist
 
+> **Last Updated**: 2024-12-12 (Session 1 - Phase 0 & 1 Foundation)
+
 ## Pre-Migration Planning
 
-### Phase 0: Preparation
+### Phase 0: Preparation ✅
 
-- [ ] Review all mockup files in `src/mockups/`
-- [ ] Identify shared components that can be extracted
-- [ ] Plan feature flag strategy for gradual rollout
+- [x] Review all mockup files in `src/mockups/`
+  - *Audited: MockupShell.ts, MobileDrawer.ts, CollapsiblePanel.ts*
+  - *See: `06-PHASE0-AUDIT-RESULTS.md` for detailed findings*
+- [x] Identify shared components that can be extracted
+  - *CollapsiblePanel and MobileDrawer are production-ready*
+  - *Common UI patterns documented in 02-COMPONENTS.md*
+- [x] Plan feature flag strategy for gradual rollout
+  - *Created: `src/services/feature-flag-service.ts`*
+  - *Strategy: LocalStorage toggle + URL param override (?ui=v3)*
 - [ ] Set up A/B testing infrastructure (optional)
+  - *Deferred: Will use simple feature flag for now*
 - [ ] Create backup/rollback plan
+  - *V2 code will remain until v3 is stable, then deleted entirely*
 
-### Phase 0.5: Infrastructure
+### Phase 0.5: Infrastructure ✅
 
-- [ ] Add CSS custom property definitions to global styles
-- [ ] Verify `--panel-left-width`, `--panel-collapsed-width`, `--drawer-transition` are defined
-- [ ] Ensure Tailwind v4 is configured correctly
+- [x] Add CSS custom property definitions to global styles
+  - *Verified in `src/styles/themes.css`*
+- [x] Verify `--panel-left-width`, `--panel-collapsed-width`, `--drawer-transition` are defined
+  - *All present: 280px, 64px, 0.3s ease-out respectively*
+- [x] Ensure Tailwind v4 is configured correctly
+  - *Confirmed: Tailwind v4 + Vite 7 + TypeScript 5.9*
 - [ ] Test responsive breakpoints (768px boundary)
+  - *Pending: Manual testing in next session*
 
 ---
 
@@ -33,12 +47,25 @@
 - [ ] Add keyboard shortcuts (if applicable)
 - [ ] Test resize behavior (desktop ↔ mobile transition)
 
-### Phase 1.5: Routing Integration
+*Note: MockupShell is already production-ready per audit. Migration involves:*
+1. *Renaming/moving to `src/components/two-panel-shell.ts`*
+2. *Integrating with FeatureFlagService*
+3. *Connecting to real tool components instead of mockups*
 
-- [ ] Decide on routing strategy (hash-based, history API, or internal)
-- [ ] Map tool IDs to routes (`/harmony`, `/matcher`, etc.)
-- [ ] Handle deep linking to specific tools
-- [ ] Preserve query parameters across tool switches
+### Phase 1.5: Routing Integration ✅
+
+- [x] Decide on routing strategy (hash-based, history API, or internal)
+  - *Decision: History API with Cloudflare Pages `_redirects` for SPA fallback*
+- [x] Map tool IDs to routes (`/harmony`, `/matcher`, etc.)
+  - *Created: `src/services/router-service.ts`*
+  - *Routes: /harmony, /matcher, /accessibility, /comparison, /mixer, /presets, /budget*
+- [x] Handle deep linking to specific tools
+  - *Implemented: `handleInitialRoute()` parses URL on load*
+- [x] Preserve query parameters across tool switches
+  - *Implemented: `preservedParams` array in RouterService (dc, dye, ui)*
+
+**Cloudflare Pages Configuration**:
+- *`public/_redirects` already exists with `/* /index.html 200` catch-all*
 
 ---
 
@@ -185,31 +212,40 @@
 
 ---
 
-### Phase 8: Budget Suggestions
+### Phase 8: Budget Suggestions (New Feature)
+
+**Mockup Status**: ✅ Complete
+- *Created: `src/mockups/tools/BudgetMockup.ts`*
+- *Added: `ICON_TOOL_BUDGET` to `src/shared/tool-icons.ts`*
+- *Updated: MockupShell, MockupNav, mockups/index.ts*
 
 **Left Panel:**
-- [ ] Create target dye selector with price display
-- [ ] Create quick pick buttons for popular expensive dyes
-- [ ] Create budget limit slider (logarithmic scale, 0 → 1M gil)
-- [ ] Create sort by radio group (Best Match, Lowest Price, Best Value)
-- [ ] Add Dye Filters panel
-- [ ] Add Data Center selector
+- [x] Create target dye selector with price display *(mockup)*
+- [x] Create quick pick buttons for popular expensive dyes *(mockup)*
+- [x] Create budget limit slider (logarithmic scale, 0 → 1M gil) *(mockup)*
+- [x] Create sort by radio group (Best Match, Lowest Price, Best Value) *(mockup)*
+- [x] Add Dye Filters panel *(mockup)*
+- [x] Add Data Center selector *(mockup)*
 
 **Right Panel:**
-- [ ] Create target overview card (swatch, name, hex, price)
-- [ ] Create alternatives header with count + sort indicator
-- [ ] Create alternatives list with side-by-side swatches
-  - [ ] Color distance indicator (Δ value with visual bar)
-  - [ ] Price display
-  - [ ] Savings badge (green)
-  - [ ] Value score (when sorting by value)
-- [ ] Create "No results" state with closest affordable suggestion
+- [x] Create target overview card (swatch, name, hex, price) *(mockup)*
+- [x] Create alternatives header with count + sort indicator *(mockup)*
+- [x] Create alternatives list with side-by-side swatches *(mockup)*
+  - [x] Color distance indicator (Δ value with visual bar) *(mockup)*
+  - [x] Price display *(mockup)*
+  - [x] Savings badge (green) *(mockup)*
+  - [x] Value score (when sorting by value) *(mockup)*
+- [x] Create "No results" state with closest affordable suggestion *(mockup)*
 - [ ] Wire up to existing `findClosestDyes()` + `PriceService`
 
 **Integration:**
 - [ ] Add "Find Cheaper" button to Color Matcher results
 - [ ] Add navigation link from Harmony/Comparison tools
 - [ ] Implement cross-tool deep linking
+
+**i18n:**
+- [ ] Add `tools.budget.title`, `tools.budget.shortName`, `tools.budget.description` to locale files
+  - *Currently using fallback strings in MockupNav.ts*
 
 **Testing:**
 - [ ] Test budget slider UX (logarithmic feel)
@@ -292,35 +328,59 @@
 
 ## Quick Reference: File Locations
 
-| Mockup | Source File |
-|--------|-------------|
-| Shell | `src/mockups/MockupShell.ts` |
-| Drawer | `src/mockups/MobileDrawer.ts` |
-| Collapsible | `src/mockups/CollapsiblePanel.ts` |
-| Harmony | `src/mockups/tools/HarmonyMockup.ts` |
-| Matcher | `src/mockups/tools/MatcherMockup.ts` |
-| Accessibility | `src/mockups/tools/AccessibilityMockup.ts` |
-| Comparison | `src/mockups/tools/ComparisonMockup.ts` |
-| Mixer | `src/mockups/tools/MixerMockup.ts` |
-| Presets | `src/mockups/tools/PresetsMockup.ts` |
-| Budget | `src/mockups/tools/BudgetMockup.ts` |
-| Tool Icons | `src/shared/tool-icons.ts` |
+| Component | Source File | Status |
+|-----------|-------------|--------|
+| Shell | `src/mockups/MockupShell.ts` | ✅ Production-ready |
+| Drawer | `src/mockups/MobileDrawer.ts` | ✅ Production-ready |
+| Collapsible | `src/mockups/CollapsiblePanel.ts` | ✅ Production-ready |
+| Harmony | `src/mockups/tools/HarmonyMockup.ts` | ✅ Mockup complete |
+| Matcher | `src/mockups/tools/MatcherMockup.ts` | ✅ Mockup complete |
+| Accessibility | `src/mockups/tools/AccessibilityMockup.ts` | ✅ Mockup complete |
+| Comparison | `src/mockups/tools/ComparisonMockup.ts` | ✅ Mockup complete |
+| Mixer | `src/mockups/tools/MixerMockup.ts` | ✅ Mockup complete |
+| Presets | `src/mockups/tools/PresetsMockup.ts` | ✅ Mockup complete |
+| Budget | `src/mockups/tools/BudgetMockup.ts` | ✅ Mockup complete |
+| Tool Icons | `src/shared/tool-icons.ts` | ✅ All 7 icons |
+| Feature Flag | `src/services/feature-flag-service.ts` | ✅ Created |
+| Router | `src/services/router-service.ts` | ✅ Created |
+
+---
+
+## Session Log
+
+### Session 1 (2024-12-12): Phase 0 & 1 Foundation
+
+**Commits:**
+1. `d4b9603` - feat(services): Add FeatureFlagService for v2/v3 UI toggle
+2. `725c59c` - feat(services): Add RouterService for History API navigation
+3. `9e38a76` - feat(mockups): Add Budget Suggestions tool mockup
+
+**Completed:**
+- Phase 0: Preparation ✅
+- Phase 0.5: Infrastructure ✅
+- Phase 1.5: Routing Integration ✅
+- Budget mockup created ✅
+
+**Next Session:**
+- Phase 1: Create production TwoPanelShell component
+- Manual testing of responsive breakpoints
+- Begin Phase 2: Harmony Explorer migration
 
 ---
 
 ## Estimated Timeline
 
-| Phase | Effort | Dependencies |
-|-------|--------|--------------|
-| 0-0.5 Prep | 1-2 days | None |
-| 1-1.5 Shell | 3-5 days | Phase 0 |
-| 2 Harmony | 2-3 days | Phase 1 |
-| 3 Matcher | 3-4 days | Phase 1 |
-| 4 Accessibility | 2-3 days | Phase 1 |
-| 5 Comparison | 2-3 days | Phase 1 |
-| 6 Mixer | 2-3 days | Phase 1 |
-| 7 Presets | 3-5 days | Phase 1, Auth |
-| 8 Budget | 2-3 days | Phase 1, Price API |
-| 9-13 Polish | 5-7 days | All phases |
+| Phase | Effort | Dependencies | Status |
+|-------|--------|--------------|--------|
+| 0-0.5 Prep | 1-2 days | None | ✅ Complete |
+| 1-1.5 Shell | 3-5 days | Phase 0 | 🔄 Routing done, Shell pending |
+| 2 Harmony | 2-3 days | Phase 1 | ⏳ Pending |
+| 3 Matcher | 3-4 days | Phase 1 | ⏳ Pending |
+| 4 Accessibility | 2-3 days | Phase 1 | ⏳ Pending |
+| 5 Comparison | 2-3 days | Phase 1 | ⏳ Pending |
+| 6 Mixer | 2-3 days | Phase 1 | ⏳ Pending |
+| 7 Presets | 3-5 days | Phase 1, Auth | ⏳ Pending |
+| 8 Budget | 2-3 days | Phase 1, Price API | 🔄 Mockup done |
+| 9-13 Polish | 5-7 days | All phases | ⏳ Pending |
 
 **Total Estimate**: 4-6 weeks for full migration
