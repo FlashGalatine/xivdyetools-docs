@@ -1,6 +1,6 @@
 # v3.0.0 UI Migration Checklist
 
-> **Last Updated**: 2024-12-12 (Session 8 - Phase 7 Preset Browser Migration)
+> **Last Updated**: 2024-12-12 (Session 9 - Phase 8 Budget Suggestions Migration)
 
 ## Pre-Migration Planning
 
@@ -329,7 +329,7 @@
 
 ---
 
-### Phase 8: Budget Suggestions (New Feature)
+### Phase 8: Budget Suggestions (New Feature) ✅
 
 **Mockup Status**: ✅ Complete
 - *Created: `src/mockups/tools/BudgetMockup.ts`*
@@ -337,39 +337,64 @@
 - *Updated: MockupShell, MockupNav, mockups/index.ts*
 
 **Left Panel:**
-- [x] Create target dye selector with price display *(mockup)*
-- [x] Create quick pick buttons for popular expensive dyes *(mockup)*
-- [x] Create budget limit slider (logarithmic scale, 0 → 1M gil) *(mockup)*
-- [x] Create sort by radio group (Best Match, Lowest Price, Best Value) *(mockup)*
-- [x] Add Dye Filters panel *(mockup)*
-- [x] Add Data Center selector *(mockup)*
+- [x] Create target dye selector with price display
+  - *DyeSelector with maxSelections: 1, price fetch via MarketBoard*
+- [x] Create quick pick buttons for popular expensive dyes
+  - *6 quick picks: Jet Black, Pure White, Metallic Gold, Metallic Silver, Gunmetal Black, Snow White*
+- [x] Create budget limit slider (logarithmic scale, 0 → 1M gil)
+  - *Range slider with tick marks, value display with toLocaleString()*
+- [x] Create sort by radio group (Best Match, Lowest Price, Best Value)
+  - *3 radio options with StorageService persistence*
+- [x] Add Dye Filters panel
+  - *CollapsiblePanel with DyeFilters component*
+- [x] Add Data Center selector
+  - *Integrated via MarketBoard component in CollapsiblePanel*
 
 **Right Panel:**
-- [x] Create target overview card (swatch, name, hex, price) *(mockup)*
-- [x] Create alternatives header with count + sort indicator *(mockup)*
-- [x] Create alternatives list with side-by-side swatches *(mockup)*
-  - [x] Color distance indicator (Δ value with visual bar) *(mockup)*
-  - [x] Price display *(mockup)*
-  - [x] Savings badge (green) *(mockup)*
-  - [x] Value score (when sorting by value) *(mockup)*
-- [x] Create "No results" state with closest affordable suggestion *(mockup)*
-- [ ] Wire up to existing `findClosestDyes()` + `PriceService`
+- [x] Create target overview card (swatch, name, hex, price)
+  - *Dynamic display when target dye selected*
+- [x] Create alternatives header with count + sort indicator
+  - *Shows "N alternatives within budget" + current sort mode*
+- [x] Create alternatives list with side-by-side swatches
+  - [x] Color distance indicator (Δ value with visual bar)
+  - [x] Price display
+  - [x] Savings badge (green)
+  - [x] Value score (when sorting by value)
+- [x] Create "No results" state with closest affordable suggestion
+- [x] Wire up to existing `findClosestDyes()` + `PriceService`
+  - *Using `dyeService.findDyesWithinDistance()` + MarketBoard batch fetch*
 
 **Integration:**
-- [ ] Add "Find Cheaper" button to Color Matcher results
-- [ ] Add navigation link from Harmony/Comparison tools
-- [ ] Implement cross-tool deep linking
+- [x] Add "Find Cheaper" button to Color Matcher results
+  - *Added 💰 button to each dye card (visible on hover)*
+- [x] Add navigation link from Harmony/Comparison tools
+  - *Harmony: "Budget Options" button in results header*
+  - *Comparison: 💰 button per dye in selected dyes list*
+- [x] Implement cross-tool deep linking
+  - *URL params: `?dye=DyeName` handled in BudgetTool*
 
 **i18n:**
-- [ ] Add `tools.budget.title`, `tools.budget.shortName`, `tools.budget.description` to locale files
-  - *Currently using fallback strings in MockupNav.ts*
+- [x] Add `tools.budget.*` entries to all 6 locale files
+  - *en.json, ja.json, de.json, fr.json, ko.json, zh.json updated*
+  - *Keys: title, shortName, description, subtitle, findCheaperTooltip, budgetOptions*
+
+**New Files Created:**
+- `src/components/tools/budget-tool.ts` - Production Budget tool component (21.29 kB)
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `BudgetTool` for budget route
+- `src/components/tools/index.ts` - Exports `BudgetTool`
+- `src/components/tools/matcher-tool.ts` - Added "Find Cheaper" buttons
+- `src/components/tools/harmony-tool.ts` - Added "Budget Options" button
+- `src/components/tools/comparison-tool.ts` - Added "Find Cheaper" buttons
+- `src/locales/*.json` - Added budget i18n entries (6 files)
 
 **Testing:**
-- [ ] Test budget slider UX (logarithmic feel)
-- [ ] Test all sort modes
-- [ ] Verify price data accuracy against Universalis
-- [ ] Test with 0 results edge case
-- [ ] Test mobile layout
+- [ ] Test budget slider UX (logarithmic feel) *(Manual testing required)*
+- [ ] Test all sort modes *(Manual testing required)*
+- [ ] Verify price data accuracy against Universalis *(Manual testing required)*
+- [ ] Test with 0 results edge case *(Manual testing required)*
+- [ ] Test mobile layout *(Manual testing required)*
 
 ---
 
@@ -459,6 +484,7 @@
 | **ComparisonTool** | `src/components/tools/comparison-tool.ts` | ✅ Created (Phase 5) |
 | **MixerTool** | `src/components/tools/mixer-tool.ts` | ✅ Created (Phase 6) |
 | **PresetTool** | `src/components/tools/preset-tool.ts` | ✅ Created (Phase 7) |
+| **BudgetTool** | `src/components/tools/budget-tool.ts` | ✅ Created (Phase 8) |
 
 ### Mockup Components (Reference)
 | Component | Source File | Status |
@@ -703,6 +729,47 @@
 - Manual browser testing of Phase 7 Preset tool
 - Begin Phase 8: Budget Suggestions migration (or polish existing tools)
 
+### Session 9 (2024-12-12): Phase 8 Budget Suggestions Migration
+
+**Completed:**
+- Phase 8: Budget Suggestions ✅
+
+**New Files Created:**
+- `src/components/tools/budget-tool.ts` - Production Budget tool component
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `BudgetTool` for budget route
+- `src/components/tools/index.ts` - Exports `BudgetTool`
+- `src/components/tools/matcher-tool.ts` - Added "Find Cheaper" button with RouterService navigation
+- `src/components/tools/harmony-tool.ts` - Added "Budget Options" button to results header
+- `src/components/tools/comparison-tool.ts` - Added "Find Cheaper" button per selected dye
+- `src/locales/en.json` - Added budget i18n entries
+- `src/locales/ja.json` - Added budget i18n entries (Japanese)
+- `src/locales/de.json` - Added budget i18n entries (German)
+- `src/locales/fr.json` - Added budget i18n entries (French)
+- `src/locales/ko.json` - Added budget i18n entries (Korean)
+- `src/locales/zh.json` - Added budget i18n entries (Chinese)
+
+**Key Changes:**
+- Created `BudgetTool` as the only NEW FEATURE in v3 migration (Phases 2-7 were migrations)
+- Left panel: DyeSelector for target, Quick Picks for expensive dyes, budget slider, sort options, filters
+- Right panel: Target overview, alternatives list with distance/price/savings, empty state
+- Cross-tool integration: "Find Cheaper" buttons in Matcher, Harmony, Comparison tools
+- Deep linking: `?dye=DyeName` URL parameter support for pre-selecting target dye
+- i18n: Added 6 keys to all 6 locale files (en, ja, de, fr, ko, zh)
+- Value score formula: `(distance × 0.7) + (price × 0.3)` for "Best Value" sort
+- Build verified: budget-tool chunk at 21.29 kB
+
+**Design Decisions:**
+- Used existing `DyeSelector` and `MarketBoard` components for consistency
+- Quick picks hardcoded (6 popular expensive dyes) rather than dynamic
+- 💰 emoji for "Find Cheaper" button to reduce text clutter
+- RouterService.navigateTo() for cross-tool navigation
+
+**Next Session:**
+- Manual browser testing of Phase 8 Budget tool
+- Begin Phase 9: Polish & Optimization (or start cross-browser testing)
+
 ---
 
 ## Estimated Timeline
@@ -717,7 +784,7 @@
 | 5 Comparison | 2-3 days | Phase 1 | ✅ Complete |
 | 6 Mixer | 2-3 days | Phase 1 | ✅ Complete |
 | 7 Presets | 3-5 days | Phase 1, Auth | ✅ Complete |
-| 8 Budget | 2-3 days | Phase 1, Price API | 🔄 Mockup done |
+| 8 Budget | 2-3 days | Phase 1, Price API | ✅ Complete |
 | 9-13 Polish | 5-7 days | All phases | ⏳ Pending |
 
 **Total Estimate**: 4-6 weeks for full migration
