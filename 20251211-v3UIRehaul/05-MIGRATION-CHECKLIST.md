@@ -1,6 +1,6 @@
 # v3.0.0 UI Migration Checklist
 
-> **Last Updated**: 2024-12-12 (Session 3 - Phase 2 Harmony Explorer Migration)
+> **Last Updated**: 2024-12-12 (Session 4 - Phase 3 Color Matcher Migration)
 
 ## Pre-Migration Planning
 
@@ -127,27 +127,44 @@
 
 ---
 
-### Phase 3: Color Matcher
+### Phase 3: Color Matcher ✅
 
 **Left Panel:**
-- [ ] Migrate image upload (drag-drop, file, camera, paste)
-- [ ] Migrate color picker with hex input
-- [ ] Migrate eyedropper functionality
-- [ ] Migrate sample size slider
-- [ ] Migrate palette extraction toggle
-- [ ] Add Dye Filters + Market Board panels
+- [x] Migrate image upload (drag-drop, file, camera, paste)
+  - *Integrated `ImageUploadDisplay` component*
+- [x] Migrate color picker with hex input
+  - *Integrated `ColorPickerDisplay` component*
+- [x] Migrate eyedropper functionality
+  - *Included via `ColorPickerDisplay`*
+- [x] Migrate sample size slider
+  - *Range slider (1-10px) with storage persistence*
+- [x] Migrate palette extraction toggle
+  - *Checkbox toggle with storage persistence*
+- [x] Add Dye Filters + Market Board panels
+  - *Wrapped with `CollapsiblePanel` components*
 
 **Right Panel:**
-- [ ] Migrate image canvas with zoom controls
-- [ ] Migrate matched dyes result list
-- [ ] Migrate recent colors row
-- [ ] Wire up color matching algorithm
+- [x] Migrate image canvas with zoom controls
+  - *Integrated `ImageZoomController` component*
+- [x] Migrate matched dyes result list
+  - *2-column grid with rank badges, swatches, distance metrics*
+- [x] Migrate recent colors row
+  - *Integrated `RecentColorsPanel` component*
+- [x] Wire up color matching algorithm
+  - *Using `dyeService.findClosestDye()` and `findDyesWithinDistance()`*
+
+**New Files Created:**
+- `src/components/tools/matcher-tool.ts` - Production Matcher tool (14.60 kB)
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `MatcherTool` for matcher route
+- `src/components/tools/index.ts` - Exports `MatcherTool`
 
 **Testing:**
-- [ ] Test image upload on desktop browsers
-- [ ] Test image upload on mobile (camera)
-- [ ] Test clipboard paste
-- [ ] Verify color matching accuracy
+- [ ] Test image upload on desktop browsers *(Manual testing required)*
+- [ ] Test image upload on mobile (camera) *(Manual testing required)*
+- [ ] Test clipboard paste *(Manual testing required)*
+- [ ] Verify color matching accuracy *(Manual testing required)*
 
 ---
 
@@ -370,6 +387,7 @@
 | ToolNav | `src/components/tool-nav.ts` | ✅ Created |
 | V3Layout | `src/components/v3-layout.ts` | ✅ Created |
 | **HarmonyTool** | `src/components/tools/harmony-tool.ts` | ✅ Created (Phase 2) |
+| **MatcherTool** | `src/components/tools/matcher-tool.ts` | ✅ Created (Phase 3) |
 
 ### Mockup Components (Reference)
 | Component | Source File | Status |
@@ -468,6 +486,33 @@
 - Manual browser testing of Phase 2 Harmony tool
 - Begin Phase 3: Color Matcher migration
 
+### Session 4 (2024-12-12): Phase 3 Color Matcher Migration
+
+**Completed:**
+- Phase 3: Color Matcher ✅
+
+**New Files Created:**
+- `src/components/tools/matcher-tool.ts` - Production Matcher tool component
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `MatcherTool` for matcher route
+- `src/components/tools/index.ts` - Exports `MatcherTool`
+
+**Key Changes:**
+- Created `MatcherTool` as orchestrator wrapping existing v2 components
+- Integrated: `ImageUploadDisplay`, `ColorPickerDisplay`, `ImageZoomController`, `RecentColorsPanel`
+- Added `CollapsiblePanel` wrappers for DyeFilters and MarketBoard
+- Mobile drawer shows current color selection and settings summary
+- Build verified: matcher-tool chunk at 14.60 kB
+
+**Deferred:**
+- Palette extraction full integration (toggle present, extract button deferred)
+- Manual testing (Phase 3 testing items)
+
+**Next Session:**
+- Manual browser testing of Phase 3 Matcher tool
+- Begin Phase 4: Accessibility Checker migration
+
 ---
 
 ## Estimated Timeline
@@ -477,7 +522,7 @@
 | 0-0.5 Prep | 1-2 days | None | ✅ Complete |
 | 1-1.5 Shell | 3-5 days | Phase 0 | ✅ Complete |
 | 2 Harmony | 2-3 days | Phase 1 | ✅ Complete |
-| 3 Matcher | 3-4 days | Phase 1 | ⏳ Pending |
+| 3 Matcher | 3-4 days | Phase 1 | ✅ Complete |
 | 4 Accessibility | 2-3 days | Phase 1 | ⏳ Pending |
 | 5 Comparison | 2-3 days | Phase 1 | ⏳ Pending |
 | 6 Mixer | 2-3 days | Phase 1 | ⏳ Pending |
