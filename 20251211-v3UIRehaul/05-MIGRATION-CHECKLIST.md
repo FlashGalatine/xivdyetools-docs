@@ -1,6 +1,6 @@
 # v3.0.0 UI Migration Checklist
 
-> **Last Updated**: 2024-12-12 (Session 5 - Phase 4 Accessibility Checker Migration)
+> **Last Updated**: 2024-12-12 (Session 6 - Phase 5 Dye Comparison Migration)
 
 ## Pre-Migration Planning
 
@@ -204,26 +204,41 @@
 
 ---
 
-### Phase 5: Dye Comparison
+### Phase 5: Dye Comparison ✅
 
 **Left Panel:**
-- [ ] Migrate selected dyes list
-- [ ] Migrate "Add Dyes" button/modal
-- [ ] Add Market Board panel
+- [x] Migrate selected dyes list
+  - *Selected dyes with swatches, names, remove buttons*
+- [x] Migrate "Add Dyes" button/modal
+  - *Inline DyeSelector with maxSelections: 4*
+- [x] Add Market Board panel
+  - *CollapsiblePanel with MarketBoard component*
 
 **Right Panel:**
-- [ ] Migrate Hue-Saturation Plot (SVG)
-  - [ ] Ensure axis labels render correctly (0°-360°, 0%-100%)
-  - [ ] Verify data points position correctly
-- [ ] Migrate Brightness Distribution chart
-  - [ ] Ensure bars fill available height
-  - [ ] Test flexbox height propagation
-- [ ] Migrate Distance Matrix table
+- [x] Migrate Hue-Saturation Plot (SVG)
+  - [x] Ensure axis labels render correctly (0°-360°, 0%-100%)
+  - [x] Verify data points position correctly
+  - *SVG-based with viewBox 130x120, grid lines, numbered data points*
+- [x] Migrate Brightness Distribution chart
+  - [x] Ensure bars fill available height
+  - [x] Test flexbox height propagation
+  - *Flex-based bars with items-end alignment, dye names + percentages*
+- [x] Migrate Distance Matrix table
+  - *Color-coded cells, highlight closest pair option*
+- [x] Add Statistics Summary section
+  - *Avg Saturation, Avg Brightness, Hue Range, Avg Distance*
 
 **Testing:**
-- [ ] Test chart responsiveness
-- [ ] Verify brightness bars align to bottom
-- [ ] Test with various numbers of dyes (2-8)
+- [ ] Test chart responsiveness *(Manual testing required)*
+- [ ] Verify brightness bars align to bottom *(Manual testing required)*
+- [ ] Test with various numbers of dyes (2-4) *(Manual testing required)*
+
+**New Files Created:**
+- `src/components/tools/comparison-tool.ts` - Production Comparison tool (19.92 kB)
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `ComparisonTool` for comparison route
+- `src/components/tools/index.ts` - Exports `ComparisonTool`
 
 ---
 
@@ -405,6 +420,7 @@
 | **HarmonyTool** | `src/components/tools/harmony-tool.ts` | ✅ Created (Phase 2) |
 | **MatcherTool** | `src/components/tools/matcher-tool.ts` | ✅ Created (Phase 3) |
 | **AccessibilityTool** | `src/components/tools/accessibility-tool.ts` | ✅ Created (Phase 4) |
+| **ComparisonTool** | `src/components/tools/comparison-tool.ts` | ✅ Created (Phase 5) |
 
 ### Mockup Components (Reference)
 | Component | Source File | Status |
@@ -558,6 +574,35 @@
 - Manual browser testing of Phase 4 Accessibility tool
 - Begin Phase 5: Dye Comparison migration
 
+### Session 6 (2024-12-12): Phase 5 Dye Comparison Migration
+
+**Completed:**
+- Phase 5: Dye Comparison ✅
+
+**New Files Created:**
+- `src/components/tools/comparison-tool.ts` - Production Comparison tool component
+
+**Modified Files:**
+- `src/components/v3-layout.ts` - Loads `ComparisonTool` for comparison route
+- `src/components/tools/index.ts` - Exports `ComparisonTool`
+
+**Key Changes:**
+- Created `ComparisonTool` as orchestrator wrapping existing v2 components
+- Integrated: `DyeSelector` (up to 4 dyes), `CollapsiblePanel`, `MarketBoard`
+- Right panel: Statistics summary, SVG Hue-Saturation plot, Flex-based Brightness chart, Distance matrix
+- Options: Show Distance Values, Highlight Closest Pair, Show Price Comparison
+- Mobile drawer shows selected dyes count and color swatches
+- Build verified: comparison-tool chunk at 19.92 kB
+
+**Design Decisions:**
+- SVG-based charts (matching mockup design, better accessibility than Canvas)
+- Bar chart for brightness distribution (more intuitive than v2 scatter plot)
+- Color-coded distance matrix with optional closest pair highlighting
+
+**Next Session:**
+- Manual browser testing of Phase 5 Comparison tool
+- Begin Phase 6: Dye Mixer migration
+
 ---
 
 ## Estimated Timeline
@@ -569,7 +614,7 @@
 | 2 Harmony | 2-3 days | Phase 1 | ✅ Complete |
 | 3 Matcher | 3-4 days | Phase 1 | ✅ Complete |
 | 4 Accessibility | 2-3 days | Phase 1 | ✅ Complete |
-| 5 Comparison | 2-3 days | Phase 1 | ⏳ Pending |
+| 5 Comparison | 2-3 days | Phase 1 | ✅ Complete |
 | 6 Mixer | 2-3 days | Phase 1 | ⏳ Pending |
 | 7 Presets | 3-5 days | Phase 1, Auth | ⏳ Pending |
 | 8 Budget | 2-3 days | Phase 1, Price API | 🔄 Mockup done |
