@@ -1,6 +1,6 @@
 # v3.0.0 UI Migration Checklist
 
-> **Last Updated**: 2024-12-12 (Session 10 - Phase 9 Testing Environment Setup)
+> **Last Updated**: 2024-12-13 (Session 12 - Accessibility Tool Polish & Localization Fixes)
 
 ## Pre-Migration Planning
 
@@ -113,7 +113,8 @@
   - *Harmony offsets, hue-based matching via `ColorService.hexToHsv`*
 
 **Testing:**
-- [ ] Verify all harmony types work correctly *(Manual testing required)*
+- [x] Verify all harmony types work correctly *(Session 11 - tested)*
+- [x] Test Market Board integration *(Session 11 - server dropdown + price display working)*
 - [ ] Test theme switching *(Manual testing required)*
 - [ ] Test mobile layout *(Manual testing required)*
 
@@ -198,9 +199,9 @@
 - `src/components/tools/index.ts` - Exports `AccessibilityTool`
 
 **Testing:**
-- [ ] Verify CVD simulations are accurate *(Manual testing required)*
+- [x] Verify CVD simulations are accurate *(Session 12 - tested)*
 - [ ] Test with actual users who have color vision deficiencies (if possible)
-- [ ] Verify matrix calculations *(Manual testing required)*
+- [x] Verify matrix calculations *(Session 12 - tested)*
 
 ---
 
@@ -482,7 +483,7 @@
 | CollapsiblePanel | `src/components/collapsible-panel.ts` | ✅ Created |
 | ToolNav | `src/components/tool-nav.ts` | ✅ Created |
 | V3Layout | `src/components/v3-layout.ts` | ✅ Created |
-| **HarmonyTool** | `src/components/tools/harmony-tool.ts` | ✅ Created (Phase 2) |
+| **HarmonyTool** | `src/components/tools/harmony-tool.ts` | ✅ **READY** (Session 11) |
 | **MatcherTool** | `src/components/tools/matcher-tool.ts` | ✅ Created (Phase 3) |
 | **AccessibilityTool** | `src/components/tools/accessibility-tool.ts` | ✅ Created (Phase 4) |
 | **ComparisonTool** | `src/components/tools/comparison-tool.ts` | ✅ Created (Phase 5) |
@@ -816,6 +817,91 @@
 - Lighthouse audit via Chrome DevTools
 - Update `check-bundle-size.js` with v3 tool limits
 - Continue Phase 9-10 optimization tasks
+
+### Session 11 (2024-12-12): Harmony Explorer Market Board Integration ✅
+
+**Completed:**
+- Harmony Explorer Market Board fully functional ✅
+- UI consistency fixes across all tools ✅
+
+**Issues Fixed:**
+1. **Server dropdown empty** - `loadServerData()` was never called
+   - Fix: Added `this.loadServerData()` call in `MarketBoard.onMount()`
+2. **Price toggle not working** - Event name mismatch
+   - Fix: Changed event from `'toggle-prices'` to `'showPricesChanged'`
+3. **Prices never fetched** - Missing integration in HarmonyTool
+   - Fix: Added `fetchPricesForDisplayedDyes()` method with proper event listeners
+4. **Redundant price labeling** - Showed "48,498G gil"
+   - Fix: Removed " gil" suffix in `harmony-result-panel.ts`
+5. **Redundant "Market Board" header** - Nested inside CollapsiblePanel
+   - Fix: Removed title element from `market-board.ts` render()
+6. **Double "Dye Filters" headers** - Panel + dropdown both had headers
+   - Fix: Added `hideHeader: true` option to DyeFilters in v2 tools
+7. **Inconsistent DyeSelector columns** - 4 columns in most tools, 3 in Harmony
+   - Fix: Added `compactMode: true` to all DyeSelector instances (8 files)
+
+**Files Modified:**
+- `src/components/market-board.ts` - Server loading, event name, header removal
+- `src/components/tools/harmony-tool.ts` - Price fetching integration
+- `src/components/harmony-result-panel.ts` - Price label format
+- `src/components/__tests__/market-board.test.ts` - Event name update
+- `src/components/dye-mixer-tool.ts` - hideHeader + compactMode
+- `src/components/color-matcher-tool.ts` - hideHeader
+- `src/components/harmony-generator-tool.ts` - hideHeader + compactMode
+- `src/components/accessibility-checker-tool.ts` - compactMode
+- `src/components/dye-comparison-tool.ts` - compactMode
+- `src/components/tools/accessibility-tool.ts` - compactMode
+- `src/components/tools/budget-tool.ts` - compactMode
+- `src/components/tools/comparison-tool.ts` - compactMode
+- `src/components/tools/mixer-tool.ts` - compactMode
+
+**Commit:**
+- `4931429` - feat(market-board): Implement Market Board features for v3 Harmony Explorer
+
+**Harmony Explorer Status:** ✅ **READY**
+- Server dropdown populates with all FFXIV data centers/worlds
+- Prices appear on harmony result cards when enabled
+- All UI elements consistent with design
+
+**Next Session:**
+- Test and troubleshoot remaining tools (Matcher, Accessibility, Comparison, Mixer, Presets, Budget)
+
+### Session 12 (2024-12-13): Accessibility Tool Polish & Localization Fixes ✅
+
+**Completed:**
+- Accessibility Tool v3 polish and bug fixes ✅
+
+**Issues Fixed:**
+1. **Missing localization keys** - Raw keys showing instead of translated text
+   - Added 9 new keys to all 6 locale files: `common.dye`, `common.remove`, `accessibility.level`, `accessibility.visionTypes`, `accessibility.displayOptions`, `accessibility.showHexValues`, `accessibility.showLabels`, `accessibility.highContrastMode`, `accessibility.inspectDyes`
+2. **Left panel sections not collapsible** - Sections were static
+   - Refactored `renderLeftPanel()` to use `CollapsiblePanel` component
+   - Added persistence via StorageService
+3. **Missing section icons** - No visual indicators for sections
+   - Added beaker icon (ICON_BEAKER) for "Inspect Dyes" section
+   - Added eye icon (ICON_EYE) for "Vision Types" section
+   - Added sliders icon (ICON_SLIDERS) for "Display Options" section
+4. **Light theme contrast issue** - Warning text in pairwise matrix hard to read
+   - Changed from hardcoded `#eab308` to `var(--theme-text-muted)` for text
+   - Used darker amber `#b45309` for warning icon for visibility
+
+**Files Modified:**
+- `src/components/tools/accessibility-tool.ts` - CollapsiblePanel integration, icons, contrast fix
+- `src/locales/en.json` - Added common.dye, common.remove, accessibility.* keys
+- `src/locales/ja.json` - Japanese translations
+- `src/locales/de.json` - German translations
+- `src/locales/fr.json` - French translations
+- `src/locales/ko.json` - Korean translations
+- `src/locales/zh.json` - Chinese translations
+
+**Accessibility Tool Status:** ✅ **READY**
+- All localization keys display properly in all 6 languages
+- Three collapsible sections with icons (Beaker, Eye, Sliders)
+- Collapsed state persists across page refresh
+- Warning text readable on light and dark themes
+
+**Next Session:**
+- Test and troubleshoot remaining tools (Matcher, Comparison, Mixer, Presets, Budget)
 
 ---
 
