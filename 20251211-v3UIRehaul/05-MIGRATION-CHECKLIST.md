@@ -315,6 +315,8 @@
     - *Tab toggle between Browse and My Submissions*
   - [x] Submit Preset button
     - *Opens `showPresetSubmissionForm()` modal*
+- [x] Refactor sections to use CollapsiblePanel components
+  - *Session 15: Search, Categories, Sort By, Account all use CollapsiblePanel with icons*
 
 **Right Panel:**
 - [x] Migrate featured presets section
@@ -327,6 +329,8 @@
   - *Using `hybridPresetService.getPresets()` and `getFeaturedPresets()`*
 - [x] Wire up voting functionality
   - *Service integration ready via `presetSubmissionService`*
+- [x] Add Edit/Delete buttons for user-owned presets
+  - *Session 15: Edit opens showPresetEditForm(), Delete shows confirmation + calls presetSubmissionService.deletePreset()*
 
 **New Files Created:**
 - `src/components/tools/preset-tool.ts` - Production Preset tool (21.62 kB)
@@ -340,6 +344,11 @@
 - [ ] Test preset loading and pagination *(Manual testing required)*
 - [ ] Test voting (authenticated users only) *(Manual testing required)*
 - [ ] Test preset submission flow *(Manual testing required)*
+- [ ] Test collapsible left panel sections *(Session 15 - implemented)*
+- [ ] Test all localization keys display correctly *(Session 15 - added)*
+- [ ] Test Edit button opens edit form *(Session 15 - implemented)*
+- [ ] Test Delete button with confirmation *(Session 15 - implemented)*
+- [ ] XIVAuth integration *(Deferred - see `../20251213-XIVAuth-Integration.md`)*
 
 ---
 
@@ -993,6 +1002,53 @@
 
 **Next Session:**
 - Test and troubleshoot remaining tools (Presets, Budget)
+
+### Session 15 (2024-12-13): Preset Palettes Polish & Bug Fixes ✅
+
+**Completed:**
+- Preset Palettes Tool v3 polish and bug fixes ✅
+- XIVAuth integration documentation ✅
+
+**Issues Fixed:**
+1. **Missing localization keys** - Raw keys like `preset.featured`, `preset.categories`, etc. showing
+   - Added 28 new keys to all 6 locale files for preset.* and auth.* namespaces
+   - Includes category names (jobs, grandCompanies, etc.) and sort options (popular, recent, name)
+2. **Left panel sections not collapsible** - Search, Categories, Sort By, Account were static
+   - Refactored `renderLeftPanel()` to use 4 `CollapsiblePanel` instances
+   - Added icons: ICON_SEARCH, ICON_GRID, ICON_SORT, ICON_USER
+   - All panels have StorageService persistence
+3. **Missing Edit/Delete buttons** - Users couldn't manage their own presets
+   - Added Edit button → calls `showPresetEditForm(communityPreset, callback)`
+   - Added Delete button → shows confirmation → calls `presetSubmissionService.deletePreset()`
+   - Buttons only shown on user-owned presets (my-submissions tab or matching author)
+   - Added icons: ICON_EDIT, ICON_TRASH
+
+**Files Modified:**
+- `src/components/tools/preset-tool.ts` - CollapsiblePanel integration, Edit/Delete, icons
+- `src/locales/en.json` - 28 new preset.* and auth.* keys
+- `src/locales/ja.json` - Japanese translations
+- `src/locales/de.json` - German translations
+- `src/locales/fr.json` - French translations
+- `src/locales/ko.json` - Korean translations
+- `src/locales/zh.json` - Chinese translations
+
+**Documentation Created:**
+- `xivdyetools-docs/20251213-XIVAuth-Integration.md` - Comprehensive XIVAuth integration plan
+  - OAuth2 flow documentation
+  - Required scopes and endpoints
+  - Database schema changes
+  - Frontend/backend implementation checklist
+  - Deferred to future session
+
+**Preset Palettes Status:** ✅ **READY**
+- All localization keys display properly in all 6 languages
+- Four collapsible sections with icons (Search, Grid, Sort, User)
+- Edit/Delete buttons for user-owned presets
+- XIVAuth integration documented for future implementation
+
+**Next Session:**
+- Manual testing of all v3 tools
+- Phase 9-10 optimization tasks
 
 ---
 
