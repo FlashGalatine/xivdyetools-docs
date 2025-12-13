@@ -1,6 +1,6 @@
 # v3.0.0 UI Migration Checklist
 
-> **Last Updated**: 2024-12-13 (Session 12 - Accessibility Tool Polish & Localization Fixes)
+> **Last Updated**: 2024-12-13 (Session 14 - Color Matcher Market Board Integration)
 
 ## Pre-Migration Planning
 
@@ -162,10 +162,17 @@
 - `src/components/tools/index.ts` - Exports `MatcherTool`
 
 **Testing:**
-- [ ] Test image upload on desktop browsers *(Manual testing required)*
+- [x] Test image upload on desktop browsers *(Session 14 - tested)*
 - [ ] Test image upload on mobile (camera) *(Manual testing required)*
 - [ ] Test clipboard paste *(Manual testing required)*
-- [ ] Verify color matching accuracy *(Manual testing required)*
+- [x] Verify color matching accuracy *(Session 14 - tested)*
+- [x] Test Market Board integration *(Session 14 - prices display correctly)*
+
+**Color Matcher Status:** ✅ **READY**
+- Image upload and color picking working correctly
+- Matched dyes display with rank badges, swatches, and distance metrics
+- Market Board prices display in dye cards when enabled
+- All market board events handled (server change, category change, refresh)
 
 ---
 
@@ -230,9 +237,9 @@
   - *Avg Saturation, Avg Brightness, Hue Range, Avg Distance*
 
 **Testing:**
-- [ ] Test chart responsiveness *(Manual testing required)*
-- [ ] Verify brightness bars align to bottom *(Manual testing required)*
-- [ ] Test with various numbers of dyes (2-4) *(Manual testing required)*
+- [x] Test chart responsiveness *(Session 14 - tested)*
+- [x] Verify brightness bars align to bottom *(Session 14 - tested)*
+- [x] Test with various numbers of dyes (2-4) *(Session 14 - tested)*
 
 **New Files Created:**
 - `src/components/tools/comparison-tool.ts` - Production Comparison tool (19.92 kB)
@@ -240,6 +247,12 @@
 **Modified Files:**
 - `src/components/v3-layout.ts` - Loads `ComparisonTool` for comparison route
 - `src/components/tools/index.ts` - Exports `ComparisonTool`
+
+**Dye Comparison Status:** ✅ **READY**
+- Hue-Saturation plot renders correctly with axis labels
+- Brightness distribution bars align properly
+- Distance matrix displays with color-coded cells
+- Statistics summary shows all metrics
 
 ---
 
@@ -272,10 +285,10 @@
   - *Ported from v2 DyeMixerTool with hue wraparound handling*
 
 **Testing:**
-- [ ] Verify RGB interpolation *(Manual testing required)*
-- [ ] Verify HSV interpolation *(Manual testing required)*
-- [ ] Test gradient rendering *(Manual testing required)*
-- [ ] Test export functionality *(Manual testing required)*
+- [x] Verify RGB interpolation *(Session 13 - tested)*
+- [x] Verify HSV interpolation *(Session 13 - tested)*
+- [x] Test gradient rendering *(Session 13 - tested)*
+- [x] Test export functionality *(Session 13 - tested)*
 
 **New Files Created:**
 - `src/components/tools/mixer-tool.ts` - Production Mixer tool (19.18 kB)
@@ -902,6 +915,84 @@
 
 **Next Session:**
 - Test and troubleshoot remaining tools (Matcher, Comparison, Mixer, Presets, Budget)
+
+### Session 13 (2024-12-13): Dye Mixer Polish & Market Board Integration ✅
+
+**Completed:**
+- Dye Mixer Tool v3 polish and bug fixes ✅
+
+**Issues Fixed:**
+1. **Missing localization keys** - Raw keys showing instead of translated text
+   - Added 4 new keys to all 6 locale files: `mixer.targetColor`, `mixer.bestMatch`, `mixer.exportPalette`, `common.download`
+2. **Left panel sections not collapsible** - Start/End Dye sections were static
+   - Refactored to use `CollapsiblePanel` component for Start Dye and End Dye sections
+   - Added persistence via StorageService (`v3_mixer_start_dye_panel`, `v3_mixer_end_dye_panel`)
+3. **Missing section icons** - No visual indicators for dye sections
+   - Added Test Tube icon (ICON_TEST_TUBE) for "Start Dye" section
+   - Added Beaker+Pipe icon (ICON_BEAKER_PIPE) for "End Dye" section
+4. **Double "Dye Filters" header** - Nested CollapsiblePanel + DyeFilters header
+   - Added `hideHeader: true` option to DyeFilters
+5. **Selected dyes not persisting** - Dyes reset when navigating away
+   - Added localStorage persistence for startDyeId and endDyeId
+6. **Market Board prices not displaying** - Prices fetched but never rendered
+   - Root cause 1: Race condition - display updates called before async fetch completed
+   - Root cause 2: Early return when `dyesToFetch.length === 0` skipped display updates
+   - Fix: Restructured event listener and moved display updates outside try/catch
+
+**Files Modified:**
+- `src/components/tools/mixer-tool.ts` - CollapsiblePanel, icons, persistence, Market Board fix
+- `src/locales/en.json` - Added mixer.targetColor, mixer.bestMatch, mixer.exportPalette, common.download
+- `src/locales/ja.json` - Japanese translations
+- `src/locales/de.json` - German translations
+- `src/locales/fr.json` - French translations
+- `src/locales/ko.json` - Korean translations
+- `src/locales/zh.json` - Chinese translations
+
+**Commit:**
+- `6dc0891` - feat(mixer): Add CollapsiblePanel sections, icons, persistence, and Market Board price integration
+
+**Dye Mixer Status:** ✅ **READY**
+- All localization keys display properly in all 6 languages
+- Two collapsible dye sections with custom icons (Test Tube, Beaker+Pipe)
+- Selected dyes persist across page refresh
+- Market Board prices display in dye cards when enabled
+- Gradient preview and intermediate matches working correctly
+
+**Next Session:**
+- Test and troubleshoot remaining tools (Matcher, Comparison, Presets, Budget)
+
+### Session 14 (2024-12-13): Color Matcher Market Board Integration ✅
+
+**Completed:**
+- Color Matcher Tool v3 Market Board integration ✅
+- Dye Comparison Tool v3 marked as READY ✅
+
+**Issues Fixed:**
+1. **Server dropdown empty** - `loadServerData()` was never called on MarketBoard
+   - Fix: Added `void this.marketBoard.loadServerData()` after init
+   - Fix: Added `this.showPrices = this.marketBoard.getShowPrices()` for initial state
+2. **Prices never fetched when toggle enabled** - Missing fetch call in event handler
+   - Fix: Added `void this.fetchPricesForMatches()` when showPrices becomes true
+3. **Missing event handlers** - Server/category changes didn't trigger price refresh
+   - Fix: Added listeners for `server-changed`, `categories-changed`, `refresh-requested`
+4. **Phantom event listener** - V3 listened for `pricesLoaded` event that MarketBoard never emits
+   - Fix: Removed listener, prices come from `fetchPricesForMatches()` directly
+
+**Root Cause Analysis:**
+- V2 used `PricingMixin` which abstracted all MarketBoard integration
+- V3 tried to handle events manually but only partially implemented the logic
+- The `pricesLoaded` event was assumed but never emitted by MarketBoard
+
+**Files Modified:**
+- `src/components/tools/matcher-tool.ts` - Market Board integration fix
+
+**Color Matcher Status:** ✅ **READY**
+- Server dropdown populates with all FFXIV data centers/worlds
+- Prices appear on matched dye cards when enabled
+- All market board events handled (toggle, server change, category change, refresh)
+
+**Next Session:**
+- Test and troubleshoot remaining tools (Presets, Budget)
 
 ---
 
