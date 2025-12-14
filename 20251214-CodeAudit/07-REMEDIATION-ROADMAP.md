@@ -3,7 +3,7 @@
 **Date:** 2025-12-14
 **Total Findings:** 83
 **Estimated Total Effort:** ~60 hours
-**Last Updated:** 2025-12-14 (Session 2 - Security Hardening Complete)
+**Last Updated:** 2025-12-14 (Session 3 - MEDIUM Severity Complete)
 
 ---
 
@@ -57,6 +57,66 @@
 - `xivdyetools-discord-worker`: `fix(security): add HMAC signature to preset API fallback requests`
 - `xivdyetools-presets-api`: `fix(security): tighten HMAC signature timestamp window`
 - `xivdyetools-oauth`: `fix(security): add PKCE parameter format validation`
+
+### Session 3: 2025-12-14 — MEDIUM Severity Remediation
+
+**Completed 23 MEDIUM findings across all projects:**
+
+#### xivdyetools-core (5 findings)
+| Finding | Status | Notes |
+|---------|--------|-------|
+| CORE-BUG-002 | ✅ Fixed | K-d tree boundary check changed `<` to `<=` |
+| CORE-BUG-003 | ✅ Fixed | Removed hard-coded 10-dye limit in HarmonyGenerator |
+| CORE-BUG-004 | ✅ Already Fixed | HSV boundary handled by prior CORE-BUG-001 fix |
+| CORE-BUG-005 | ✅ Fixed | Added Facewear exclusion to k-d tree path for consistency |
+| CORE-PERF-004 | ✅ Fixed | Added Math.min clamp to prevent pixel sampling out-of-bounds |
+
+**Commit:** `fix(medium): address MEDIUM severity audit findings`
+
+#### xivdyetools-web-app (10 findings)
+| Finding | Status | Notes |
+|---------|--------|-------|
+| WEB-PERF-003 | ✅ Fixed | Replaced Math.random() with counter for listener keys |
+| WEB-BUG-002 | ✅ Fixed | Added options parameter to modal subscribe() |
+| WEB-BUG-003 | ✅ Fixed | Added isInitialized flag to ThemeService |
+| WEB-BUG-004 | ✅ Fixed | Changed storage quota error to return false, not throw |
+| WEB-BUG-005 | ✅ Fixed | Added inert attribute for background modals in focus trap |
+| WEB-BUG-006 | ✅ Fixed | Added detach() call for disconnected tooltip elements |
+| WEB-BUG-007 | ✅ Fixed | Added IDs to footer elements, fixed selector fragility |
+| WEB-BUG-008 | ✅ Already Fixed | V3 layout already has proper destroyV3Layout() function |
+| WEB-REF-006 | ✅ Fixed | Added AnnouncerService.announce() for language changes |
+| WEB-REF-008 | ✅ Already Fixed | BaseComponent already has isDestroyed guard |
+
+**Commit:** `fix(medium): address MEDIUM severity audit findings`
+
+#### xivdyetools-discord-worker (5 findings)
+| Finding | Status | Notes |
+|---------|--------|-------|
+| DISCORD-PERF-003 | ✅ Already Optimized | @cf-wasm/photon has proper lazy initialization |
+| DISCORD-PERF-004 | ✅ Already Optimized | resvg-wasm has proper module-level caching |
+| DISCORD-PERF-005 | ✅ Already Optimized | i18n pattern is correct for Workers isolates |
+| DISCORD-BUG-004 | ✅ Fixed | Added .catch() to analytics waitUntil |
+| DISCORD-REF-002 | ✅ Fixed | Extended ephemeralResponse to accept InteractionResponseData |
+
+**Commit:** `fix(medium): address MEDIUM severity audit findings`
+
+#### xivdyetools-oauth (3 findings)
+| Finding | Status | Notes |
+|---------|--------|-------|
+| OAUTH-PERF-001 | ✅ Fixed | Implemented deterministic cleanup with request counter and MAX_ENTRIES |
+| OAUTH-BUG-003 | ✅ Fixed | Added race condition handling with constraint error retry |
+| OAUTH-REF-001 | ✅ Fixed | Added comprehensive route structure documentation |
+
+**Commit:** `fix(medium): address MEDIUM severity audit findings`
+
+#### xivdyetools-presets-api (3 findings)
+| Finding | Status | Notes |
+|---------|--------|-------|
+| PRESETS-PERF-003 | ✅ Fixed | Lowered pagination cap from 100 to 50 |
+| PRESETS-BUG-004 | ✅ Fixed | Added null guard for userDiscordId in refresh-author |
+| PRESETS-REF-001 | ✅ Fixed | Refactored validation into shared helper functions |
+
+**Commit:** `fix(medium): address MEDIUM severity audit findings`
 
 ---
 
@@ -383,13 +443,50 @@ Use this checklist to track remediation progress:
 - [x] PRESETS-SEC-005 — Fixed: Profanity filter uses single combined regex
 - [x] CORE-SEC-001 — Fixed: Cache key type prefixes
 
-### Week 2 (High Bugs/Perf)
+### MEDIUM Severity — ✅ COMPLETED 2025-12-14 (Session 3)
+
+#### Core Library
+- [x] CORE-BUG-002 — Fixed: K-d tree boundary `<` to `<=`
+- [x] CORE-BUG-003 — Fixed: Removed 10-dye harmony limit
+- [x] CORE-BUG-004 — Already fixed by CORE-BUG-001
+- [x] CORE-BUG-005 — Fixed: Facewear exclusion consistency
+- [x] CORE-PERF-004 — Fixed: Pixel sampling bounds with Math.min
+
+#### Web App
+- [x] WEB-PERF-003 — Fixed: Counter-based listener keys
+- [x] WEB-BUG-002 — Fixed: Modal subscribe options parameter
+- [x] WEB-BUG-003 — Fixed: ThemeService double init protection
+- [x] WEB-BUG-004 — Fixed: Storage quota returns false
+- [x] WEB-BUG-005 — Fixed: Modal focus trap with inert attribute
+- [x] WEB-BUG-006 — Fixed: Tooltip memory leak cleanup
+- [x] WEB-BUG-007 — Fixed: Footer selector with IDs
+- [x] WEB-BUG-008 — Already has proper destroyV3Layout()
+- [x] WEB-REF-006 — Fixed: A11y announcer for language changes
+- [x] WEB-REF-008 — Already has isDestroyed guard
+
+#### Discord Worker
+- [x] DISCORD-PERF-003 — Already optimized (photon lazy init)
+- [x] DISCORD-PERF-004 — Already optimized (resvg caching)
+- [x] DISCORD-PERF-005 — Already optimized (correct Workers pattern)
+- [x] DISCORD-BUG-004 — Fixed: Analytics error handling
+- [x] DISCORD-REF-002 — Fixed: Flexible ephemeralResponse
+
+#### OAuth Worker
+- [x] OAUTH-PERF-001 — Fixed: Deterministic rate limiter cleanup
+- [x] OAUTH-BUG-003 — Fixed: User service race condition handling
+- [x] OAUTH-REF-001 — Fixed: Route structure documentation
+
+#### Presets API
+- [x] PRESETS-PERF-003 — Fixed: Pagination cap 100→50
+- [x] PRESETS-BUG-004 — Fixed: WHERE clause null guard
+- [x] PRESETS-REF-001 — Fixed: Shared validation functions
+
+### Week 2 (High Bugs/Perf) — Remaining
 - [ ] DISCORD-BUG-002
 - [ ] OAUTH-BUG-001
 - [ ] PRESETS-BUG-001
 - [ ] PRESETS-BUG-002
 - [ ] PRESETS-BUG-003
-- [ ] OAUTH-BUG-003
 - [ ] WEB-PERF-001
 - [ ] WEB-PERF-002
 - [ ] WEB-BUG-001
