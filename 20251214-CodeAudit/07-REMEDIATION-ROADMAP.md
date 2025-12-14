@@ -3,7 +3,7 @@
 **Date:** 2025-12-14
 **Total Findings:** 83
 **Estimated Total Effort:** ~60 hours
-**Last Updated:** 2025-12-14
+**Last Updated:** 2025-12-14 (Session 2 - Security Hardening Complete)
 
 ---
 
@@ -27,6 +27,36 @@
 - `xivdyetools-oauth`: `fix(cors): restrict localhost CORS to specific ports`
 - `xivdyetools-discord-worker`: `feat(discord): add deadline tracking for 3-second timeout`
 - `xivdyetools-core`: `fix(color): normalize hue before caching to prevent thrashing`
+
+### Session 2: 2025-12-14 — Security Hardening (HIGH + MEDIUM Security)
+
+**Completed 13 SECURITY findings:**
+
+| Finding | Status | Notes |
+|---------|--------|-------|
+| DISCORD-SEC-001 | ✅ Already Safe | `/stats` command already validates against `STATS_AUTHORIZED_USERS` |
+| DISCORD-SEC-003 | ✅ Already Safe | `timingSafeEqual()` already handles length differences correctly |
+| DISCORD-SEC-002 | ✅ Fixed | Added redirect validation, IP literal blocking, cloud metadata blocking |
+| DISCORD-SEC-004 | ✅ Fixed | Added HMAC signature generation to preset API fallback path |
+| OAUTH-SEC-002 | ✅ Fixed | Added RFC 7636 format validation for code_challenge and code_verifier |
+| OAUTH-SEC-003 | ✅ Fixed | Added state expiration (10 min TTL with iat/exp timestamps) |
+| OAUTH-SEC-005 | ✅ Fixed | Added scope validation (requires 'identify') and user field validation |
+| OAUTH-SEC-006 | ✅ Already Safe | Error info only logged in development mode |
+| PRESETS-SEC-002 | ✅ Fixed | Tightened timestamp window from 5 min to 2 min (full KV tracking TBD) |
+| PRESETS-SEC-003 | ✅ Fixed | Improved moderator ID parsing with flexible format support |
+| PRESETS-SEC-004 | ✅ Fixed | Added Content-Type validation middleware for mutation requests |
+| PRESETS-SEC-005 | ✅ Fixed | Replaced individual regex patterns with single combined pattern |
+| CORE-SEC-001 | ✅ Fixed | Added type prefixes to cache keys to prevent collisions |
+
+**Commits:**
+- `xivdyetools-presets-api`: `fix(auth): improve moderator ID parsing for flexible formats`
+- `xivdyetools-oauth`: `fix(security): add state expiration and scope validation`
+- `xivdyetools-presets-api`: `fix(security): add Content-Type validation and fix profanity ReDoS`
+- `xivdyetools-core`: `fix(security): prevent cache key collisions with type prefixes`
+- `xivdyetools-discord-worker`: `fix(security): strengthen SSRF protection with redirect validation`
+- `xivdyetools-discord-worker`: `fix(security): add HMAC signature to preset API fallback requests`
+- `xivdyetools-presets-api`: `fix(security): tighten HMAC signature timestamp window`
+- `xivdyetools-oauth`: `fix(security): add PKCE parameter format validation`
 
 ---
 
@@ -333,19 +363,25 @@ Use this checklist to track remediation progress:
 - [x] DISCORD-PERF-001 — Fixed: Added InteractionContext deadline tracking infrastructure
 - [x] CORE-BUG-001 — Fixed: Added normalizeHue() to prevent cache key mismatches
 
-### Week 1 (High Security)
-- [ ] DISCORD-SEC-001
-- [ ] DISCORD-SEC-003
-- [ ] OAUTH-SEC-002
-- [ ] OAUTH-SEC-003
-- [ ] OAUTH-BUG-002
-- [ ] OAUTH-SEC-005
-- [ ] PRESETS-SEC-002
-- [ ] PRESETS-SEC-003
-- [ ] DISCORD-SEC-002
-- [ ] DISCORD-SEC-004
-- [ ] DISCORD-BUG-003
-- [ ] DISCORD-BUG-001
+### Week 1 (High Security) — ✅ SECURITY ISSUES COMPLETED 2025-12-14
+- [x] DISCORD-SEC-001 — Already secure (validates against STATS_AUTHORIZED_USERS)
+- [x] DISCORD-SEC-003 — Already secure (timingSafeEqual handles length differences)
+- [x] OAUTH-SEC-002 — Fixed: Added PKCE format validation (RFC 7636)
+- [x] OAUTH-SEC-003 — Fixed: Added state expiration (10 min TTL)
+- [ ] OAUTH-BUG-002 — Pending (not a security issue)
+- [x] OAUTH-SEC-005 — Fixed: Added scope and user field validation
+- [x] PRESETS-SEC-002 — Fixed: Tightened timestamp window to 2 min
+- [x] PRESETS-SEC-003 — Fixed: Flexible moderator ID parsing
+- [x] DISCORD-SEC-002 — Fixed: Redirect validation, IP blocking, metadata blocking
+- [x] DISCORD-SEC-004 — Fixed: HMAC signatures in fallback path
+- [ ] DISCORD-BUG-003 — Pending (not a security issue)
+- [ ] DISCORD-BUG-001 — Pending (not a security issue)
+
+### Medium Security (Completed in Session 2)
+- [x] OAUTH-SEC-006 — Already secure (error info only in dev)
+- [x] PRESETS-SEC-004 — Fixed: Content-Type validation middleware
+- [x] PRESETS-SEC-005 — Fixed: Profanity filter uses single combined regex
+- [x] CORE-SEC-001 — Fixed: Cache key type prefixes
 
 ### Week 2 (High Bugs/Perf)
 - [ ] DISCORD-BUG-002
