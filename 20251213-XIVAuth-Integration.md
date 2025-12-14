@@ -236,7 +236,7 @@ async loginWithXIVAuth(): Promise<void> {
 ## Resources
 
 - XIVAuth Developer Portal: https://xivauth.net/developer
-- XIVAuth API Documentation: https://xivauth.net/api/docs
+- XIVAuth API Documentation: https://kazwolfe.notion.site/Documentation-128e77f0016c4901888ea1234678c37d
 - OAuth2 RFC 6749: https://datatracker.ietf.org/doc/html/rfc6749
 - PKCE RFC 7636: https://datatracker.ietf.org/doc/html/rfc7636
 
