@@ -3,7 +3,7 @@
 **Date:** 2025-12-14
 **Total Findings:** 83
 **Estimated Total Effort:** ~60 hours
-**Last Updated:** 2025-12-14 (Session 3 - MEDIUM Severity Complete)
+**Last Updated:** 2025-12-14 (Session 4 - LOW Severity Complete)
 
 ---
 
@@ -117,6 +117,29 @@
 | PRESETS-REF-001 | ✅ Fixed | Refactored validation into shared helper functions |
 
 **Commit:** `fix(medium): address MEDIUM severity audit findings`
+
+### Session 4: 2025-12-14 — LOW Severity Remediation
+
+**Completed 10 LOW findings across all projects:**
+
+| Finding | Status | Notes |
+|---------|--------|-------|
+| CORE-PERF-006 | ✅ Already Fixed | `getDyesInternal()` method already exists |
+| WEB-A11Y-001 | ✅ Already Fixed | ARIA labels already present on dye-grid buttons |
+| WEB-A11Y-002 | ✅ Fixed | Added `isConnected` check before restoring focus |
+| WEB-TYPE-001 | ✅ Fixed | Added branded `ModalId` type for type-safe identification |
+| WEB-TYPE-002 | ❌ N/A | `ephemeralResponse` not found in web-app (Discord only) |
+| WEB-PERF-007 | ✅ Informational | Arrow function pattern is correct, no change needed |
+| DISCORD-REF-003 | ✅ Fixed | Documented i18n file separation in both files |
+| OAUTH-REF-002 | ✅ Fixed | Exported shared JWT utilities, removed duplication |
+| PRESETS-REF-002 | ✅ Fixed | Improved notification error logging with preset context |
+| PRESETS-PERF-001 | ✅ Documented | Added comment explaining batch() is for atomicity |
+
+**Commits:**
+- `xivdyetools-web-app`: `fix(low): address LOW severity audit findings`
+- `xivdyetools-discord-worker`: `docs(low): clarify i18n file separation (DISCORD-REF-003)`
+- `xivdyetools-oauth`: `refactor(low): extract shared JWT utilities (OAUTH-REF-002)`
+- `xivdyetools-presets-api`: `fix(low): improve error logging and add batch documentation`
 
 ---
 
@@ -305,22 +328,22 @@ if (!VALID_SORT.includes(sort)) sort = 'newest';
 
 ---
 
-## Backlog: Low Severity (P3)
+## Backlog: Low Severity (P3) — ✅ COMPLETED 2025-12-14 (Session 4)
 
-**Goal:** Address opportunistically when working in related code.
+**All 10 LOW severity findings addressed:**
 
-| Finding | Project | Effort |
+| Finding | Project | Status |
 |---------|---------|--------|
-| WEB-A11Y-001: ARIA labels | web-app | 20 min |
-| WEB-A11Y-002: Focus management | web-app | 15 min |
-| WEB-TYPE-001: Modal ID typing | web-app | 15 min |
-| WEB-TYPE-002: Response wrapper | web-app | 15 min |
-| WEB-PERF-007: Router handler | web-app | N/A |
-| DISCORD-REF-003: i18n separation | discord-worker | 30 min |
-| OAUTH-REF-002: JWT duplication | oauth | 30 min |
-| PRESETS-REF-002: Notification errors | presets-api | 15 min |
-| PRESETS-PERF-001: D1 batch | presets-api | 30 min |
-| CORE-PERF-006: getAllDyes copy | core | 10 min |
+| WEB-A11Y-001: ARIA labels | web-app | ✅ Already Fixed |
+| WEB-A11Y-002: Focus management | web-app | ✅ Fixed |
+| WEB-TYPE-001: Modal ID typing | web-app | ✅ Fixed |
+| WEB-TYPE-002: Response wrapper | web-app | ❌ N/A (Discord only) |
+| WEB-PERF-007: Router handler | web-app | ✅ Informational |
+| DISCORD-REF-003: i18n separation | discord-worker | ✅ Fixed |
+| OAUTH-REF-002: JWT duplication | oauth | ✅ Fixed |
+| PRESETS-REF-002: Notification errors | presets-api | ✅ Fixed |
+| PRESETS-PERF-001: D1 batch | presets-api | ✅ Documented |
+| CORE-PERF-006: getAllDyes copy | core | ✅ Already Fixed |
 
 ---
 
