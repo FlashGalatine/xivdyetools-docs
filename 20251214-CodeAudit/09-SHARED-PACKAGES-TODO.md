@@ -1,8 +1,8 @@
 # Shared Packages Implementation - TODO
 
 **Created:** 2025-12-14
-**Updated:** 2025-12-14
-**Status:** Phase 3 In Progress (Migration)
+**Updated:** 2025-12-15
+**Status:** Phase 3 In Progress (Logger Middleware Added)
 **Related:** [06-CROSS-CUTTING.md](./06-CROSS-CUTTING.md), [07-REMEDIATION-ROADMAP.md](./07-REMEDIATION-ROADMAP.md)
 
 ---
@@ -113,7 +113,7 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/types.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
-- [ ] Add request logger middleware using @xivdyetools/logger/worker
+- [x] Add request logger middleware using @xivdyetools/logger/worker
 - [ ] Run tests (pre-existing test type errors need fixing first)
 - [ ] Deploy
 
@@ -121,7 +121,7 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/types.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
-- [ ] Add request logger middleware using @xivdyetools/logger/worker
+- [x] Add request logger middleware using @xivdyetools/logger/worker
 - [ ] Run tests (pre-existing test failures need fixing first)
 - [ ] Deploy
 
@@ -130,7 +130,8 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/types/preset.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
-- [ ] Replace console.log/error with structured logger
+- [x] Add request logger middleware using @xivdyetools/logger/worker
+- [ ] Replace console.log/error with structured logger (gradual migration)
 - [ ] Run tests (pre-existing test type errors need fixing first)
 - [ ] Deploy
 
@@ -230,6 +231,20 @@ npm pack
 
 ## Recent Commits
 
+### 2025-12-15: Logger Middleware Session
+
+**xivdyetools-presets-api** (main branch):
+- Added `src/middleware/logger.ts` - Request logger middleware using @xivdyetools/logger/worker
+- Updated `src/index.ts` to integrate structured logging middleware and replace hono/logger
+
+**xivdyetools-oauth** (master branch):
+- Added `src/middleware/logger.ts` - Request logger middleware using @xivdyetools/logger/worker
+- Updated `src/index.ts` to integrate structured logging middleware and replace hono/logger
+
+**xivdyetools-discord-worker** (master branch):
+- Added `src/middleware/logger.ts` - Request logger middleware using @xivdyetools/logger/worker
+- Updated `src/index.ts` to integrate structured logging middleware
+
 ### 2025-12-14: Integration Session
 
 **xivdyetools-web-app** (main branch, 6 commits ahead of origin):
@@ -241,8 +256,8 @@ npm pack
 - `9a9869b` - chore(deps): migrate from xivdyetools-core to @xivdyetools/core
 
 ### Known Issues (Pre-existing)
-Both projects have pre-existing type errors in test files:
-- **web-app**: Branded type issues (ModalId), incomplete mock objects, ErrorCode enum mismatch
+All three worker projects have pre-existing type errors in test files:
+- **presets-api**: 'body' is of type 'unknown', incomplete mock objects
+- **oauth**: Missing `auth_provider` property in JWTPayload, XIVAuthCharacter type mismatches
 - **discord-worker**: 'body' is of type 'unknown', incomplete Dye mock objects, Env type mismatches
-
-These test type errors existed before the migration and are not caused by the shared package integration.
+- **web-app**: Branded type issues (ModalId), incomplete mock objects, ErrorCode enum mismatch
