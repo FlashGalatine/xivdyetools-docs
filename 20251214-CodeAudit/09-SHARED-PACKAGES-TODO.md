@@ -110,13 +110,13 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Update `src/types/logger.ts` to re-export from @xivdyetools/logger/library
 - [x] Update `tsconfig.json` to use `moduleResolution: "bundler"` for subpath exports
 
-#### xivdyetools-presets-api ✅ MIGRATED
+#### xivdyetools-presets-api ✅ COMPLETE
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/types.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
 - [x] Add request logger middleware using @xivdyetools/logger/worker
-- [ ] Run tests (pre-existing test type errors need fixing first)
-- [ ] Deploy
+- [x] Run tests (fixed 172 pre-existing type errors + auth middleware fix for dev/test mode)
+- [x] Deploy (https://xivdyetools-presets-api.ashejunius.workers.dev)
 
 #### xivdyetools-oauth ✅ MIGRATED
 - [x] Add `@xivdyetools/types` as dependency
@@ -259,8 +259,8 @@ npm pack
 - `9a9869b` - chore(deps): migrate from xivdyetools-core to @xivdyetools/core
 
 ### Known Issues (Pre-existing)
-All three worker projects have pre-existing type errors in test files:
-- **presets-api**: 'body' is of type 'unknown', incomplete mock objects
+Some projects have pre-existing type errors in test files:
+- ~~**presets-api**: 'body' is of type 'unknown', incomplete mock objects~~ **FIXED** (2025-12-14)
 - **oauth**: Missing `auth_provider` property in JWTPayload, XIVAuthCharacter type mismatches
 - **discord-worker**: 'body' is of type 'unknown', incomplete Dye mock objects, Env type mismatches
 - **web-app**: Branded type issues (ModalId), incomplete mock objects, ErrorCode enum mismatch
