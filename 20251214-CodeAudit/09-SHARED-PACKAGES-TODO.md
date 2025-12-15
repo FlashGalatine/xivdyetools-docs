@@ -1,8 +1,8 @@
 # Shared Packages Implementation - TODO
 
 **Created:** 2025-12-14
-**Updated:** 2025-12-15
-**Status:** Phase 3 Complete for xivdyetools-core
+**Updated:** 2025-12-16
+**Status:** Phase 3 Complete for xivdyetools-core, xivdyetools-discord-worker logging migration complete
 **Related:** [06-CROSS-CUTTING.md](./06-CROSS-CUTTING.md), [07-REMEDIATION-ROADMAP.md](./07-REMEDIATION-ROADMAP.md)
 
 ---
@@ -133,8 +133,8 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Replace `src/types/preset.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
 - [x] Add request logger middleware using @xivdyetools/logger/worker
 - [x] Replace console.log/error with structured logger in `src/index.ts` (main entry point)
-- [ ] Replace console.log/error in command handlers (requires passing logger through call stack)
-- [ ] Replace console.log/error in services (requires passing logger through call stack)
+- [x] Replace console.log/error in command handlers (logger passed through call stack)
+- [x] Replace console.log/error in services (logger passed through call stack)
 - [ ] Run tests (pre-existing test type errors need fixing first)
 - [ ] Deploy
 
