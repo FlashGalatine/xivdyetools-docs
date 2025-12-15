@@ -118,13 +118,13 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Run tests (fixed 172 pre-existing type errors + auth middleware fix for dev/test mode)
 - [x] Deploy (https://xivdyetools-presets-api.ashejunius.workers.dev)
 
-#### xivdyetools-oauth ✅ MIGRATED
+#### xivdyetools-oauth ✅ COMPLETE
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/types.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
 - [x] Add request logger middleware using @xivdyetools/logger/worker
-- [ ] Run tests (pre-existing test failures need fixing first)
-- [ ] Deploy
+- [x] Run tests (fixed: updated tests to use valid PKCE values per RFC 7636)
+- [x] Deploy
 
 #### xivdyetools-discord-worker ✅ COMPLETE
 - [x] Update dependency from `xivdyetools-core` to `@xivdyetools/core`
@@ -144,7 +144,7 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Add `@xivdyetools/logger` as dependency
 - [x] Replace `src/shared/types.ts` imports with @xivdyetools/types (re-exports for backward compatibility)
 - [x] Replace `src/shared/logger.ts` with @xivdyetools/logger/browser (re-exports for backward compatibility)
-- [ ] Run tests (pre-existing test type errors need fixing first)
+- [x] Run tests (fixed test expectations for @xivdyetools/types and @xivdyetools/logger behavior changes)
 - [ ] Deploy
 
 ---
@@ -261,6 +261,6 @@ npm pack
 ### Known Issues (Pre-existing)
 Some projects have pre-existing type errors in test files:
 - ~~**presets-api**: 'body' is of type 'unknown', incomplete mock objects~~ **FIXED** (2025-12-14)
-- **oauth**: Missing `auth_provider` property in JWTPayload, XIVAuthCharacter type mismatches
+- ~~**oauth**: Test failures due to invalid PKCE values~~ **FIXED** (2025-12-14) - Updated tests to use RFC 7636 compliant values
 - **discord-worker**: 'body' is of type 'unknown', incomplete Dye mock objects, Env type mismatches
 - **web-app**: Branded type issues (ModalId), incomplete mock objects, ErrorCode enum mismatch
