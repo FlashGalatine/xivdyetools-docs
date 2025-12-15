@@ -2,7 +2,7 @@
 
 **Created:** 2025-12-14
 **Updated:** 2025-12-15
-**Status:** Phase 3 In Progress (Logger Middleware Added)
+**Status:** Phase 3 Complete for xivdyetools-core
 **Related:** [06-CROSS-CUTTING.md](./06-CROSS-CUTTING.md), [07-REMEDIATION-ROADMAP.md](./07-REMEDIATION-ROADMAP.md)
 
 ---
@@ -100,14 +100,15 @@ This document tracks the implementation progress for the shared packages initiat
 
 ### Per-Project Migration Checklist
 
-#### xivdyetools-core ✅ RENAMED
+#### xivdyetools-core ✅ COMPLETE
 - [x] Rename package to `@xivdyetools/core`
 - [x] Publish to npm under new name
 - [x] Deprecate old `xivdyetools-core` package
-- [ ] Add `@xivdyetools/types` as dependency (future)
-- [ ] Add `@xivdyetools/logger` as dependency (future)
-- [ ] Update `src/types/index.ts` to re-export from @xivdyetools/types (future)
-- [ ] Update `src/types/logger.ts` to re-export from @xivdyetools/logger/library (future)
+- [x] Add `@xivdyetools/types` as dependency
+- [x] Add `@xivdyetools/logger` as dependency
+- [x] Update `src/types/index.ts` to re-export from @xivdyetools/types
+- [x] Update `src/types/logger.ts` to re-export from @xivdyetools/logger/library
+- [x] Update `tsconfig.json` to use `moduleResolution: "bundler"` for subpath exports
 
 #### xivdyetools-presets-api ✅ MIGRATED
 - [x] Add `@xivdyetools/types` as dependency
@@ -158,8 +159,8 @@ This document tracks the implementation progress for the shared packages initiat
 
 | Project | File | Replacement | Status |
 |---------|------|-------------|--------|
-| core | `src/types/index.ts` (type definitions) | `@xivdyetools/types` | Pending |
-| core | `src/types/logger.ts` | `@xivdyetools/logger/library` | Pending |
+| core | `src/types/index.ts` (type definitions) | `@xivdyetools/types` | ✅ Now re-exports from shared package |
+| core | `src/types/logger.ts` | `@xivdyetools/logger/library` | ✅ Now re-exports from shared package |
 | web-app | `src/shared/types.ts` | `@xivdyetools/types` | ✅ Now re-exports from shared package |
 | web-app | `src/shared/logger.ts` | `@xivdyetools/logger/browser` | ✅ Now re-exports from shared package |
 | discord-worker | `src/types/preset.ts` | `@xivdyetools/types/preset` | ✅ Now re-exports from shared package |
