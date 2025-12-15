@@ -2,7 +2,7 @@
 
 **Created:** 2025-12-14
 **Updated:** 2025-12-16
-**Status:** Phase 3 Complete for xivdyetools-core, xivdyetools-discord-worker logging migration complete
+**Status:** Phase 3 Complete for xivdyetools-core, xivdyetools-discord-worker fully complete (tests passing, deployed)
 **Related:** [06-CROSS-CUTTING.md](./06-CROSS-CUTTING.md), [07-REMEDIATION-ROADMAP.md](./07-REMEDIATION-ROADMAP.md)
 
 ---
@@ -126,7 +126,7 @@ This document tracks the implementation progress for the shared packages initiat
 - [ ] Run tests (pre-existing test failures need fixing first)
 - [ ] Deploy
 
-#### xivdyetools-discord-worker ✅ MIGRATED
+#### xivdyetools-discord-worker ✅ COMPLETE
 - [x] Update dependency from `xivdyetools-core` to `@xivdyetools/core`
 - [x] Add `@xivdyetools/types` as dependency
 - [x] Add `@xivdyetools/logger` as dependency
@@ -135,8 +135,8 @@ This document tracks the implementation progress for the shared packages initiat
 - [x] Replace console.log/error with structured logger in `src/index.ts` (main entry point)
 - [x] Replace console.log/error in command handlers (logger passed through call stack)
 - [x] Replace console.log/error in services (logger passed through call stack)
-- [ ] Run tests (pre-existing test type errors need fixing first)
-- [ ] Deploy
+- [x] Run tests (fixed test mock references and logger expectations)
+- [x] Deploy (2025-12-14)
 
 #### xivdyetools-web-app ✅ MIGRATED
 - [x] Update dependency from `xivdyetools-core` to `@xivdyetools/core`
