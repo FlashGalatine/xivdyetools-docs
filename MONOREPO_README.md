@@ -1,3 +1,6 @@
+> **⚠️ DEPRECATED:** This document has been superseded by the Documentation Bible.
+> See: [index.md](index.md) for the main navigation hub.
+
 # XIV Dye Tools
 
 **The ultimate color toolkit for Final Fantasy XIV glamour enthusiasts**

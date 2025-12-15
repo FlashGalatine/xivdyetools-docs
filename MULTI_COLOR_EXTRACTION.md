@@ -1,3 +1,6 @@
+> **⚠️ DEPRECATED:** This document has been superseded by the Documentation Bible.
+> See: [specifications/multi-color-extraction.md](specifications/multi-color-extraction.md)
+
 # Multi-Color Palette Extraction - Technical Specification
 
 > Feature Status: Planned

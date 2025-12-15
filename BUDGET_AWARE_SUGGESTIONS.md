@@ -1,3 +1,6 @@
+> **⚠️ DEPRECATED:** This document has been superseded by the Documentation Bible.
+> See: [specifications/feature-roadmap.md](specifications/feature-roadmap.md)
+
 # Budget-Aware Dye Suggestions - Feature Specification
 
 > Last Updated: December 5, 2025
