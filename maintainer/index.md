@@ -10,6 +10,7 @@
 
 | Document | Description |
 |----------|-------------|
+| [Adding New Dyes](adding-dyes.md) | How to update dye database after FFXIV patches |
 | [Architecture Decisions](#architecture-decisions) | Why we built things this way |
 | [Known Issues](#known-issues) | Current limitations and workarounds |
 | [Technical Debt](#technical-debt) | Areas needing improvement |
