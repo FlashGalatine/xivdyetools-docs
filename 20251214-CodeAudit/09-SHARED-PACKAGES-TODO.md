@@ -152,8 +152,8 @@ This document tracks the implementation progress for the shared packages initiat
 ## Phase 4: Cleanup
 
 ### Deprecation Period
-- [ ] Add JSDoc `@deprecated` tags to old type exports
-- [ ] Document migration guide in CHANGELOG
+- [x] Add JSDoc `@deprecated` tags to old type exports
+- [x] Document migration guide in CHANGELOG
 - [ ] Keep deprecated exports for 2 minor versions
 - [ ] Remove deprecated exports in next major version
 
