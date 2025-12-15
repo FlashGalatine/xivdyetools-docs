@@ -168,58 +168,117 @@ Use [Garland Tools](https://www.garlandtools.org/db/) or in-game resources:
 
 ## Step 4: Update the Database
 
-### File Location
+The dye data is split across two locations:
 
-```
-xivdyetools-core/src/data/colors_xiv.json
-```
+1. **`colors_xiv.json`** - Mathematical, categorical, and vendor data
+2. **`locales/*.json`** - Localized dye names (6 languages)
 
-### Data Structure
+### File: `xivdyetools-core/src/data/colors_xiv.json`
+
+Contains the core dye data (English name kept for backward compatibility):
 
 ```json
 {
-  "id": 5734,
-  "name": {
-    "en": "Soot Black",
-    "ja": "スートブラック",
-    "de": "Rußschwarz",
-    "fr": "Noir de suie",
-    "ko": "검댕 블랙",
-    "zh": "煤黑"
+  "itemID": 5734,
+  "category": "Neutral",
+  "name": "Soot Black",
+  "hex": "#2b2923",
+  "acquisition": "Ixali Vendor",
+  "price": 216,
+  "currency": "Gil",
+  "rgb": {
+    "r": 43,
+    "g": 41,
+    "b": 35
   },
-  "hex": "#2B2B2B",
-  "rgb": { "r": 43, "g": 43, "b": 43 },
-  "hsv": { "h": 0, "s": 0, "v": 17 },
-  "category": "black",
-  "rarity": "common",
-  "source": "vendor"
+  "hsv": {
+    "h": 45,
+    "s": 18.6,
+    "v": 16.86
+  },
+  "isMetallic": false,
+  "isPastel": false,
+  "isDark": false,
+  "isCosmic": false
 }
 ```
+
+### Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `itemID` | number \| null | XIVAPI/Universalis Item ID (null for Facewear) |
+| `category` | string | Color category (see below) |
+| `name` | string | English name (backward compat) |
+| `hex` | string | Hex color code |
+| `acquisition` | string | How to obtain (e.g., "Dye Vendor", "Crafting", "Cosmic Exploration") |
+| `price` | number \| null | Cost (null if not purchasable) |
+| `currency` | string \| null | "Gil", "Cosmocredits", or null |
+| `rgb` | object | `{ r, g, b }` values (0-255) |
+| `hsv` | object | `{ h, s, v }` values (h: 0-360, s/v: 0-100) |
+| `isMetallic` | boolean | Has metallic sheen |
+| `isPastel` | boolean | Is pastel series |
+| `isDark` | boolean | Is dark series |
+| `isCosmic` | boolean | Is cosmic series |
 
 ### Categories
 
 | Category | Description |
 |----------|-------------|
-| `white` | White/snow dyes |
-| `black` | Black/grey dyes |
-| `red` | Red/wine dyes |
-| `orange` | Orange dyes |
-| `yellow` | Yellow/gold dyes |
-| `green` | Green dyes |
-| `blue` | Blue dyes |
-| `purple` | Purple/violet dyes |
-| `brown` | Brown/tan dyes |
-| `pink` | Pink dyes |
-| `metallic` | Metallic sheen dyes |
-| `pastel` | Pastel series |
+| `Neutral` | White, grey, black dyes |
+| `Reds` | Red, pink, wine dyes |
+| `Browns` | Brown, orange, tan dyes |
+| `Yellows` | Yellow, gold dyes |
+| `Greens` | Green dyes |
+| `Blues` | Blue dyes |
+| `Purples` | Purple, violet dyes |
+| `Special` | Metallic, pastel, dark series |
+| `Facewear` | Facewear-only colors (no itemID) |
 
-### Rarity
+### File: `xivdyetools-core/src/data/locales/{lang}.json`
 
-| Rarity | Description |
-|--------|-------------|
-| `common` | Vendor-purchasable with gil |
-| `uncommon` | Crafted or dungeon drops |
-| `rare` | Event-exclusive or achievement |
+Each locale file contains localized dye names keyed by `itemID`:
+
+```json
+{
+  "locale": "ja",
+  "meta": {
+    "version": "1.0.0",
+    "generated": "2025-12-15T01:41:03.145Z",
+    "dyeCount": 125
+  },
+  "labels": {
+    "dye": "カララント:",
+    "dark": "ダーク",
+    "metallic": "メタリック",
+    "pastel": "パステル",
+    "cosmic": "コスモ",
+    "cosmicExploration": "コスモエクスプローラー",
+    "cosmicFortunes": "コスモフォーチュン"
+  },
+  "dyeNames": {
+    "5734": "スートブラック",
+    "5735": "ローズピンク"
+  }
+}
+```
+
+### Supported Locales
+
+| File | Language |
+|------|----------|
+| `en.json` | English |
+| `ja.json` | Japanese (日本語) |
+| `de.json` | German (Deutsch) |
+| `fr.json` | French (Français) |
+| `ko.json` | Korean (한국어) |
+| `zh.json` | Chinese (中文) |
+
+### Adding a New Dye
+
+1. Add entry to `colors_xiv.json` with all mathematical/vendor data
+2. Add localized name to **each** `locales/*.json` file under `dyeNames`
+3. Update `meta.dyeCount` in each locale file
 
 ---
 
