@@ -46,7 +46,7 @@ This documentation covers the following projects:
 | **xivdyetools-web-app** | v3.1.0 | Interactive web-based color tools |
 | **xivdyetools-discord-worker** | v2.2.0 | Serverless Discord bot (Cloudflare Workers) |
 | **xivdyetools-oauth** | v2.1.0 | Discord OAuth authentication worker |
-| **xivdyetools-presets-api** | v1.2.0 | Community presets REST API |
+| **xivdyetools-presets-api** | v1.3.0 | Community presets REST API |
 
 ### Shared Libraries
 
