@@ -28,6 +28,8 @@ This repository contains planning documents, feature specifications, and design 
 
 | Folder | Description |
 |--------|-------------|
+| [maintainer/](./maintainer/) | Maintainer guides including the Dye Maintainer Tool |
+| [operations/](./operations/) | Operational guides (moderation, secret rotation) |
 | [20251207-DiscordBotMigration/](./20251207-DiscordBotMigration/) | Discord bot migration from Gateway to HTTP Interactions |
 | [20251207-PresetRefinements/](./20251207-PresetRefinements/) | Preset system refinements and improvements |
 | [historical/](./historical/) | Archived documentation from previous development phases |
@@ -36,13 +38,29 @@ This repository contains planning documents, feature specifications, and design 
 
 This documentation covers the following projects:
 
+### Applications
+
 | Project | Version | Description |
 |---------|---------|-------------|
-| **xivdyetools-core** | v1.3.7 | Core color algorithms and dye database (npm library) |
-| **xivdyetools-web-app** | v2.6.0 | Interactive web-based color tools |
-| **xivdyetools-discord-worker** | v2.0.1 | Serverless Discord bot (Cloudflare Workers) |
-| **xivdyetools-oauth** | v1.1.0 | Discord OAuth authentication worker |
-| **xivdyetools-presets-api** | v1.1.0 | Community presets REST API |
+| **xivdyetools-core** | v1.4.0 | Core color algorithms and dye database (npm library) |
+| **xivdyetools-web-app** | v3.1.0 | Interactive web-based color tools |
+| **xivdyetools-discord-worker** | v2.2.0 | Serverless Discord bot (Cloudflare Workers) |
+| **xivdyetools-oauth** | v2.1.0 | Discord OAuth authentication worker |
+| **xivdyetools-presets-api** | v1.2.0 | Community presets REST API |
+
+### Shared Libraries
+
+| Project | Version | Description |
+|---------|---------|-------------|
+| **@xivdyetools/types** | v1.0.0 | Shared TypeScript type definitions |
+| **@xivdyetools/logger** | v1.0.0 | Unified logging across environments |
+| **@xivdyetools/test-utils** | v1.0.2 | Shared testing utilities |
+
+### Developer Tools
+
+| Project | Version | Description |
+|---------|---------|-------------|
+| **xivdyetools-maintainer** | v1.0.0 | GUI for adding new dyes (Vue 3 + Express) |
 
 > **Note**: The original `xivdyetools-discord-bot` (Discord.js + Gateway) has been deprecated and replaced by `xivdyetools-discord-worker`.
 

@@ -10,7 +10,9 @@
 
 | Document | Description |
 |----------|-------------|
-| [Adding New Dyes](adding-dyes.md) | How to update dye database after FFXIV patches |
+| [Dye Maintainer Tool](dye-maintainer-tool.md) | GUI application for adding new dyes |
+| [Adding New Dyes (Manual)](adding-dyes.md) | Manual process and data format reference |
+| [Moderation Guide](../operations/MODERATION.md) | Managing bans and community presets |
 | [Architecture Decisions](#architecture-decisions) | Why we built things this way |
 | [Known Issues](#known-issues) | Current limitations and workarounds |
 | [Technical Debt](#technical-debt) | Areas needing improvement |
@@ -144,7 +146,7 @@ For detailed audit findings, see [Historical: Code Audit](../historical/20251214
 
 | Core Version | Web App | Discord Worker | Notes |
 |--------------|---------|----------------|-------|
-| 1.4.0 | 3.1.0+ | 2.1.0+ | Current |
+| 1.4.0 | 3.1.0+ | 2.2.0+ | Current |
 | 1.3.x | 3.0.x | 2.0.x | Previous stable |
 | 1.2.x | 2.x | 1.x | Legacy (unsupported) |
 

@@ -14,9 +14,15 @@
 |---------|---------|--------------|----------|--------|
 | **Core Library** | v1.4.0 | `@xivdyetools/core` | npm | Active |
 | **Web Application** | v3.1.0 | — | Cloudflare Pages | Active |
-| **Discord Bot** | v2.1.0 | — | Cloudflare Workers | Active |
+| **Discord Bot** | v2.2.0 | — | Cloudflare Workers | Active |
 | **OAuth Worker** | v2.1.0 | — | Cloudflare Workers | Active |
 | **Presets API** | v1.2.0 | — | Cloudflare Workers | Active |
+
+### Developer Tools
+
+| Project | Version | Package Name | Platform | Status |
+|---------|---------|--------------|----------|--------|
+| **Dye Maintainer** | v1.0.0 | — | Local (Vite + Express) | Active |
 
 ### Shared Packages
 
@@ -60,7 +66,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v2.1.0 | Dec 2025 | Current release |
+| v2.2.0 | Dec 2025 | Current release, `/preset ban_user` and `unban_user` commands |
+| v2.1.0 | Dec 2025 | Moderation infrastructure |
 | v2.0.1 | Dec 2025 | Bug fixes |
 | v2.0.0 | Dec 2025 | HTTP Interactions migration |
 | v1.0.0 | Nov 2025 | Initial Cloudflare Worker release |

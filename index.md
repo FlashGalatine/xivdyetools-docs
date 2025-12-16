@@ -15,6 +15,8 @@ This wiki-style documentation serves developers, end users, and maintainers with
 | Use the Discord bot | [Discord Bot Guide](user-guides/discord-bot/getting-started.md) |
 | Set up development environment | [Local Setup](developer-guides/local-setup.md) |
 | Integrate the core library | [Core Library Overview](projects/core/overview.md) |
+| **Add new dyes after a patch** | [Dye Maintainer Tool](maintainer/dye-maintainer-tool.md) |
+| Moderate community presets | [Moderation Guide](operations/MODERATION.md) |
 | Check version numbers | [Version Matrix](versions.md) |
 | Read feature specifications | [Specifications](specifications/index.md) |
 | Review historical decisions | [History Archive](history/index.md) |
@@ -40,8 +42,8 @@ This wiki-style documentation serves developers, end users, and maintainers with
          ┌─────────────▼──┐    ┌──────▼─────┐    │
          │   Web App      │    │  Discord   │    │
          │   (v3.1.0)     │    │  Worker    │    │
-         │   6 tools,     │    │  (v2.1.0)  │    │
-         │   12 themes    │    │  17 cmds   │    │
+         │   6 tools,     │    │  (v2.2.0)  │    │
+         │   12 themes    │    │  19 cmds   │    │
          └───────┬────────┘    └──────┬─────┘    │
                  │                    │          │
          ┌───────▼────────┐           │   ┌──────▼──────────┐
@@ -89,16 +91,29 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 ## Projects Overview
 
+### Applications
+
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
 | [@xivdyetools/core](projects/core/overview.md) | npm library | v1.4.0 | Core color algorithms, 136-dye database, Universalis API |
 | [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v3.1.0 | Interactive web toolkit with 6 color tools |
-| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.1.0 | Discord bot with 17 slash commands |
+| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.2.0 | Discord bot with 19 slash commands |
 | [xivdyetools-oauth](projects/oauth/overview.md) | CF Worker | v2.1.0 | Discord OAuth + JWT issuance |
 | [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.2.0 | Community presets with moderation |
+
+### Shared Libraries
+
+| Project | Type | Version | Purpose |
+|---------|------|---------|---------|
 | [@xivdyetools/types](projects/types/overview.md) | npm library | v1.0.0 | Shared TypeScript type definitions |
 | [@xivdyetools/logger](projects/logger/overview.md) | npm library | v1.0.0 | Unified logging across environments |
 | [@xivdyetools/test-utils](projects/test-utils/overview.md) | npm library | v1.0.2 | Shared testing utilities |
+
+### Developer Tools
+
+| Project | Type | Version | Purpose |
+|---------|------|---------|---------|
+| [xivdyetools-maintainer](maintainer/dye-maintainer-tool.md) | Vue 3 + Express | v1.0.0 | GUI for adding new dyes to the core library |
 
 ---
 
