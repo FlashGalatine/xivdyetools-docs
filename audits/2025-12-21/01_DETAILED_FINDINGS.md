@@ -188,22 +188,34 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 ---
 
-### Finding SEC-007: Missing Subresource Integrity (Existing)
+### Finding SEC-007: Subresource Integrity - NOT APPLICABLE
 
-**Severity:** LOW
-**Status:** Open
+**Severity:** N/A (Closed)
+**Status:** Closed - Not Applicable
 
 #### Description
-External resources (Google Fonts) do not use SRI hashes.
+Originally flagged for missing SRI hashes on external resources.
 
-#### Analysis
-SRI is primarily designed for CDN-hosted JavaScript. For fonts:
-- Google Fonts serves versioned, trusted files
-- CSP restricts font sources
-- Risk is minimal
+#### Investigation Results (December 21, 2025)
 
-#### Priority
-Low - Best practice rather than security vulnerability.
+**SRI is not applicable for this project because:**
+
+1. **No External JavaScript CDNs**
+   - `script-src 'self'` in CSP blocks ALL external scripts
+   - No jQuery, Bootstrap, or other CDN-hosted libraries
+   - This is actually stronger protection than SRI
+
+2. **Google Fonts Doesn't Support SRI**
+   - Google Fonts CSS is dynamically generated per browser/device
+   - URLs like `fonts.googleapis.com/css2?family=...` return different content
+   - No stable hash can be generated
+
+3. **Other External Resources Don't Need SRI**
+   - `cdn.discordapp.com` - User avatars (images can't execute code)
+   - `universalis.app` - API connections (not script loading)
+
+#### Conclusion
+SEC-007 is **closed as Not Applicable**. The CSP `script-src 'self'` policy provides complete protection against malicious external scripts - better than SRI would.
 
 ---
 
@@ -337,7 +349,7 @@ Comprehensive SSRF protection:
 | A02: Cryptographic Failures | PASS | Proper implementation |
 | A03: Injection | PASS | Parameterized queries |
 | A04: Insecure Design | PASS | Defense in depth |
-| A05: Security Misconfiguration | PASS | SEC-010 (intentional), SEC-007 (low priority) |
+| A05: Security Misconfiguration | PASS | SEC-010 (intentional), SEC-007 (closed - N/A) |
 | A06: Vulnerable Components | PASS | 0 npm vulnerabilities |
 | A07: Auth Failures | PASS | Strong OAuth/JWT |
 | A08: Data Integrity Failures | PASS | HMAC signatures |

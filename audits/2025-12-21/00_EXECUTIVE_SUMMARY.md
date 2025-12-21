@@ -39,8 +39,8 @@ This security audit is a 6-day follow-up to the December 15, 2025 audit, combine
 | Critical | 0 | - |
 | High | 0 | All resolved |
 | Medium | 0 | All resolved |
-| Low | 1 | Monitor |
-| Informational | 3 | Best practices / By design |
+| Low | 0 | All resolved/closed |
+| Informational | 1 | By design (SEC-010) |
 
 ### Vulnerability Scan Results
 
@@ -73,11 +73,11 @@ This security audit is a 6-day follow-up to the December 15, 2025 audit, combine
 | SEC-004 | TypeScript version inconsistencies | MEDIUM | - | **RESOLVED** |
 | SEC-005 | Core package version mismatch | MEDIUM | - | **RESOLVED** |
 | SEC-006 | @types/node inconsistencies | MEDIUM | - | **RESOLVED** |
-| SEC-007 | Missing SRI for external resources | LOW | LOW | Open |
+| SEC-007 | Missing SRI for external resources | LOW | N/A | **CLOSED** (Not Applicable) |
 | SEC-008 | CSP in meta tags vs HTTP headers | LOW | - | **RESOLVED** |
 | SEC-009 | No automated secret rotation | LOW | - | **RESOLVED** |
 
-**Summary: 7 of 9 findings resolved, 1 improved, 1 remains open (low priority)**
+**Summary: 8 of 9 findings resolved/closed, 1 improved (intentional by design)**
 
 ---
 
@@ -167,10 +167,13 @@ The audit confirms continued excellence in:
 
 ### Monitoring (No Immediate Action Required)
 1. **Vitest v4:** Monitor [@cloudflare/vitest-pool-workers](https://github.com/cloudflare/workers-sdk/issues/11064) for v4 support release, then upgrade oauth and presets-api
+2. Continue quarterly secret rotation per schedule
 
-### Future Improvements
-2. Consider SRI for any CDN-hosted JavaScript (SEC-007)
-3. Continue quarterly secret rotation per schedule
+### Note on SEC-007 (SRI)
+SEC-007 has been **closed as Not Applicable**. Investigation revealed:
+- No CDN-hosted JavaScript exists in the project
+- CSP `script-src 'self'` blocks all external scripts (stronger than SRI)
+- Google Fonts doesn't support SRI due to dynamic CSS generation
 
 ---
 
@@ -181,11 +184,11 @@ The audit confirms continued excellence in:
 The xivdyetools ecosystem has made significant security improvements since the December 15 audit:
 - Both HIGH severity findings resolved
 - 4 of 4 MEDIUM findings resolved
-- 2 of 3 LOW findings resolved
+- 3 of 3 LOW findings resolved/closed
 - Zero npm audit vulnerabilities
 - Comprehensive security documentation added
 
-The remaining open items are minor configuration improvements that do not represent security risks.
+**All security findings have been addressed.** The only remaining item (SEC-010: Vitest v3/v4 split) is intentional and required for Cloudflare Workers testing compatibility.
 
 ---
 

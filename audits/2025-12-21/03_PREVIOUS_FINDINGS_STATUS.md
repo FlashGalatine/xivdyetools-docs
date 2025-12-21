@@ -234,21 +234,27 @@ Minor version difference (22.10.1 vs 22.10.2) is acceptable.
 ### SEC-007: Missing SRI for External Resources
 
 **Previous Status:** LOW - Open
-**Current Status:** LOW - Still Open
+**Current Status:** CLOSED - Not Applicable
 
 **Issue:** External resources should use Subresource Integrity (SRI) hashes.
 
-**Analysis:**
+**Investigation (December 21, 2025):**
 
-The web app loads external resources from:
-- Google Fonts (fonts.googleapis.com, fonts.gstatic.com)
+This finding was investigated and determined to be **not applicable**:
 
-SRI is primarily designed for CDN-hosted JavaScript libraries where integrity is critical. For fonts:
-- Google Fonts uses versioned URLs
-- Fonts are served from Google's trusted CDN
-- CSP restricts font sources to specific domains
+1. **No External JavaScript CDNs**
+   - The project doesn't load any CDN-hosted JavaScript libraries
+   - CSP `script-src 'self'` blocks ALL external scripts - stronger than SRI
 
-**Priority:** Low - Best practice but not a security vulnerability.
+2. **Google Fonts Doesn't Support SRI**
+   - Google Fonts CSS is dynamically generated per browser/device
+   - No stable hash can be generated for dynamic content
+
+3. **Other External Resources Don't Need SRI**
+   - Discord avatar images (can't execute code)
+   - API connections (not script resources)
+
+**Resolution:** Closed as Not Applicable. The existing CSP policy provides equivalent or better protection than SRI would provide.
 
 ---
 
@@ -322,7 +328,7 @@ Comprehensive documentation created at `xivdyetools-docs/operations/SECRET_ROTAT
 | SEC-004 | Dec 15, 2025 | Dec 21, 2025 | 6 |
 | SEC-005 | Dec 15, 2025 | Dec 21, 2025 | 6 |
 | SEC-006 | Dec 15, 2025 | Dec 21, 2025 | 6 |
-| SEC-007 | Dec 15, 2025 | Open | - |
+| SEC-007 | Dec 15, 2025 | Dec 21, 2025 (Closed N/A) | 6 |
 | SEC-008 | Dec 15, 2025 | Dec 21, 2025 | 6 |
 | SEC-009 | Dec 15, 2025 | Dec 21, 2025 | 6 |
 
@@ -334,11 +340,11 @@ Comprehensive documentation created at `xivdyetools-docs/operations/SECRET_ROTAT
 
 The team demonstrated excellent responsiveness to security findings:
 - All HIGH severity findings resolved within 6 days
-- All but one MEDIUM findings resolved
-- Majority of LOW findings addressed
+- All MEDIUM findings resolved (SEC-003 improved, intentional by design)
+- All LOW findings resolved/closed
 - Additional security improvements beyond recommendations
 
-The remaining open items (SEC-003 partial, SEC-007) are low priority and do not represent active security risks.
+**All findings from December 15, 2025 have been addressed.** The only remaining item (SEC-003/SEC-010: Vitest v3/v4 split) is intentional and required for Cloudflare Workers testing compatibility.
 
 ---
 

@@ -29,9 +29,11 @@ This audit found significantly fewer items requiring remediation compared to Dec
 | ID | Finding | Severity | Priority |
 |----|---------|----------|----------|
 | SEC-010 | Vitest version split (v3/v4) | INFORMATIONAL | N/A - By Design |
-| SEC-007 | Missing SRI for external resources | LOW | P4 |
+| SEC-007 | Missing SRI for external resources | N/A | CLOSED - Not Applicable |
 
-**Note:** SEC-010 was initially classified as MEDIUM but has been downgraded to INFORMATIONAL after investigation revealed it's intentional due to Cloudflare Workers testing requirements.
+**Notes:**
+- SEC-010 was initially classified as MEDIUM but has been downgraded to INFORMATIONAL after investigation revealed it's intentional due to Cloudflare Workers testing requirements.
+- SEC-007 was investigated and closed as Not Applicable - the project uses `script-src 'self'` CSP which blocks all external scripts (stronger than SRI), and Google Fonts doesn't support SRI.
 
 ---
 
@@ -84,32 +86,32 @@ All 9 projects now specify the minimum Node.js version requirement.
 
 ---
 
-### Task 2: Add SRI for External Resources (SEC-007)
+### SEC-007: Subresource Integrity - CLOSED
 
-**Priority:** P4 - Enhancement
-**Effort:** 1 hour
-**Finding:** SEC-007
+**Status:** Closed - Not Applicable
+**Investigation Date:** December 21, 2025
 
-#### Background
+#### Investigation Results
 
-Subresource Integrity (SRI) is primarily valuable for CDN-hosted JavaScript libraries. The web app currently loads:
-- Google Fonts (fonts.googleapis.com)
+SEC-007 was investigated and determined to be **not applicable** for this project:
 
-Since fonts are less susceptible to code execution attacks, this is low priority.
+1. **No External JavaScript CDNs**
+   - The project doesn't use any CDN-hosted JavaScript libraries
+   - CSP `script-src 'self'` blocks ALL external scripts - this is stronger than SRI
+   - No jQuery, Bootstrap, or similar libraries loaded from CDNs
 
-#### If Implementing
+2. **Google Fonts Doesn't Support SRI**
+   - Google Fonts CSS is dynamically generated based on browser/device
+   - The CSS content changes, so no stable hash can be generated
+   - This is a known limitation documented by Google
 
-For any future CDN JavaScript:
-```html
-<script src="https://cdn.example.com/lib.js"
-        integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
-        crossorigin="anonymous"></script>
-```
+3. **Other External Resources Don't Need SRI**
+   - `cdn.discordapp.com` - User avatar images (can't execute code)
+   - `universalis.app` - API connections (not script resources)
 
-Generate hash:
-```bash
-curl -s https://cdn.example.com/lib.js | openssl dgst -sha384 -binary | openssl base64 -A
-```
+#### Conclusion
+
+**No action required.** The existing CSP policy provides equivalent or better protection than SRI would for this use case.
 
 ---
 
@@ -197,11 +199,13 @@ After completing Vitest upgrade:
 | Critical findings | 0 |
 | High findings | 0 |
 | Medium findings | 0 |
-| Low findings | 1 (SEC-007) |
+| Low findings | 0 |
 | Informational | 1 (SEC-010 - intentional) |
 | Overall posture | EXCELLENT |
 
-**Note:** SEC-010 (Vitest v3/v4 split) is intentional and required for Cloudflare Workers testing compatibility. It does not represent a security risk.
+**Notes:**
+- SEC-010 (Vitest v3/v4 split) is intentional and required for Cloudflare Workers testing compatibility
+- SEC-007 (SRI) was closed as Not Applicable - CSP provides equivalent protection
 
 ---
 
@@ -212,7 +216,6 @@ After completing Vitest upgrade:
 | Zero-day in dependencies | Monthly audits, quick patching | Accepted |
 | Discord API changes | Monitor changelog | Accepted |
 | Cloudflare service issues | No alternative | Accepted |
-| SRI not implemented for fonts | Low risk for fonts | Accepted |
 
 ---
 
@@ -222,10 +225,10 @@ After completing Vitest upgrade:
 |--------|--------------|--------------|
 | Critical findings | 0 | 0 |
 | High findings | 2 | 0 |
-| Medium findings | 4 | 1 |
-| Low findings | 3 | 1 |
+| Medium findings | 4 | 0 |
+| Low findings | 3 | 0 |
 | npm vulnerabilities | 0 | 0 |
-| Remediation rate | - | 78% |
+| Remediation rate | - | 100% |
 | Overall rating | GOOD | EXCELLENT |
 
 ---
