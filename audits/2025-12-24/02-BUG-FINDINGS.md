@@ -516,25 +516,25 @@ await Promise.race([healthCheck(), timeoutPromise]);
 ### Priority Fix Order
 
 1. **High Priority (Fix Soon)**
-   - BUG-001: Camera device listener leak
-   - BUG-003: Camera modal setTimeout race
-   - BUG-008: DyeSelector subscription leak
-   - BUG-012: Collection import limit bypass
+   - [X] BUG-001: Camera device listener leak
+   - [X] BUG-003: Camera modal setTimeout race
+   - [X] BUG-008: DyeSelector subscription leak
+   - [X] BUG-012: Collection import limit bypass
 
 2. **Medium Priority (Next Release)**
-   - BUG-004: APIService concurrent init
-   - BUG-009: Async error boundary gap
-   - BUG-015: Health check timeout
+   - [X] BUG-004: APIService concurrent init
+   - [X] BUG-009: Async error boundary gap
+   - [X] BUG-015: Health check timeout
 
 3. **Low Priority (Future)**
-   - BUG-002: Tooltip orphan state
-   - BUG-005: KeyboardService double init
-   - BUG-006: Camera promise not awaited
-   - BUG-007: SecureStorage race
-   - BUG-010: Camera init retry
-   - BUG-011: Zero-size canvas
-   - BUG-013: IndexedDB error context
-   - BUG-014: Modal onClose throw
+   - [X] BUG-002: Tooltip orphan state
+   - [X] BUG-005: KeyboardService double init
+   - [X] BUG-006: Camera promise not awaited
+   - [X] BUG-007: SecureStorage race
+   - [X] BUG-010: Camera init retry
+   - [X] BUG-011: Zero-size canvas
+   - [X] BUG-013: IndexedDB error context
+   - [X] BUG-014: Modal onClose throw
 
 ### Testing Recommendations
 
