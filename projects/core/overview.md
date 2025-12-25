@@ -1,6 +1,6 @@
 # Core Library Overview
 
-**@xivdyetools/core** - The foundation of the XIV Dye Tools ecosystem
+**@xivdyetools/core** v1.5.4 - The foundation of the XIV Dye Tools ecosystem
 
 ---
 
@@ -9,12 +9,14 @@
 The core library is a TypeScript package that provides:
 
 - **136 Official FFXIV Dyes** - Complete database with accurate hex colors
+- **Facewear Dye Support** - Synthetic IDs (≤ -1000) for Facewear gear slot
 - **Color Algorithms** - Conversion, accessibility, colorblindness simulation
 - **Dye Matching** - O(log n) nearest-neighbor lookup via k-d tree
 - **Color Harmonies** - Complementary, triadic, analogous, and more
 - **Palette Extraction** - K-means++ clustering from images
 - **Market Prices** - Universalis API integration with caching
 - **Localization** - 6 languages (en, ja, de, fr, ko, zh)
+- **Performance Optimized** - Pre-computed search indices, consolidated LRU cache
 
 ---
 

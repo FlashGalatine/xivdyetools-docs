@@ -231,33 +231,71 @@ sequenceDiagram
 
 ## Market Price Flow
 
-Fetching real-time FFXIV market prices from Universalis.
+Fetching real-time FFXIV market prices from Universalis via the caching proxy.
 
 ```mermaid
 sequenceDiagram
-    participant Client as Consumer App
-    participant Core as @xivdyetools/core
-    participant Cache as LRU Cache
+    participant Client as Web App
+    participant Proxy as Universalis Proxy
+    participant EdgeCache as Cache API (Edge)
+    participant KV as KV Storage (Global)
     participant API as Universalis API
 
-    Note over Client,Core: 1. Request price data
-    Client->>Core: APIService.getPriceData(dyeId, server)
+    Note over Client,Proxy: 1. Request price data
+    Client->>Proxy: GET /api/{server}/{itemId}
 
-    Note over Core,Cache: 2. Check cache
-    Core->>Cache: Get cached price
-    alt Cache hit (< 15 min old)
-        Cache->>Core: { prices, timestamp }
-        Core->>Client: Return cached data
+    Note over Proxy,EdgeCache: 2. Check edge cache
+    Proxy->>EdgeCache: Check Cache API
+    alt Edge cache hit
+        EdgeCache->>Proxy: { data, age }
+        Proxy->>Client: Return cached data
     end
 
-    Note over Core,API: 3. Fetch from API
-    Core->>API: GET /api/v2/{server}/{itemId}
-    API->>Core: { listings: [...], history: [...] }
+    Note over Proxy,KV: 3. Check KV cache
+    Proxy->>KV: Get from KV storage
+    alt KV hit (< 5 min for prices)
+        KV->>Proxy: { data, timestamp }
+        Proxy->>EdgeCache: Store in edge cache
+        Proxy->>Client: Return cached data
+    end
 
-    Note over Core,Cache: 4. Cache response
-    Core->>Cache: Store with 15-min TTL
-    Core->>Client: Return price data
+    Note over Proxy: 4. Request coalescing
+    Proxy->>Proxy: Check inflight requests
+    alt Same request in flight
+        Proxy->>Proxy: Wait for existing request
+        Proxy->>Client: Return shared response
+    end
+
+    Note over Proxy,API: 5. Fetch from Universalis
+    Proxy->>API: GET /api/v2/{server}/{itemId}
+
+    alt Response size check
+        API->>Proxy: Response (check < 5MB)
+    end
+
+    Note over Proxy,KV: 6. Dual-layer caching
+    Proxy->>KV: Store with 5-min TTL (prices)
+    Proxy->>EdgeCache: Store for edge caching
+    Proxy->>Client: Return price data
 ```
+
+### Caching Strategy
+
+| Cache Layer | TTL (Prices) | TTL (Static) | Purpose |
+|-------------|--------------|--------------|---------|
+| Edge Cache (Cache API) | 5 min | 24h | Low-latency regional caching |
+| KV Storage | 5 min | 24h | Global persistence across edges |
+| Stale-while-revalidate | +1 min | +1h | Serve stale during refresh |
+
+### Request Coalescing
+
+When multiple clients request the same data simultaneously:
+```
+Request 1 ──┐
+Request 2 ──┼──► Single upstream request ──► Shared response
+Request 3 ──┘
+```
+This prevents thundering herd on the Universalis API.
 
 ---
 

@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Monorepo Quick Reference
 
-**9 Active Projects** - see [versions.md](versions.md) for current versions
+**10 Active Projects** - see [versions.md](versions.md) for current versions
 
 | Project | Type | Quick Link |
 |---------|------|------------|
@@ -27,6 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `xivdyetools-discord-worker` | CF Worker | [Overview](projects/discord-worker/overview.md) |
 | `xivdyetools-oauth` | CF Worker | [Overview](projects/oauth/overview.md) |
 | `xivdyetools-presets-api` | CF Worker + D1 | [Overview](projects/presets-api/overview.md) |
+| `xivdyetools-universalis-proxy` | CF Worker | [Overview](projects/universalis-proxy/overview.md) |
 
 Changes to core require publishing to npm before consumers can use them.
 
@@ -83,6 +84,16 @@ npm run deploy             # Deploy to staging
 npm run deploy:production  # Deploy to production
 npm run db:migrate:local   # Apply schema to local D1
 npm run db:migrate         # Apply schema to production D1
+```
+
+### xivdyetools-universalis-proxy (Market Data Proxy)
+```bash
+cd xivdyetools-universalis-proxy
+npm run dev                # Local dev server
+npm run deploy             # Deploy to staging
+npm run deploy:production  # Deploy to production
+npm run test               # Run vitest
+npm run type-check         # TypeScript validation
 ```
 
 ---

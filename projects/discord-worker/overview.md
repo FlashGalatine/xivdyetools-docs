@@ -1,12 +1,19 @@
 # Discord Worker Overview
 
-**xivdyetools-discord-worker** - Serverless Discord bot for FFXIV dye tools
+**xivdyetools-discord-worker** v2.3.1 - Serverless Discord bot for FFXIV dye tools
 
 ---
 
 ## What is the Discord Worker?
 
-A Cloudflare Worker that brings XIV Dye Tools to Discord via 17 slash commands. Uses HTTP Interactions (not Gateway WebSocket) for serverless, globally distributed operation.
+A Cloudflare Worker that brings XIV Dye Tools to Discord via 21 slash commands. Uses HTTP Interactions (not Gateway WebSocket) for serverless, globally distributed operation.
+
+### Recent Features (v2.3.x)
+
+- **User Ban System** - `/preset ban_user` and `/preset unban_user` for content moderation
+- **KV Schema Versioning** - Version-based key prefixes for future migrations
+- **Analytics Fix** - Now tracks actual command success status
+- **Webhook Auth Security** - Fixed timing-safe comparison for webhook authentication
 
 ---
 
@@ -60,16 +67,22 @@ src/
 │   │   ├── harmony.ts
 │   │   ├── match.ts
 │   │   ├── dye.ts
+│   │   ├── preset-ban.ts    # NEW: User ban system
 │   │   └── ...
 │   ├── buttons/          # Button interaction handlers
+│   │   ├── ban-confirmation.ts  # NEW: Ban confirm/cancel
+│   │   └── ...
 │   └── modals/           # Modal submission handlers
+│       ├── ban-reason.ts     # NEW: Ban reason input
+│       └── ...
 ├── services/
 │   ├── svg/              # SVG generation
 │   ├── image/            # Image processing (Photon WASM)
 │   ├── analytics.ts      # Usage tracking
 │   ├── rate-limiter.ts   # Per-user rate limiting
-│   ├── user-storage.ts   # Favorites & collections
-│   └── preset-api.ts     # Presets API client
+│   ├── user-storage.ts   # Favorites & collections (versioned keys)
+│   ├── preset-api.ts     # Presets API client
+│   └── ban-service.ts    # NEW: User ban operations
 └── utils/
     ├── verify.ts         # Ed25519 verification
     └── response.ts       # Discord response builders
@@ -114,6 +127,8 @@ src/
 | `/preset show` | View preset details |
 | `/preset submit` | Submit new preset |
 | `/preset vote` | Vote on presets |
+| `/preset ban_user` | Ban user from preset system (moderators) |
+| `/preset unban_user` | Unban user and restore presets (moderators) |
 
 ### Utility
 | Command | Description |

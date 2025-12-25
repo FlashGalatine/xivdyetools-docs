@@ -13,6 +13,7 @@ Environment variables are configured differently based on the project type:
 | Web App | `.env` files, `import.meta.env` |
 | Cloudflare Workers | `wrangler.toml` (vars) + `wrangler secret put` (secrets) |
 | Core Library | None (environment-agnostic) |
+| Universalis Proxy | `wrangler.toml` (vars) + KV bindings |
 
 ---
 
@@ -166,6 +167,59 @@ BOT_API_SECRET=local-api-secret
 JWT_SECRET=development-jwt-secret-min-32-chars
 MODERATOR_IDS=123456789,987654321
 ```
+
+---
+
+## xivdyetools-universalis-proxy
+
+### wrangler.toml Variables
+
+```toml
+[vars]
+ENVIRONMENT = "production"        # "development" | "production"
+PRICE_TTL = "300"                 # Price cache TTL in seconds (default: 5 min)
+STATIC_TTL = "86400"              # Static cache TTL in seconds (default: 24h)
+MAX_ITEMS = "100"                 # Max items per request
+MAX_RESPONSE_SIZE = "5242880"     # Max response size in bytes (5MB)
+```
+
+### KV Bindings
+
+The proxy requires two KV namespaces:
+
+```toml
+[[kv_namespaces]]
+binding = "PRICE_CACHE"
+id = "your-price-cache-namespace-id"
+
+[[kv_namespaces]]
+binding = "STATIC_CACHE"
+id = "your-static-cache-namespace-id"
+```
+
+### Creating KV Namespaces
+
+```bash
+cd xivdyetools-universalis-proxy
+
+# Create namespaces
+wrangler kv:namespace create "PRICE_CACHE"
+wrangler kv:namespace create "STATIC_CACHE"
+
+# Note the IDs and update wrangler.toml
+```
+
+### Local Development
+
+For local development, use:
+
+```bash
+# Create local namespaces
+wrangler kv:namespace create "PRICE_CACHE" --preview
+wrangler kv:namespace create "STATIC_CACHE" --preview
+```
+
+Update `wrangler.toml` with the preview IDs for local testing.
 
 ---
 

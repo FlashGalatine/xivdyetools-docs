@@ -2,7 +2,7 @@
 
 **Single source of truth for all XIV Dye Tools project versions**
 
-*Last Updated: December 15, 2025*
+*Last Updated: December 25, 2025*
 
 ---
 
@@ -12,11 +12,12 @@
 
 | Project | Version | Package Name | Platform | Status |
 |---------|---------|--------------|----------|--------|
-| **Core Library** | v1.4.0 | `@xivdyetools/core` | npm | Active |
-| **Web Application** | v3.1.0 | — | Cloudflare Pages | Active |
-| **Discord Bot** | v2.2.0 | — | Cloudflare Workers | Active |
-| **OAuth Worker** | v2.1.0 | — | Cloudflare Workers | Active |
-| **Presets API** | v1.2.0 | — | Cloudflare Workers | Active |
+| **Core Library** | v1.5.4 | `@xivdyetools/core` | npm | Active |
+| **Web Application** | v3.2.8 | — | Cloudflare Pages | Active |
+| **Discord Bot** | v2.3.1 | — | Cloudflare Workers | Active |
+| **OAuth Worker** | v2.2.2 | — | Cloudflare Workers | Active |
+| **Presets API** | v1.4.5 | — | Cloudflare Workers | Active |
+| **Universalis Proxy** | v1.2.2 | — | Cloudflare Workers | Active |
 
 ### Developer Tools
 
@@ -28,9 +29,9 @@
 
 | Package | Version | Package Name | Platform | Status |
 |---------|---------|--------------|----------|--------|
-| **Types** | v1.0.0 | `@xivdyetools/types` | npm | Active |
-| **Logger** | v1.0.0 | `@xivdyetools/logger` | npm | Active |
-| **Test Utils** | v1.0.2 | `@xivdyetools/test-utils` | npm | Active |
+| **Types** | v1.1.1 | `@xivdyetools/types` | npm | Active |
+| **Logger** | v1.0.2 | `@xivdyetools/logger` | npm | Active |
+| **Test Utils** | v1.0.3 | `@xivdyetools/test-utils` | npm | Active |
 
 ### Deprecated
 
@@ -46,7 +47,11 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.4.0 | Dec 2025 | Current release |
+| v1.5.4 | Dec 2025 | Current release |
+| v1.5.3 | Dec 2025 | Pre-computed lowercase names, simplified findClosestNonFacewearDye |
+| v1.5.2 | Dec 2025 | Input validation, batch API URL validation, 100-item limit |
+| v1.5.0 | Dec 2025 | Generic LRU cache consolidation |
+| v1.4.0 | Dec 2025 | Facewear dye support (synthetic IDs ≤ -1000) |
 | v1.3.7 | Dec 2025 | Bug fixes, performance improvements |
 | v1.3.0 | Nov 2025 | K-means++ palette extraction |
 | v1.2.0 | Nov 2025 | Preset service, localization |
@@ -56,7 +61,14 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v3.1.0 | Dec 2025 | Current release, SVG icon redesign |
+| v3.2.8 | Dec 2025 | Current release |
+| v3.2.7 | Dec 2025 | Theme factory pattern (createThemePalette) |
+| v3.2.6 | Dec 2025 | SVG icons consolidated to ui-icons.ts (~10KB savings), SubscriptionManager utility |
+| v3.2.5 | Dec 2025 | Dye Mixer context menu (action dropdown for intermediate matches) |
+| v3.2.4 | Dec 2025 | See Color Harmonies fix in Color Matcher |
+| v3.2.2 | Dec 2025 | Slot selection modal, duplicate detection toasts |
+| v3.2.0 | Dec 2025 | Budget Suggestions tool (7th tool) |
+| v3.1.0 | Dec 2025 | SVG icon redesign |
 | v3.0.0 | Dec 2025 | UI/UX rehaul, new theme system |
 | v2.6.0 | Dec 2025 | Community presets browser |
 | v2.0.0 | Nov 2025 | Major release with 6 tools |
@@ -66,7 +78,9 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v2.2.0 | Dec 2025 | Current release, `/preset ban_user` and `unban_user` commands |
+| v2.3.1 | Dec 2025 | Current release |
+| v2.3.0 | Dec 2025 | KV schema versioning, analytics tracking fix, webhook auth security fix |
+| v2.2.0 | Dec 2025 | User ban system (`/preset ban_user`, `/preset unban_user`) |
 | v2.1.0 | Dec 2025 | Moderation infrastructure |
 | v2.0.1 | Dec 2025 | Bug fixes |
 | v2.0.0 | Dec 2025 | HTTP Interactions migration |
@@ -76,7 +90,10 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v2.1.0 | Dec 2025 | Current release |
+| v2.2.2 | Dec 2025 | Current release |
+| v2.2.1 | Dec 2025 | Timeout protection (10s token exchange, 5s user info fetch) |
+| v2.2.0 | Dec 2025 | Open redirect fix, improved state handling |
+| v2.1.0 | Dec 2025 | State handling improvements |
 | v1.1.0 | Dec 2025 | Refresh token improvements |
 | v1.0.0 | Nov 2025 | Initial release with PKCE |
 
@@ -84,8 +101,38 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.2.0 | Dec 2025 | Current release |
-| v1.1.0 | Dec 2025 | Moderation pipeline |
+| v1.4.5 | Dec 2025 | Current release |
+| v1.4.4 | Dec 2025 | Standardized API responses, cascade delete integration tests |
+| v1.4.3 | Dec 2025 | UTF-8 safe truncation for Discord embeds |
+| v1.4.1 | Dec 2025 | Perspective API 5s timeout protection |
+| v1.4.0 | Dec 2025 | Race condition handling, dynamic category validation, Discord notification retries |
+| v1.2.0 | Dec 2025 | Moderation pipeline enhancements |
+| v1.1.0 | Dec 2025 | Initial moderation pipeline |
+| v1.0.0 | Nov 2025 | Initial release |
+
+### xivdyetools-universalis-proxy
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.2.2 | Dec 2025 | Current release, 5MB response size limit |
+| v1.2.0 | Dec 2025 | Memory leak fix (60s entry cleanup), input validation (100 items max, ID range 1-1M) |
+| v1.1.0 | Dec 2025 | Dual-layer caching (Cache API + KV), request coalescing, stale-while-revalidate |
+| v1.0.0 | Dec 2025 | Initial release with CORS proxy |
+
+### @xivdyetools/types
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.1.1 | Dec 2025 | Current release, branded types runtime validation guidance |
+| v1.1.0 | Dec 2025 | Facewear ID support (synthetic IDs ≤ -1000) |
+| v1.0.0 | Nov 2025 | Initial release |
+
+### @xivdyetools/logger
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.0.2 | Dec 2025 | Current release, Authorization pattern fix |
+| v1.0.1 | Dec 2025 | Secret redaction pattern fixes |
 | v1.0.0 | Nov 2025 | Initial release |
 
 ---
@@ -94,9 +141,10 @@
 
 | Consumer | Minimum Core Version | Notes |
 |----------|---------------------|-------|
-| Web App v3.x | @xivdyetools/core v1.3.0+ | Requires palette service |
-| Discord Worker v2.x | @xivdyetools/core v1.3.0+ | Requires preset service |
+| Web App v3.x | @xivdyetools/core v1.4.0+ | Requires facewear dye support |
+| Discord Worker v2.x | @xivdyetools/core v1.4.0+ | Requires facewear dye support |
 | Presets API v1.x | @xivdyetools/core v1.2.0+ | Requires localization |
+| Web App v3.2.0+ | Universalis Proxy v1.0.0+ | Budget Suggestions tool uses proxy |
 
 ---
 

@@ -17,7 +17,7 @@ Whether you're using the web app or Discord bot, these guides will help you make
 
 ## Web App Guides
 
-### The 6 Tools
+### The 7 Tools
 
 | Tool | Guide | Description |
 |------|-------|-------------|
@@ -27,6 +27,7 @@ Whether you're using the web app or Discord bot, these guides will help you make
 | **Dye Comparison** | [Guide](web-app/dye-comparison.md) | Compare dyes side-by-side |
 | **Accessibility Checker** | [Guide](web-app/accessibility.md) | Simulate colorblindness |
 | **Preset Browser** | [Guide](web-app/preset-browser.md) | Browse community dye palettes |
+| **Budget Suggestions** | [Guide](web-app/budget-suggestions.md) | Find affordable dye alternatives |
 
 ### Features
 

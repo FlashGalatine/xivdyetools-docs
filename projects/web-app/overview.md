@@ -1,12 +1,12 @@
 # Web App Overview
 
-**xivdyetools-web-app** - Interactive browser-based toolkit for FFXIV dye colors
+**xivdyetools-web-app** v3.2.8 - Interactive browser-based toolkit for FFXIV dye colors
 
 ---
 
 ## What is the Web App?
 
-A fully-featured web application built with Lit and Vite, offering 6 interactive tools for exploring FFXIV dye colors:
+A fully-featured web application built with Lit and Vite, offering 7 interactive tools for exploring FFXIV dye colors:
 
 | Tool | Purpose |
 |------|---------|
@@ -16,6 +16,16 @@ A fully-featured web application built with Lit and Vite, offering 6 interactive
 | **Dye Comparison** | Compare dyes side-by-side |
 | **Accessibility Checker** | Colorblindness simulation |
 | **Preset Browser** | Browse community dye palettes |
+| **Budget Suggestions** | Find affordable dye alternatives using market data |
+
+### Recent Features (v3.2.x)
+
+- **Dye Action Dropdown** - Context menu for quick actions on dye matches
+- **Slot Selection Modal** - Choose which slot to replace when Comparison/Mixer is full
+- **Duplicate Detection** - Toast notifications for duplicate presets
+- **SVG Icon Consolidation** - Shared icons reduce bundle size by ~10KB
+- **SubscriptionManager** - Prevents memory leaks from orphaned reactive subscriptions
+- **Theme Factory Pattern** - `createThemePalette()` for easy theme creation
 
 ---
 
@@ -62,17 +72,21 @@ src/
 │   │   ├── harmony-explorer/
 │   │   ├── dye-comparison/
 │   │   ├── accessibility-checker/
-│   │   └── preset-browser/
+│   │   ├── preset-browser/
+│   │   └── budget-suggestions/    # NEW: Affordable alternatives
 │   ├── shared/                 # Reusable components
 │   │   ├── color-swatch/
 │   │   ├── dye-picker/
+│   │   ├── dye-action-dropdown/   # NEW: Context menu actions
+│   │   ├── slot-selection-modal/  # NEW: Slot replacement UI
 │   │   └── ...
 │   └── layout/                 # App shell components
 ├── services/                   # Business logic layer
 │   ├── ThemeService.ts         # Theme management
 │   ├── StorageService.ts       # localStorage persistence
 │   ├── AuthService.ts          # OAuth integration
-│   └── PresetService.ts        # Preset API client
+│   ├── PresetService.ts        # Preset API client
+│   └── SubscriptionManager.ts  # NEW: Reactive subscription cleanup
 ├── styles/                     # Global styles
 │   ├── themes/                 # 12 theme files
 │   └── tailwind.css
@@ -143,7 +157,8 @@ git push origin main
 
 ## Related Documentation
 
-- [Tools](tools.md) - Detailed guide to all 6 tools
+- [Tools](tools.md) - Detailed guide to all 7 tools
 - [Components](components.md) - Lit component architecture
 - [Theming](theming.md) - Theme system documentation
 - [Deployment](deployment.md) - Deployment procedures
+- [User Guide](../../user-guides/web-app/getting-started.md) - End-user documentation

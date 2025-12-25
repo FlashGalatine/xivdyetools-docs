@@ -28,29 +28,35 @@ This wiki-style documentation serves developers, end users, and maintainers with
 ```
                     ┌─────────────────────────────────┐
                     │        Shared Packages          │
-                    │  @xivdyetools/types (v1.0.0)    │
-                    │  @xivdyetools/logger (v1.0.0)   │
-                    │  @xivdyetools/test-utils (v1.0.2)│
+                    │  @xivdyetools/types (v1.1.1)    │
+                    │  @xivdyetools/logger (v1.0.2)   │
+                    │  @xivdyetools/test-utils (v1.0.3)│
                     └────────────────┬────────────────┘
                                      │
                     ┌────────────────▼────────────────┐
-                    │     @xivdyetools/core (v1.4.0)  │
+                    │     @xivdyetools/core (v1.5.4)  │
                     │   136 dyes, color algorithms,   │
                     │   Universalis API, 6 languages  │
                     └──┬──────────────┬───────────┬───┘
                        │              │           │
          ┌─────────────▼──┐    ┌──────▼─────┐    │
          │   Web App      │    │  Discord   │    │
-         │   (v3.1.0)     │    │  Worker    │    │
-         │   6 tools,     │    │  (v2.2.0)  │    │
-         │   12 themes    │    │  19 cmds   │    │
+         │   (v3.2.8)     │    │  Worker    │    │
+         │   7 tools,     │    │  (v2.3.1)  │    │
+         │   12 themes    │    │  21 cmds   │    │
          └───────┬────────┘    └──────┬─────┘    │
                  │                    │          │
          ┌───────▼────────┐           │   ┌──────▼──────────┐
          │  OAuth Worker  │           │   │  Presets API    │
-         │   (v2.1.0)     │◄──────────┴───│   (v1.2.0)      │
+         │   (v2.2.2)     │◄──────────┴───│   (v1.4.5)      │
          │  PKCE + JWT    │               │  D1 + Moderation │
          └────────────────┘               └─────────────────┘
+                 │
+         ┌───────▼────────────────┐
+         │  Universalis Proxy     │
+         │   (v1.2.2)             │
+         │  CORS + Dual Caching   │
+         └────────────────────────┘
 ```
 
 ---
@@ -69,7 +75,7 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 | Section | Description |
 |---------|-------------|
-| [Web App Guides](user-guides/web-app/getting-started.md) | Step-by-step guides for all 6 web tools |
+| [Web App Guides](user-guides/web-app/getting-started.md) | Step-by-step guides for all 7 web tools |
 | [Discord Bot Guides](user-guides/discord-bot/getting-started.md) | Command reference and usage examples |
 
 ### For Developers
@@ -95,19 +101,20 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
-| [@xivdyetools/core](projects/core/overview.md) | npm library | v1.4.0 | Core color algorithms, 136-dye database, Universalis API |
-| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v3.1.0 | Interactive web toolkit with 6 color tools |
-| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.2.0 | Discord bot with 19 slash commands |
-| [xivdyetools-oauth](projects/oauth/overview.md) | CF Worker | v2.1.0 | Discord OAuth + JWT issuance |
-| [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.2.0 | Community presets with moderation |
+| [@xivdyetools/core](projects/core/overview.md) | npm library | v1.5.4 | Core color algorithms, 136-dye database, Universalis API |
+| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v3.2.8 | Interactive web toolkit with 7 color tools |
+| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.3.1 | Discord bot with 21 slash commands |
+| [xivdyetools-oauth](projects/oauth/overview.md) | CF Worker | v2.2.2 | Discord OAuth + JWT issuance |
+| [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.4.5 | Community presets with moderation |
+| [xivdyetools-universalis-proxy](projects/universalis-proxy/overview.md) | CF Worker | v1.2.2 | CORS proxy for Universalis API with dual-layer caching |
 
 ### Shared Libraries
 
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
-| [@xivdyetools/types](projects/types/overview.md) | npm library | v1.0.0 | Shared TypeScript type definitions |
-| [@xivdyetools/logger](projects/logger/overview.md) | npm library | v1.0.0 | Unified logging across environments |
-| [@xivdyetools/test-utils](projects/test-utils/overview.md) | npm library | v1.0.2 | Shared testing utilities |
+| [@xivdyetools/types](projects/types/overview.md) | npm library | v1.1.1 | Shared TypeScript types with Facewear support |
+| [@xivdyetools/logger](projects/logger/overview.md) | npm library | v1.0.2 | Unified logging across environments |
+| [@xivdyetools/test-utils](projects/test-utils/overview.md) | npm library | v1.0.3 | Shared testing utilities |
 
 ### Developer Tools
 
@@ -119,10 +126,18 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 ## Recent Updates
 
-*This section will be updated with links to recent changes and releases.*
+*Last updated: December 25, 2025*
 
-- See [Release History](history/releases/index.md) for version changelog
-- See [Feature Roadmap](specifications/feature-roadmap.md) for planned features
+### December 2025 Highlights
+
+- **Budget Suggestions Tool** - New 7th tool in the web app for finding affordable dye alternatives
+- **Universalis Proxy** - New project providing CORS proxy with dual-layer caching for market data
+- **User Ban System** - Discord bot now supports `/preset ban_user` and `/preset unban_user` commands
+- **Facewear Dye Support** - Core library and types now support synthetic dye IDs for Facewear gear slot
+- **Security Hardening** - Open redirect fixes, timeout protections, response size limits across all workers
+- **Performance Optimizations** - Pre-computed search indices, LRU cache consolidation, memory leak fixes
+
+See [Version Matrix](versions.md) for detailed version history and [Feature Roadmap](specifications/feature-roadmap.md) for planned features.
 
 ---
 

@@ -9,10 +9,11 @@
 | Project | Type | Platform | Key Technologies | Primary Purpose |
 |---------|------|----------|------------------|-----------------|
 | [@xivdyetools/core](core/overview.md) | npm library | Node.js / Browser | TypeScript, k-d tree, K-means++ | Color algorithms, 136-dye database |
-| [xivdyetools-web-app](web-app/overview.md) | Web app | Cloudflare Pages | Lit, Vite, Tailwind CSS | 6 interactive color tools |
-| [xivdyetools-discord-worker](discord-worker/overview.md) | Discord bot | Cloudflare Workers | Hono, HTTP Interactions, resvg-wasm | 17 slash commands |
+| [xivdyetools-web-app](web-app/overview.md) | Web app | Cloudflare Pages | Lit, Vite, Tailwind CSS | 7 interactive color tools |
+| [xivdyetools-discord-worker](discord-worker/overview.md) | Discord bot | Cloudflare Workers | Hono, HTTP Interactions, resvg-wasm | 21 slash commands |
 | [xivdyetools-oauth](oauth/overview.md) | OAuth provider | Cloudflare Workers | Hono, PKCE, JWT | Discord authentication |
 | [xivdyetools-presets-api](presets-api/overview.md) | REST API | Cloudflare Workers | Hono, D1 SQLite | Community presets |
+| [xivdyetools-universalis-proxy](universalis-proxy/overview.md) | CORS Proxy | Cloudflare Workers | Hono, KV | Market data caching |
 | [@xivdyetools/types](types/overview.md) | npm library | Universal | TypeScript | Shared type definitions |
 | [@xivdyetools/logger](logger/overview.md) | npm library | Universal | TypeScript | Multi-environment logging |
 | [@xivdyetools/test-utils](test-utils/overview.md) | npm library | Test | TypeScript, Vitest | Testing utilities and mocks |
@@ -28,19 +29,20 @@
 │  │     xivdyetools-web-app     │  │    xivdyetools-discord-worker       │   │
 │  │     ─────────────────────   │  │    ─────────────────────────────    │   │
 │  │     Vite + Lit web app      │  │    Cloudflare Worker Discord bot    │   │
-│  │     6 interactive tools     │  │    17 slash commands                │   │
+│  │     7 interactive tools     │  │    21 slash commands                │   │
 │  │     12 themes, PWA          │  │    SVG/PNG rendering               │   │
 │  └─────────────────────────────┘  └─────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            Backend Services                                  │
-│  ┌─────────────────────────────┐  ┌─────────────────────────────────────┐   │
-│  │      xivdyetools-oauth      │  │      xivdyetools-presets-api        │   │
-│  │      ─────────────────      │  │      ───────────────────────        │   │
-│  │      Discord OAuth + PKCE   │  │      Community presets CRUD         │   │
-│  │      JWT issuance           │  │      D1 database + moderation       │   │
-│  └─────────────────────────────┘  └─────────────────────────────────────┘   │
+│  ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────────┐    │
+│  │ xivdyetools-oauth │  │xivdyetools-presets│  │xivdyetools-universalis│    │
+│  │ ───────────────── │  │       -api        │  │        -proxy         │    │
+│  │ Discord OAuth     │  │ ───────────────── │  │ ───────────────────── │    │
+│  │ PKCE + JWT        │  │ Community presets │  │ Universalis CORS proxy│    │
+│  │ timeout protection│  │ D1 + moderation   │  │ Dual-layer caching    │    │
+│  └───────────────────┘  └───────────────────┘  └───────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -50,7 +52,7 @@
 │  │                        ─────────────────                                ││
 │  │     136-dye database │ Color conversion │ Accessibility simulation      ││
 │  │     K-d tree matching │ Color harmonies │ K-means++ palette extraction  ││
-│  │     Universalis API │ 6-language localization │ Preset palettes         ││
+│  │     Facewear support │ 6-language localization │ Preset palettes        ││
 │  └─────────────────────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │
@@ -60,7 +62,7 @@
 │  │  @xivdyetools/types  │ │ @xivdyetools/logger  │ │@xivdyetools/test-utils│ │
 │  │  ──────────────────  │ │ ──────────────────── │ │────────────────────── │ │
 │  │  Type definitions    │ │ Multi-env logging    │ │ Mocks & factories     │ │
-│  │  Branded types       │ │ Browser/Node/Worker  │ │ CF binding mocks      │ │
+│  │  Facewear ID support │ │ Secret redaction     │ │ CF binding mocks      │ │
 │  └──────────────────────┘ └──────────────────────┘ └──────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -115,20 +117,29 @@ If you want to integrate XIV Dye Tools into your own project:
 | [Presets Moderation](presets-api/moderation.md) | Content filtering pipeline |
 | [Presets Database](presets-api/database.md) | D1 schema documentation |
 
+### For Understanding the Universalis Proxy
+
+| Document | Description |
+|----------|-------------|
+| [Proxy Overview](universalis-proxy/overview.md) | Architecture and features |
+| [Caching Strategy](universalis-proxy/caching.md) | Dual-layer caching deep dive |
+| [Deployment Guide](universalis-proxy/deployment.md) | KV setup and deployment |
+
 ---
 
 ## Version Summary
 
 | Project | Version | Last Updated |
 |---------|---------|--------------|
-| @xivdyetools/core | v1.4.0 | December 2025 |
-| xivdyetools-web-app | v3.1.0 | December 2025 |
-| xivdyetools-discord-worker | v2.1.0 | December 2025 |
-| xivdyetools-oauth | v2.1.0 | December 2025 |
-| xivdyetools-presets-api | v1.2.0 | December 2025 |
-| @xivdyetools/types | v1.0.0 | December 2025 |
-| @xivdyetools/logger | v1.0.0 | December 2025 |
-| @xivdyetools/test-utils | v1.0.2 | December 2025 |
+| @xivdyetools/core | v1.5.4 | December 2025 |
+| xivdyetools-web-app | v3.2.8 | December 2025 |
+| xivdyetools-discord-worker | v2.3.1 | December 2025 |
+| xivdyetools-oauth | v2.2.2 | December 2025 |
+| xivdyetools-presets-api | v1.4.5 | December 2025 |
+| xivdyetools-universalis-proxy | v1.2.2 | December 2025 |
+| @xivdyetools/types | v1.1.1 | December 2025 |
+| @xivdyetools/logger | v1.0.2 | December 2025 |
+| @xivdyetools/test-utils | v1.0.3 | December 2025 |
 
 See [Version Matrix](../versions.md) for detailed version history.
 
