@@ -6,6 +6,55 @@
 
 ---
 
+## 🔄 Remediation Status (Updated: December 24, 2025)
+
+### ✅ Resolved Issues
+
+| ID | Issue | Resolution |
+|----|-------|------------|
+| OAUTH-CRITICAL-001 | State param base64/JSON parsing | Separated into distinct try-catch blocks with specific error messages |
+| OAUTH-CRITICAL-002 | Open redirect vulnerability | Added `allowedOrigins` validation before redirect |
+| OAUTH-HIGH-001 | Missing Discord API timeouts | Added `AbortSignal.timeout(10000)` and `AbortSignal.timeout(5000)` |
+| OAUTH-MED-001 | JWT_SECRET length validation | Added 32-char minimum check in env-validation.ts |
+| DISCORD-CRITICAL-001 | Analytics always success=true | Moved analytics to `finally` block with actual `success` value |
+| DISCORD-CRITICAL-003 | Timing-safe comparison bypass | Separated config check from timing-safe comparison |
+| DISCORD-HIGH-001 | Missing body size validation | Added 10KB Content-Length check |
+| DISCORD-HIGH-002 | No timeout on Discord messages | Added `AbortSignal.timeout(5000)` |
+| DISCORD-HIGH-003 | Null userId bypass | Added early return guard for missing userId |
+| PROXY-CRITICAL-001 | Memory leak in coalescer | Added `InFlightEntry` with timestamp + periodic cleanup |
+| PROXY-CRITICAL-002 | CORS middleware structure | Refactored to set headers directly |
+| PROXY-CRITICAL-003 | Unlimited item IDs | Added count (1-100) and range (1-1M) validation |
+| PRESETS-CRITICAL-001 | Duplicate preset race condition | Added UNIQUE constraint on dye_signature + application handler |
+| PRESETS-CRITICAL-004 | Audit trail cleared on edit | Changed to append-only (no longer clears previous_values) |
+| PRESETS-HIGH-001 | No Perspective API timeout | Added `AbortSignal.timeout(5000)` |
+| PRESETS-HIGH-002 | Whitespace author names | Added `.trim()` to author name handling |
+
+### ⏳ Remaining Issues
+
+| ID | Issue | Priority |
+|----|-------|----------|
+| DISCORD-CRITICAL-002 | Collections race condition | Documented as acceptable for UX |
+| PRESETS-CRITICAL-002 | Hardcoded category list | Medium (acceptable trade-off) |
+| PRESETS-CRITICAL-003 | Discord notify fire-and-forget | Low (intentional design) |
+| PRESETS-MED-001 | Cascade delete verification | Low |
+| PRESETS-MED-002 | Inconsistent error format | Low |
+
+### ✅ Additional Resolved Issues (December 24, 2025)
+
+| ID | Issue | Resolution |
+|----|-------|------------|
+| OAUTH-HIGH-002 | User creation race condition | UNIQUE indexes on discord_id/xivauth_id + try-catch retry pattern |
+| OAUTH-MED-002 | No rate limiting on refresh | Rate limiting middleware already covers `/auth/*` including `/auth/refresh` |
+| OAUTH-MED-003 | Grace period boundary | Boundary behavior is correct (`<` allows refresh at exactly 24h); tests exist |
+| PRESETS-HIGH-003 | UTF-8 truncation in embeds | Added `truncateUnicodeSafe()` function using `Array.from()` |
+| PROXY-HIGH-001 | Cache timestamp validation | Current behavior correctly treats missing headers as cache miss |
+| PROXY-HIGH-002 | No response size limit | Added `MAX_RESPONSE_SIZE_BYTES` (5MB) check + `ResponseTooLargeError` |
+| DISCORD-MED-001 | KV error silent failure | `kvError` flag added to RateLimitResult, documented in JSDoc with example |
+| DISCORD-MED-002 | Hardcoded command limits | Documented in code comments: "Commands not listed use default limit" |
+| DISCORD-MED-003 | No KV key versioning | Added `KV_SCHEMA_VERSION = 'v1'` prefix to all KV keys |
+
+---
+
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)

@@ -6,6 +6,42 @@
 
 ---
 
+## 🔄 Remediation Status (Updated: December 24, 2025)
+
+### ✅ Resolved Issues
+
+| ID | Issue | Resolution |
+|----|-------|------------|
+| TYPES-001 | Duplicate LRU cache implementation | Extracted to `src/utils/lru-cache.ts`, imported by both ColorConverter and ColorblindnessSimulator |
+| INPUT-001 | Batch API URL missing validation | Added empty array, max 100 items, and positive integer validation |
+| PERF-002 | Pixel sampling bias | Fixed range distribution to include first and last pixels |
+| ERROR-001 | Cache miss vs error indistinguishable | Improved error handling to fall through to fetch on cache errors |
+| LOG-API-001 | Child logger clones all adapters | Added DelegatingLogger class for efficient child logger creation |
+| TEST-DESIGN-001 | Factory ID race condition | Changed to random UUIDs for parallel test safety |
+| TEST-DESIGN-002 | Fragile SQL query matching | Updated docs to recommend regex patterns |
+
+### ⏳ Remaining Issues
+
+| ID | Issue | Priority |
+|----|-------|----------|
+| TYPES-102 | DyeId range excludes Facewear | Medium - needs design decision (allow negative IDs or separate function) |
+| PERF-003 | O(n²) harmony fallback | Medium - needs algorithmic refactor for Facewear filtering |
+| MEM-001 | Repeated toLowerCase in search | Low - minor CPU overhead |
+| LOG-ERR-001 | Secret redaction patterns | Low - edge cases with whitespace |
+| CROSS-002 | Inconsistent logging | Low - varies by service |
+| TYPES-101 | Branded types rely on runtime | Low - known TS limitation |
+| TYPES-103 | Optional Dye fields | Low - consumer audit needed |
+
+### ✅ Additional Resolved Issues (December 24, 2025)
+
+| ID | Issue | Resolution |
+|----|-------|------------|
+| REEXP-001 | Deprecation without timeline | All deprecations now specify "Removed in v2.0.0" |
+| TYPES-001 | Duplicate LRU cache | Extracted to shared `src/utils/lru-cache.ts` |
+| INPUT-001 | Batch API URL validation | Added empty array, max 100 items, positive integer validation |
+
+---
+
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
