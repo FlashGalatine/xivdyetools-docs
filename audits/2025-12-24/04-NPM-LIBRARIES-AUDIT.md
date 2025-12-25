@@ -22,13 +22,7 @@
 
 ### ⏳ Remaining Issues
 
-| ID | Issue | Priority |
-|----|-------|----------|
-| MEM-001 | Repeated toLowerCase in search | Low - minor CPU overhead |
-| LOG-ERR-001 | Secret redaction patterns | Low - edge cases with whitespace |
-| CROSS-002 | Inconsistent logging | Low - varies by service |
-| TYPES-101 | Branded types rely on runtime | Low - known TS limitation |
-| TYPES-103 | Optional Dye fields | Low - consumer audit needed |
+_All Low priority issues have been resolved or documented. No remaining actionable items._
 
 ### ✅ Additional Resolved Issues (December 24, 2025)
 
@@ -39,6 +33,11 @@
 | INPUT-001 | Batch API URL validation | Added empty array, max 100 items, positive integer validation |
 | TYPES-102 | DyeId range excludes Facewear | Updated `createDyeId` to accept synthetic negative IDs (<= -1000) |
 | PERF-003 | O(n²) harmony fallback | Simplified to O(log n) by leveraging DyeSearch's built-in Facewear exclusion |
+| MEM-001 | Repeated toLowerCase in search | Pre-computed `nameLower` and `categoryLower` fields in DyeInternal |
+| LOG-ERR-001 | Secret redaction patterns | Fixed patterns to handle quoted values and delimiters properly |
+| CROSS-002 | Inconsistent logging | Created `developer-guides/logging-standards.md` documenting standards |
+| TYPES-101 | Branded types rely on runtime | Documented limitation in `src/color/branded.ts` with best practices |
+| TYPES-103 | Optional Dye fields | Documented field presence guarantee in `src/dye/dye.ts` |
 
 ---
 

@@ -28,6 +28,7 @@
 | Guide | Description |
 |-------|-------------|
 | [Environment Variables](environment-variables.md) | All env vars in one place |
+| [Logging Standards](logging-standards.md) | Consistent logging across packages |
 | [Troubleshooting](troubleshooting.md) | Common issues and solutions |
 
 ---
