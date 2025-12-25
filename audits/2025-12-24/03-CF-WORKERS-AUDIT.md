@@ -36,8 +36,6 @@
 | DISCORD-CRITICAL-002 | Collections race condition | Documented as acceptable for UX |
 | PRESETS-CRITICAL-002 | Hardcoded category list | Medium (acceptable trade-off) |
 | PRESETS-CRITICAL-003 | Discord notify fire-and-forget | Low (intentional design) |
-| PRESETS-MED-001 | Cascade delete verification | Low |
-| PRESETS-MED-002 | Inconsistent error format | Low |
 
 ### ✅ Additional Resolved Issues (December 24, 2025)
 
@@ -52,6 +50,8 @@
 | DISCORD-MED-001 | KV error silent failure | `kvError` flag added to RateLimitResult, documented in JSDoc with example |
 | DISCORD-MED-002 | Hardcoded command limits | Documented in code comments: "Commands not listed use default limit" |
 | DISCORD-MED-003 | No KV key versioning | Added `KV_SCHEMA_VERSION = 'v1'` prefix to all KV keys |
+| PRESETS-MED-001 | Cascade delete verification | Added 3 integration tests verifying vote cascade delete behavior |
+| PRESETS-MED-002 | Inconsistent error format | Created `api-response.ts` with standardized `ErrorCode` constants and helpers |
 
 ---
 
