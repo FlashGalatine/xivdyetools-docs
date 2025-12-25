@@ -24,8 +24,6 @@
 
 | ID | Issue | Priority |
 |----|-------|----------|
-| TYPES-102 | DyeId range excludes Facewear | Medium - needs design decision (allow negative IDs or separate function) |
-| PERF-003 | O(n²) harmony fallback | Medium - needs algorithmic refactor for Facewear filtering |
 | MEM-001 | Repeated toLowerCase in search | Low - minor CPU overhead |
 | LOG-ERR-001 | Secret redaction patterns | Low - edge cases with whitespace |
 | CROSS-002 | Inconsistent logging | Low - varies by service |
@@ -39,6 +37,8 @@
 | REEXP-001 | Deprecation without timeline | All deprecations now specify "Removed in v2.0.0" |
 | TYPES-001 | Duplicate LRU cache | Extracted to shared `src/utils/lru-cache.ts` |
 | INPUT-001 | Batch API URL validation | Added empty array, max 100 items, positive integer validation |
+| TYPES-102 | DyeId range excludes Facewear | Updated `createDyeId` to accept synthetic negative IDs (<= -1000) |
+| PERF-003 | O(n²) harmony fallback | Simplified to O(log n) by leveraging DyeSearch's built-in Facewear exclusion |
 
 ---
 
