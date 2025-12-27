@@ -11,6 +11,7 @@
 | [@xivdyetools/core](core/overview.md) | npm library | Node.js / Browser | TypeScript, k-d tree, K-means++ | Color algorithms, 136-dye database |
 | [xivdyetools-web-app](web-app/overview.md) | Web app | Cloudflare Pages | Lit, Vite, Tailwind CSS | 7 interactive color tools |
 | [xivdyetools-discord-worker](discord-worker/overview.md) | Discord bot | Cloudflare Workers | Hono, HTTP Interactions, resvg-wasm | 21 slash commands |
+| [xivdyetools-moderation-worker](moderation-worker/overview.md) | Discord bot | Cloudflare Workers | Hono, HTTP Interactions | Preset moderation commands |
 | [xivdyetools-oauth](oauth/overview.md) | OAuth provider | Cloudflare Workers | Hono, PKCE, JWT | Discord authentication |
 | [xivdyetools-presets-api](presets-api/overview.md) | REST API | Cloudflare Workers | Hono, D1 SQLite | Community presets |
 | [xivdyetools-universalis-proxy](universalis-proxy/overview.md) | CORS Proxy | Cloudflare Workers | Hono, KV | Market data caching |
@@ -23,16 +24,16 @@
 ## Architecture Layers
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           Consumer Applications                              │
-│  ┌─────────────────────────────┐  ┌─────────────────────────────────────┐   │
-│  │     xivdyetools-web-app     │  │    xivdyetools-discord-worker       │   │
-│  │     ─────────────────────   │  │    ─────────────────────────────    │   │
-│  │     Vite + Lit web app      │  │    Cloudflare Worker Discord bot    │   │
-│  │     7 interactive tools     │  │    21 slash commands                │   │
-│  │     12 themes, PWA          │  │    SVG/PNG rendering               │   │
-│  └─────────────────────────────┘  └─────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                              Consumer Applications                                        │
+│  ┌──────────────────────┐  ┌─────────────────────────┐  ┌─────────────────────────────┐  │
+│  │ xivdyetools-web-app  │  │xivdyetools-discord-worker│  │xivdyetools-moderation-worker│  │
+│  │ ──────────────────── │  │─────────────────────────│  │─────────────────────────────│  │
+│  │ Vite + Lit web app   │  │ Discord bot (public)    │  │ Discord bot (moderators)    │  │
+│  │ 7 interactive tools  │  │ 21 slash commands       │  │ Preset moderation           │  │
+│  │ 12 themes, PWA       │  │ SVG/PNG rendering       │  │ User ban management         │  │
+│  └──────────────────────┘  └─────────────────────────┘  └─────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────────────────────┘
                                       │
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            Backend Services                                  │
@@ -91,14 +92,15 @@ If you want to integrate XIV Dye Tools into your own project:
 | [Web App Components](web-app/components.md) | Lit component architecture |
 | [Web App Theming](web-app/theming.md) | 12 themes, CSS variables |
 
-### For Understanding the Discord Bot
+### For Understanding the Discord Bots
 
 | Document | Description |
 |----------|-------------|
 | [Discord Worker Overview](discord-worker/overview.md) | HTTP Interactions architecture |
-| [Discord Commands](discord-worker/commands.md) | All 17 commands documented |
+| [Discord Commands](discord-worker/commands.md) | All 21 commands documented |
 | [Discord Interactions](discord-worker/interactions.md) | Button, modal, autocomplete handlers |
 | [Discord Rendering](discord-worker/rendering.md) | SVG generation, PNG output |
+| [Moderation Worker Overview](moderation-worker/overview.md) | Moderator-only bot architecture |
 
 ### For Understanding Authentication
 
@@ -134,6 +136,7 @@ If you want to integrate XIV Dye Tools into your own project:
 | @xivdyetools/core | v1.5.4 | December 2025 |
 | xivdyetools-web-app | v3.2.8 | December 2025 |
 | xivdyetools-discord-worker | v2.3.1 | December 2025 |
+| xivdyetools-moderation-worker | v1.0.0 | December 2025 |
 | xivdyetools-oauth | v2.2.2 | December 2025 |
 | xivdyetools-presets-api | v1.4.5 | December 2025 |
 | xivdyetools-universalis-proxy | v1.2.2 | December 2025 |

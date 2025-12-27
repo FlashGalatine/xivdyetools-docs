@@ -17,11 +17,14 @@ This document outlines procedures for rotating secrets across the xivdyetools ec
 | Secret | Used By | Location | Rotation Frequency |
 |--------|---------|----------|-------------------|
 | JWT_SECRET | oauth, presets-api | Cloudflare Secrets | Quarterly |
-| BOT_API_SECRET | discord-worker, presets-api | Cloudflare Secrets | Quarterly |
+| BOT_API_SECRET | discord-worker, moderation-worker, presets-api | Cloudflare Secrets | Quarterly |
 | DISCORD_TOKEN | discord-worker | Cloudflare Secrets | On compromise |
+| DISCORD_TOKEN | moderation-worker | Cloudflare Secrets | On compromise |
 | DISCORD_CLIENT_SECRET | oauth | Cloudflare Secrets | On compromise |
 | DISCORD_PUBLIC_KEY | discord-worker | Cloudflare Secrets | Never (public key) |
-| MODERATOR_IDS | presets-api | Cloudflare Secrets | As needed |
+| DISCORD_PUBLIC_KEY | moderation-worker | Cloudflare Secrets | Never (public key) |
+| MODERATOR_IDS | presets-api, moderation-worker | Cloudflare Secrets | As needed |
+| MODERATION_CHANNEL_ID | moderation-worker | Cloudflare Secrets | As needed |
 | MAINTAINER_API_KEY | maintainer (dev) | Local .env | N/A (dev only) |
 
 ---
@@ -85,9 +88,9 @@ If issues occur, you can temporarily support both old and new secrets by modifyi
 
 ### 2. BOT_API_SECRET Rotation
 
-**Impact:** Discord bot will fail to call presets API until both services are updated.
+**Impact:** Discord bots will fail to call presets API until all services are updated.
 
-**Coordination Required:** Both discord-worker and presets-api must be updated simultaneously.
+**Coordination Required:** discord-worker, moderation-worker, and presets-api must be updated simultaneously.
 
 #### Steps
 
@@ -103,32 +106,44 @@ If issues occur, you can temporarily support both old and new secrets by modifyi
    # Paste new secret
    ```
 
-3. **Update Presets API (immediately after):**
+3. **Update Moderation Worker:**
+   ```bash
+   cd xivdyetools-moderation-worker
+   wrangler secret put BOT_API_SECRET
+   # Paste the SAME secret
+   ```
+
+4. **Update Presets API (immediately after):**
    ```bash
    cd xivdyetools-presets-api
    wrangler secret put BOT_API_SECRET
    # Paste the SAME secret
    ```
 
-4. **Test bot preset commands:**
-   - Use `/preset search` command in Discord
-   - Use `/preset submit` command
+5. **Test bot preset commands:**
+   - Use `/preset search` command in Discord (main bot)
+   - Use `/preset submit` command (main bot)
+   - Use `/preset moderate` command (moderation bot)
    - Verify API responses are correct
 
 ---
 
 ### 3. DISCORD_TOKEN Rotation
 
-**Impact:** Bot goes offline immediately until new token is deployed.
+**Impact:** The affected bot goes offline immediately until new token is deployed.
 
 **When to Rotate:** Only if compromised. Discord tokens do not expire.
 
-#### Steps
+**Note:** There are TWO separate Discord applications with separate tokens:
+- **Main Bot** (XIV Dye Tools) - Used by discord-worker
+- **Moderation Bot** (XIV Dye Tools Moderation) - Used by moderation-worker
+
+#### Steps (Main Bot - discord-worker)
 
 1. **Go to Discord Developer Portal:**
    https://discord.com/developers/applications
 
-2. **Navigate to your application → Bot section**
+2. **Navigate to XIV Dye Tools application → Bot section**
 
 3. **Click "Reset Token"**
    - Copy the new token immediately (it won't be shown again)
@@ -142,7 +157,28 @@ If issues occur, you can temporarily support both old and new secrets by modifyi
 
 5. **Verify bot is online:**
    - Check Discord server for bot presence
-   - Test a slash command
+   - Test a slash command (e.g., `/dye search red`)
+
+#### Steps (Moderation Bot - moderation-worker)
+
+1. **Go to Discord Developer Portal:**
+   https://discord.com/developers/applications
+
+2. **Navigate to XIV Dye Tools Moderation application → Bot section**
+
+3. **Click "Reset Token"**
+   - Copy the new token immediately (it won't be shown again)
+
+4. **Update Moderation Worker:**
+   ```bash
+   cd xivdyetools-moderation-worker
+   wrangler secret put DISCORD_TOKEN
+   # Paste new token
+   ```
+
+5. **Verify bot is online:**
+   - Check Discord server for moderation bot presence
+   - Test a moderation command (e.g., `/preset moderate action:pending`)
 
 ---
 
@@ -239,8 +275,10 @@ After any secret rotation, verify:
 - [ ] OAuth login flow works
 - [ ] JWT tokens are being issued
 - [ ] Presets API accepts authenticated requests
-- [ ] Discord bot slash commands work
-- [ ] Bot-to-API communication works
+- [ ] Discord bot (main) slash commands work
+- [ ] Discord bot (moderation) slash commands work
+- [ ] Main bot-to-API communication works (`/preset search`)
+- [ ] Moderation bot-to-API communication works (`/preset moderate`)
 - [ ] No error spikes in Cloudflare dashboard
 
 ---
