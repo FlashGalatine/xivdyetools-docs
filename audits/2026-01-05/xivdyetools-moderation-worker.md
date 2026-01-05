@@ -10,15 +10,15 @@
 
 This security audit covers the Cloudflare Worker-based Discord moderation bot that handles content moderation for the XIV Dye Tools Preset Palettes feature. The audit identified **16 security findings** across various severity levels.
 
-**Overall Assessment: ⚠️ NEEDS ATTENTION**
+**Overall Assessment: ✅ CRITICAL & HIGH & MEDIUM ISSUES RESOLVED**
 
-| Severity | Count |
-|----------|-------|
-| 🔴 Critical | 1 |
-| 🟠 High | 4 |
-| 🟡 Medium | 6 |
-| 🔵 Low | 3 |
-| ⚪ Informational | 2 |
+| Severity | Count | Status |
+|----------|-------|--------|
+| 🔴 Critical | 1 | ✅ Resolved |
+| 🟠 High | 4 | ✅ Resolved |
+| 🟡 Medium | 6 | ✅ Resolved |
+| 🔵 Low | 3 | ⚠️ Pending |
+| ⚪ Informational | 2 | ⚠️ Pending |
 
 ---
 
@@ -445,8 +445,122 @@ The following CRITICAL and HIGH severity issues have been resolved:
 
 ---
 
+### ✅ Issue #6: No Rate Limiting Implementation (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Implemented KV-based rate limiting with sliding window pattern
+**Files Modified:**
+- src/middleware/rate-limit.ts (NEW) - Core rate limiting implementation (~200 lines)
+- src/utils/response.ts - Added `rateLimitedResponse()` function
+- src/index.ts - Integrated rate limiting in command and autocomplete handlers
+
+**Verification:** Rate limits enforced per-user with different tiers for commands (20/min) vs autocomplete (60/min)
+
+**Technical Details:**
+- **Rate Limit Tiers**: Commands (20 req/min + 5 burst), Autocomplete (60 req/min + 10 burst)
+- **Storage**: Cloudflare KV with 120-second TTL for automatic cleanup
+- **Pattern**: Sliding window with burst allowance for legitimate rapid interactions
+- **Fail-Safe**: Fail-open if KV unavailable (prioritizes availability over strict limiting)
+- **Headers**: Adds `Retry-After` header to 429 responses
+- **Logging**: Warns on rate limit violations for monitoring
+
+---
+
+### ✅ Issue #7: SQL Query Escaping Inconsistency (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Standardized SQL LIKE escaping with validation utility
+**Files Modified:**
+- src/utils/sql-helpers.ts (NEW) - Standardized escaping and validation functions (~100 lines)
+- src/services/ban-service.ts - Replaced inline escaping with `validateAndEscapeQuery()`
+
+**Verification:** All user input validated and escaped before SQL LIKE queries
+
+**Technical Details:**
+- Created `escapeLikePattern()` to handle %, _, and \ characters for D1/SQLite
+- Created `validateAndEscapeQuery()` combining validation + escaping in one step
+- Added input length validation (max 100 chars for autocomplete queries)
+- Returns empty results for invalid input instead of crashing
+- Comprehensive JSDoc documentation of D1/SQLite escape behavior
+- Future-proof: Ready for additional LIKE queries
+
+---
+
+### ✅ Issue #8: Channel Restriction Bypass Potential (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Added channel restriction check to `moderate` subcommand
+**Files Modified:**
+- src/handlers/commands/preset.ts - Added `isInModerationChannel()` check before moderator check
+
+**Verification:** All moderation subcommands (moderate, ban_user, unban_user) now enforce channel restrictions
+
+**Technical Details:**
+- Channel check now executes BEFORE moderator check (fail-fast pattern)
+- Returns ephemeral error message: "This command must be used in the moderation channel."
+- Prevents information disclosure in public channels (pending queue stats, approval/rejection)
+- Maintains audit trail integrity (all moderation actions in dedicated channel)
+
+---
+
+### ✅ Issue #9: Missing Request Body Size Validation on JSON Parse (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Implemented safe JSON parsing with prototype pollution protection
+**Files Modified:**
+- src/utils/safe-json.ts (NEW) - Safe JSON parser with validation (~150 lines)
+- src/index.ts - Replaced `JSON.parse()` with `safeParseJSON()`
+
+**Verification:** JSON parsing rejects prototype pollution, deeply nested objects, and oversized arrays
+
+**Technical Details:**
+- **Prototype Pollution Detection**: Scans for `__proto__`, `constructor`, `prototype` keys recursively
+- **Structure Validation**: Enforces max depth (10 levels), max array size (1000 elements), max object properties (1000)
+- **Deep Freeze**: Result objects frozen to prevent runtime modification
+- **Warnings**: Non-fatal issues logged but don't block valid requests
+- **Error Messages**: User-friendly errors ("Invalid JSON syntax", "Object nesting exceeds maximum depth")
+- Discord interactions are shallow (typically 3-5 levels deep), so max depth of 10 is generous
+
+---
+
+### ✅ Issue #10: Timestamp Validation Missing in HMAC Signatures (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Added timestamp validation documentation and implemented validation in presets API
+**Files Modified:**
+- src/services/preset-api.ts (moderation-worker) - Added comprehensive JSDoc documentation and validation reminders
+- docs/HMAC_SIGNATURE_SPEC.md (NEW) - Complete specification with examples (~320 lines)
+- src/middleware/auth.ts (presets-api) - Updated timestamp validation to 5-minute window + 60-second clock skew
+
+**Verification:** Presets API now validates timestamp freshness and logs rejection reasons
+
+**Technical Details:**
+- **Timestamp Window**: 5 minutes (300 seconds) for replay protection
+- **Clock Skew Tolerance**: 60 seconds for future timestamps (handles server clock differences)
+- **Validation Logic**: Rejects if `age > 300` or `age < -60`
+- **Logging**: Warns on timestamp violations with age details for monitoring
+- **Documentation**: Complete HMAC spec includes threat model, test cases, and recommendations
+- **Signature Format**: `HMAC-SHA256(timestamp:discordId:userName)` with hex encoding
+
+---
+
+### ✅ Issue #11: Webhook Token Exposure in URLs (MEDIUM)
+**Status:** RESOLVED
+**Fix Applied:** Implemented URL and error message sanitization in logging
+**Files Modified:**
+- src/utils/url-sanitizer.ts (NEW) - Comprehensive sanitization utilities (~150 lines)
+- src/middleware/logger.ts - Sanitizes URLs in request logging
+- src/utils/discord-api.ts - Wraps all fetch calls with error sanitization
+
+**Verification:** Interaction tokens masked in logs, no tokens appear in error messages
+
+**Technical Details:**
+- **URL Patterns**: Masks Discord webhook tokens (`/webhooks/{app_id}/{token}` → `/webhooks/{app_id}/[REDACTED_TOKEN]`)
+- **Header Sanitization**: Masks Authorization, X-Request-Signature, and other sensitive headers
+- **Query Parameters**: Masks API keys in URL query strings (`?token=xxx` → `?token=[REDACTED]`)
+- **Error Messages**: Sanitizes stack traces and error messages containing URLs
+- **Fetch Helpers**: `sanitizeFetchRequest()` and `sanitizeFetchResponse()` for consistent logging
+- **Try-Catch**: All Discord API calls wrapped with sanitized error logging
+
+---
+
 ### Remaining Issues
-Medium, Low, and Informational severity issues will be addressed in subsequent security improvement sessions.
+Low and Informational severity issues will be addressed in subsequent security improvement sessions.
 
 ---
 
