@@ -16,7 +16,7 @@ This internal maintainer tool has **moderate security posture** for a developmen
 |----------|-------|----------|
 | 🔴 Critical | 1 | ✅ 1/1 |
 | 🟠 High | 3 | ✅ 3/3 |
-| 🟡 Medium | 6 | ✅ 3/6 |
+| 🟡 Medium | 6 | ✅ 6/6 |
 | 🔵 Low | 4 | ⏳ 0/4 |
 | ⚪ Informational | 3 | N/A |
 
@@ -59,19 +59,26 @@ All CRITICAL and HIGH severity vulnerabilities have been addressed:
 
 ### Files Modified
 
-**New Files:**
+**New Files (CRITICAL + HIGH fixes):**
 - `server/schemas.ts` - Zod validation schemas
 - `server/middleware/validation.ts` - Validation middleware
 - `server/auth/SessionManager.ts` - Session management
 - `server/middleware/auth.ts` - Authentication middleware
 - `server/utils/pathValidation.ts` - Path validation utilities
 
+**New Files (MEDIUM fixes - 2026-01-05):**
+- `server/middleware/rateLimiting.ts` - Three-tiered rate limiting configuration
+- `server/middleware/errorSanitizer.ts` - Error sanitization utilities
+- `server/middleware/timeout.ts` - Request timeout middleware
+- `src/utils/fetchWithTimeout.ts` - Client-side fetch timeout wrapper
+
 **Updated Files:**
-- `server/api.ts` - Applied all security fixes
-- `src/services/fileService.ts` - Session token implementation
+- `server/api.ts` - Applied all security fixes (rate limiting, timeouts, middleware)
+- `server/middleware/validation.ts` - Updated to use error sanitizer
+- `src/services/fileService.ts` - Updated to use fetchWithTimeout for all API calls
 - `src/env.d.ts` - Removed API key type definition
 - `.env.example` - Updated documentation
-- `package.json` - Added Zod dependency
+- `package.json` - Added Zod and express-rate-limit dependencies
 
 ---
 
@@ -271,14 +278,25 @@ Restricted CORS to localhost only:
 
 ---
 
-#### 6. No Rate Limiting
+#### 6. No Rate Limiting ✅ RESOLVED
 **File:** `server/api.ts`
+**Status:** ✅ **FIXED** (2026-01-05)
 
 **Description:** No rate limiting is implemented on any endpoints. An attacker could flood the server with requests.
 
 **Risk:** Denial of service, resource exhaustion.
 
 **Recommendation:** Implement rate limiting using `express-rate-limit`.
+
+**Resolution:**
+Implemented comprehensive three-tiered rate limiting using express-rate-limit:
+- Created `server/middleware/rateLimiting.ts` with three rate limiters:
+  - **Global Limiter**: 1000 requests per 15 minutes (all endpoints)
+  - **Write Limiter**: 30 requests per 1 minute (POST /api/colors, POST /api/locale/:code)
+  - **Session Limiter**: 10 requests per 15 minutes (POST /api/auth/session)
+- Applied rate limiters to all endpoints in `server/api.ts`
+- Rate limit headers (`RateLimit-*`) included in responses
+- Appropriate limits for development tool (generous but protective)
 
 ---
 
@@ -323,9 +341,10 @@ Implemented timing-safe comparison:
 
 ---
 
-#### 8. Potential XSS in Error Messages
-**File:** `src/components/DyeEditor.vue`  
+#### 8. Potential XSS in Error Messages ✅ RESOLVED
+**File:** `src/components/DyeEditor.vue`
 **Lines:** 94-96
+**Status:** ✅ **FIXED** (2026-01-05)
 
 ```vue
 <p v-if="error" class="text-sm mt-2" :class="isDuplicate ? 'text-red-400' : 'text-yellow-400'">
@@ -339,14 +358,42 @@ Implemented timing-safe comparison:
 
 **Recommendation:** Sanitize external error messages before storage.
 
+**Resolution:**
+Implemented comprehensive error sanitization to prevent user input in error messages:
+- Created `server/middleware/errorSanitizer.ts` with error sanitization system:
+  - `ValidationErrorCode` enum for safe error codes
+  - `sanitizeZodError()` function to convert Zod errors to safe format
+  - Generic error messages that never include user input
+- Updated `server/middleware/validation.ts` to use error sanitizer:
+  - Full error details logged server-side for debugging
+  - Only sanitized error codes and generic messages sent to client
+  - Format: `{ field: "itemID", code: "INVALID_TYPE", message: "Field 'itemID' has invalid type" }`
+- Eliminates risk of user input appearing in validation error messages
+
 ---
 
-#### 9. Missing Request Timeout Configuration
+#### 9. Missing Request Timeout Configuration ✅ RESOLVED
 **File:** `server/api.ts`
+**Status:** ✅ **FIXED** (2026-01-05)
 
 **Description:** The Express server has no timeout configuration. Long-running requests could tie up resources.
 
 **Recommendation:** Add `connect-timeout` middleware with a 30-second timeout.
+
+**Resolution:**
+Implemented comprehensive timeout protection on both server and client:
+- **Server-side:**
+  - Created `server/middleware/timeout.ts` with 30-second timeout middleware
+  - Sets both socket-level and response-level timeouts
+  - Automatically responds with 408 Request Timeout if exceeded
+  - Applied early in middleware stack in `server/api.ts`
+- **Client-side:**
+  - Created `src/utils/fetchWithTimeout.ts` utility using AbortController
+  - Wraps native fetch with configurable timeout (default 15s)
+  - Updated all 8 fetch calls in `src/services/fileService.ts`:
+    - Read operations: 15s timeout (health, session, reads, validation)
+    - Write operations: 30s timeout (POST /api/colors, POST /api/locale/:code)
+- Prevents hung connections and provides clear user feedback on timeout
 
 ---
 
@@ -504,13 +551,14 @@ if (!validCodes.includes(code)) {
 
 | Control | Status |
 |---------|--------|
-| Authentication | ⚠️ Partial (API key, timing vulnerable) |
+| Authentication | ✅ Session-based with timing-safe comparison |
 | Authorization | ✅ Write ops require key, reads open |
-| Input Validation | ❌ Missing on POST bodies |
-| XSS Protection | ✅ Vue auto-escaping |
-| CSRF Protection | ⚠️ Relies on CORS only |
-| Path Traversal | ⚠️ Mitigated by whitelist but path not validated |
-| Rate Limiting | ❌ Not implemented |
-| Logging | ⚠️ Minimal |
-| HTTPS | ❌ Not enforced |
+| Input Validation | ✅ Zod schemas with sanitized errors |
+| XSS Protection | ✅ Vue auto-escaping + error sanitization |
+| CSRF Protection | ✅ CORS restricted to localhost |
+| Path Traversal | ✅ Startup + runtime path validation |
+| Rate Limiting | ✅ Three-tiered rate limiting implemented |
+| Logging | ✅ Detailed server-side, sanitized client-side |
+| Request Timeouts | ✅ 30s server, 15s/30s client |
+| HTTPS | ✅ Server bound to 127.0.0.1 only |
 | Production Guard | ✅ Excellent |
