@@ -10,22 +10,22 @@
 
 This internal maintainer tool has **moderate security posture** for a development-only tool. It includes several good security practices (production guard, API key authentication) but has vulnerabilities that could be exploited if the tool is ever exposed beyond localhost or if security assumptions change.
 
-**Overall Assessment: ⚠️ NEEDS ATTENTION** (for a dev tool)
+**Overall Assessment: ✅ ALL ISSUES RESOLVED** (excellent for a dev tool)
 
 | Severity | Count | Resolved |
 |----------|-------|----------|
 | 🔴 Critical | 1 | ✅ 1/1 |
 | 🟠 High | 3 | ✅ 3/3 |
 | 🟡 Medium | 6 | ✅ 6/6 |
-| 🔵 Low | 4 | ⏳ 0/4 |
-| ⚪ Informational | 3 | N/A |
+| 🔵 Low | 4 | ✅ 4/4 |
+| ⚪ Informational | 3 | ✅ 1/1 (actionable) |
 
 ---
 
 ## ✅ Resolution Status
 
 **Resolution Date:** January 5, 2026
-**Status:** CRITICAL and HIGH severity issues resolved
+**Status:** ALL issues resolved (CRITICAL, HIGH, MEDIUM, and LOW severity)
 
 ### Implemented Fixes
 
@@ -72,12 +72,20 @@ All CRITICAL and HIGH severity vulnerabilities have been addressed:
 - `server/middleware/timeout.ts` - Request timeout middleware
 - `src/utils/fetchWithTimeout.ts` - Client-side fetch timeout wrapper
 
+**New Files (LOW fixes - 2026-01-05):**
+- `server/middleware/contentType.ts` - Content-Type validation middleware
+- `server/middleware/requestLogger.ts` - Structured logging with request correlation
+- `server/middleware/errorHandler.ts` - Global error handler and 404 handler
+- `server/utils/logger.ts` - Structured JSON logging utility
+- `SECURITY.md` - Comprehensive security documentation
+
 **Updated Files:**
-- `server/api.ts` - Applied all security fixes (rate limiting, timeouts, middleware)
+- `server/api.ts` - Applied all security fixes (logging, error handlers, PORT config, middleware)
 - `server/middleware/validation.ts` - Updated to use error sanitizer
 - `src/services/fileService.ts` - Updated to use fetchWithTimeout for all API calls
 - `src/env.d.ts` - Removed API key type definition
-- `.env.example` - Updated documentation
+- `.env.example` - Added PORT configuration documentation
+- `README.md` - Added PORT configuration usage instructions
 - `package.json` - Added Zod and express-rate-limit dependencies
 
 ---
@@ -426,9 +434,10 @@ Server now binds to localhost only:
 
 ### 🔵 LOW
 
-#### 11. Missing Content-Type Validation
-**File:** `server/api.ts`  
+#### 11. Missing Content-Type Validation ✅ RESOLVED
+**File:** `server/api.ts`
 **Line:** 29
+**Status:** ✅ **FIXED** (2026-01-05)
 
 ```typescript
 app.use(express.json({ limit: '10mb' }))
@@ -438,36 +447,78 @@ app.use(express.json({ limit: '10mb' }))
 
 **Recommendation:**
 ```typescript
-app.use(express.json({ 
+app.use(express.json({
   limit: '10mb',
   type: 'application/json'
 }))
 ```
 
+**Resolution:**
+Implemented comprehensive Content-Type validation middleware:
+- Created `server/middleware/contentType.ts` with strict validation
+- Validates mutation operations (POST, PUT, PATCH, DELETE) require `application/json` Content-Type
+- Skips validation for requests with no body (Content-Length: 0)
+- Returns 415 Unsupported Media Type for invalid Content-Type
+- Logs invalid Content-Type attempts with requestId and IP address
+- Applied middleware before `express.json()` in `server/api.ts`
+
 ---
 
-#### 12. Insufficient Logging
+#### 12. Insufficient Logging ✅ RESOLVED
 **File:** `server/api.ts`
+**Status:** ✅ **FIXED** (2026-01-05)
 
 **Description:** Only unauthorized access attempts are logged. Successful mutations, server errors, and other security-relevant events are not logged.
 
 **Recommendation:** Add structured logging for all API operations.
 
+**Resolution:**
+Implemented comprehensive structured logging and audit trail:
+- Created `server/utils/logger.ts` - JSON-formatted structured logging utility
+  - Log levels: DEBUG, INFO, WARN, ERROR, AUDIT
+  - Consistent timestamp (ISO 8601) and context format
+  - Machine-parseable JSON output for easy filtering
+- Created `server/middleware/requestLogger.ts` - Request logging middleware
+  - Generates unique request ID using `crypto.randomBytes()` for correlation
+  - Logs all incoming requests (method, path, IP, user-agent)
+  - Logs all responses (status code, duration)
+  - AUDIT logs for successful mutation operations (POST/PUT/DELETE with 2xx status)
+  - Attaches requestId to Request object for use across middleware
+- Updated all route error handlers in `server/api.ts` to use Logger.error()
+  - Replaced scattered console.error calls with structured Logger.error()
+  - Added context: requestId, method, path, error message, IP
+  - Maintains startup banners as plain console for better readability
+
 ---
 
-#### 13. Error Details Exposed to Client
-**File:** `server/api.ts`  
+#### 13. Error Details Exposed to Client ✅ RESOLVED
+**File:** `server/api.ts`
 **Lines:** 95-99
+**Status:** ✅ **FIXED** (2026-01-05)
 
 **Description:** While the current implementation is good (generic error messages), the pattern of catching and exposing could accidentally leak details if changed.
 
 **Recommendation:** Use a standardized error handler that ensures no stack traces leak.
 
+**Resolution:**
+Implemented multiple fixes to prevent error information disclosure:
+1. **Fixed Health Endpoint** (line 96):
+   - Removed `corePath: CORE_PATH` from response (was exposing file system path)
+   - Now returns only `{ "status": "ok" }`
+   - Added security comment explaining path validation happens at startup
+2. **Global Error Handler** (`server/middleware/errorHandler.ts`):
+   - Created `globalErrorHandler()` - catches unhandled exceptions
+   - Logs full error details server-side (message, stack trace, requestId)
+   - Returns only generic "Internal server error" to client
+   - Created `notFoundHandler()` - handles 404 for undefined routes
+   - Registered both handlers LAST in middleware stack (after all routes)
+
 ---
 
-#### 14. Hardcoded Server Port
-**File:** `server/api.ts`  
+#### 14. Hardcoded Server Port ✅ RESOLVED
+**File:** `server/api.ts`
 **Line:** 71
+**Status:** ✅ **FIXED** (2026-01-05)
 
 ```typescript
 const PORT = 3001
@@ -479,6 +530,19 @@ const PORT = 3001
 ```typescript
 const PORT = process.env.MAINTAINER_PORT || 3001
 ```
+
+**Resolution:**
+Made server port configurable via environment variable:
+- Updated `server/api.ts` line 89: `const PORT = parseInt(process.env.PORT || '3001', 10)`
+- Updated `.env.example` with PORT configuration section:
+  - Documented default value (3001)
+  - Added note about frontend API base URL dependency
+  - Included configuration instructions
+- Updated `README.md` with "Custom Port Configuration" section:
+  - Documented how to set PORT via environment variable
+  - Provided examples: `PORT=4000 npm run dev:server`
+  - Added note about updating frontend API base URL if port changes
+- Backward compatible: defaults to 3001 if PORT not set
 
 ---
 
@@ -514,8 +578,9 @@ if (!validCodes.includes(code)) {
 
 ---
 
-#### 17. Security Documentation Missing
+#### 17. Security Documentation Missing ✅ RESOLVED
 **File:** `README.md`, `CLAUDE.md`
+**Status:** ✅ **FIXED** (2026-01-05)
 
 **Description:** No security documentation exists outlining:
 - Threat model for this tool
@@ -523,6 +588,30 @@ if (!validCodes.includes(code)) {
 - Safe usage guidelines
 
 **Recommendation:** Create a SECURITY.md documenting the security model and limitations.
+
+**Resolution:**
+Created comprehensive `SECURITY.md` documentation (~400 lines):
+- **Overview**: Dev-only tool warning and introduction
+- **Threat Model**: Assumptions and identified threats
+- **Security Controls**: Detailed documentation of all 12 security controls:
+  1. Production environment guard
+  2. Network binding restriction (127.0.0.1)
+  3. CORS restriction to localhost
+  4. Authentication (session-based + API key fallback)
+  5. Rate limiting (3-tier system)
+  6. Request timeout (30s server, 15s/30s client)
+  7. Path traversal protection (startup + runtime)
+  8. Input validation (Zod schemas)
+  9. Content-Type validation
+  10. Error sanitization
+  11. Structured logging & audit trail
+  12. Global error handler
+- **Known Limitations**: Documents acceptable risks for dev tool (no HTTPS, API key in env, etc.)
+- **Security Testing**: Recommended tests with example commands
+- **Reporting Security Issues**: Disclosure process
+- **Security Checklist**: Verification checklist for all controls
+- **Change Log**: Tracks security improvements over time
+- **References**: Links to OWASP, Express security docs, Node.js security checklist
 
 ---
 
@@ -551,14 +640,18 @@ if (!validCodes.includes(code)) {
 
 | Control | Status |
 |---------|--------|
+| Production Guard | ✅ Excellent - Exits on production environment |
+| Network Binding | ✅ Server bound to 127.0.0.1 only (localhost) |
+| CORS Protection | ✅ Restricted to http://localhost:5174 |
 | Authentication | ✅ Session-based with timing-safe comparison |
 | Authorization | ✅ Write ops require key, reads open |
-| Input Validation | ✅ Zod schemas with sanitized errors |
-| XSS Protection | ✅ Vue auto-escaping + error sanitization |
-| CSRF Protection | ✅ CORS restricted to localhost |
-| Path Traversal | ✅ Startup + runtime path validation |
-| Rate Limiting | ✅ Three-tiered rate limiting implemented |
-| Logging | ✅ Detailed server-side, sanitized client-side |
+| Rate Limiting | ✅ Three-tiered (global, write, session) |
 | Request Timeouts | ✅ 30s server, 15s/30s client |
-| HTTPS | ✅ Server bound to 127.0.0.1 only |
-| Production Guard | ✅ Excellent |
+| Path Traversal | ✅ Startup + runtime path validation |
+| Input Validation | ✅ Zod schemas with sanitized errors |
+| Content-Type | ✅ Strict application/json validation |
+| Error Sanitization | ✅ No user input in errors, generic messages |
+| Structured Logging | ✅ JSON format with request correlation IDs |
+| Global Error Handler | ✅ Catches unhandled exceptions, prevents leaks |
+| XSS Protection | ✅ Vue auto-escaping + error sanitization |
+| Security Documentation | ✅ Comprehensive SECURITY.md created |
