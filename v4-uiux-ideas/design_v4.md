@@ -171,3 +171,43 @@ This document outlines the proposed UI/UX changes for the version 4.0 overhaul. 
     - **Data Focus**: 
         - Highlighting "Saved" amount (e.g., "Saved 74,000g").
         - Technical comparison (Delta-E) clearly visible.
+
+### Swatch Matcher (Mockup Complete - V4 Prototype)
+- **Concept**: Find dyes that match in-game character customization colors (Eye, Hair, Skin).
+- **Data Source**: Datamined color sheets (e.g., `EyeColors.csv` with 192 colors per race/gender).
+- **Configuration Panel**:
+    - **Color Sheet**: Dropdown to select the data source (EyeColors, HairColors, SkinColors).
+    - **Race**: Dropdown for character race selection.
+    - **Gender**: Dropdown for character gender selection.
+    - **Max Results**: Slider (1-8, default 3).
+- **UI Layout**:
+    - **Centered Flexbox**: Main content uses `align-items: center` and `justify-content: center`.
+    - **Left Panel (Color Grid)**:
+        - 8-column grid displaying all 192 colors from the selected sheet.
+        - Swatches are 32x32px with hover effects (scale, glow).
+        - Selected swatch highlighted with accent-colored border.
+    - **Right Panel (Results Area)**:
+        - **Selected Color Card**: Displays technical info (HEX, RGB, HSV) and grid position (Index, Row, Col). Includes "Copy Values" button.
+        - **Matching Dyes Section**: 3-column grid of Uniform Results Cards showing closest dye matches with ΔE, Technical, and Acquisition data.
+
+### Accessibility Checker (Mockup Complete - V4 Prototype)
+- **Concept**: Simulate colorblindness vision types, check WCAG compliance, and compare contrast between selected dyes.
+> [!NOTE]
+> This tool does NOT use Unified Results Cards but adopts the same design language (dark panels, glassmorphism, gold accents).
+
+- **Configuration Panel**:
+    - **Vision Types**: Toggles for Normal, Deuteranopia, Protanopia, Tritanopia, Achromatopsia.
+    - **Display Options**: Show Labels, Show Hex Values, High Contrast Mode toggles.
+- **UI Layout**:
+    - **Vision Simulations Section**:
+        - 5 glassmorphism cards in responsive grid.
+        - Each card shows: Vision type label, prevalence statistic, 4 color swatches with dye labels.
+        - Cards for: Normal Vision (reference), Deuteranopia (~6% males), Protanopia (~2% males), Tritanopia (~0.01%), Achromatopsia (~0.003%).
+    - **WCAG Contrast Ratios Section**:
+        - Table with columns: Dye (swatch + name), vs White (ratio + badge), vs Black (ratio + badge).
+        - WCAG badges: `AAA` (green), `AA` (gold), `Fail` (red).
+    - **Pairwise Contrast Comparison Section**:
+        - Matrix table comparing all selected dyes against each other.
+        - Diagonal cells display "—" (self-comparison).
+        - Color-coded percentages: `good` (green >50%), `warning` (gold 20-50%), `critical` (red <20%).
+        - Warning callouts below for problem pairs.

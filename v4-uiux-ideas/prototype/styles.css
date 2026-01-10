@@ -1233,3 +1233,741 @@ input[type=range]::-webkit-slider-runnable-track {
     height: 24px;
     fill: currentColor;
 }
+
+/* =============================================
+   Accessibility Checker View Styles
+   ============================================= */
+
+.accessibility-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    gap: 32px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.accessibility-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Vision Simulations Grid */
+.vision-simulations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.vision-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.vision-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: var(--text-secondary);
+}
+
+.vision-card-header {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.vision-type-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.vision-prevalence {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vision-swatches {
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+    justify-content: center;
+}
+
+.vision-swatch-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.vision-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.vision-swatch-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* WCAG Contrast Table */
+.contrast-table-container {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-soft);
+}
+
+.contrast-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.contrast-table thead {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.contrast-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.contrast-table tbody tr {
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.1s;
+}
+
+.contrast-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.contrast-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.dye-cell {
+    padding: 12px 16px;
+}
+
+.dye-cell-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dye-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.contrast-cell {
+    padding: 12px 16px;
+}
+
+.contrast-cell-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contrast-ratio {
+    font-family: monospace;
+    color: var(--text-primary);
+    min-width: 55px;
+}
+
+.wcag-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wcag-badge.aaa {
+    background: #2e7d32;
+    color: #fff;
+}
+
+.wcag-badge.aa {
+    background: var(--accent-primary);
+    color: #000;
+}
+
+.wcag-badge.fail {
+    background: #c62828;
+    color: #fff;
+}
+
+/* Pairwise Contrast Matrix */
+.pairwise-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pairwise-matrix {
+    border-collapse: collapse;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    width: 100%;
+}
+
+.matrix-corner {
+    width: 140px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.matrix-header-cell {
+    padding: 12px 8px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid var(--border-subtle);
+    border-left: 1px solid var(--border-subtle);
+}
+
+.matrix-header-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    margin: 0 auto 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.matrix-header-cell span,
+.matrix-row-header span {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.matrix-row-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border-subtle);
+    min-width: 140px;
+}
+
+.matrix-row-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.matrix-cell {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    border-left: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.1s;
+}
+
+.matrix-cell.diagonal {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-secondary);
+}
+
+.matrix-cell.good {
+    color: #4caf50;
+}
+
+.matrix-cell.warning {
+    color: var(--accent-primary);
+}
+
+.matrix-cell.critical {
+    color: #f44336;
+    font-weight: 700;
+}
+
+/* Warning Callouts */
+.pairwise-warnings {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.warning-callout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+.warning-callout.critical {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.warning-callout.critical .warning-icon {
+    fill: #f44336;
+}
+
+.warning-callout.warning {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.warning-callout.warning .warning-icon {
+    fill: var(--accent-primary);
+}
+
+.warning-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* =============================================
+   Dye Comparison View Styles
+   ============================================= */
+
+.comparison-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    gap: 32px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.comparison-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Selected Dyes Cards Row */
+.comparison-cards-row {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.comparison-cards-row .harmony-card {
+    flex: 1 1 0;
+    min-width: 200px;
+    max-width: 280px;
+}
+
+/* Statistics Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent-primary);
+    line-height: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.stat-value .stat-unit {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-left: 2px;
+}
+
+.stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-top: 12px;
+}
+
+/* Visualizations Row */
+.visualizations-row {
+    flex-direction: row !important;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Hue-Saturation Plot */
+.hue-sat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.hue-sat-plot {
+    width: 380px;
+    height: 320px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    position: relative;
+    box-shadow: var(--shadow-soft);
+}
+
+.plot-wrapper {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    right: 20px;
+    bottom: 40px;
+}
+
+.plot-area {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Grid lines */
+.plot-grid-line {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.plot-grid-line.horizontal {
+    width: 100%;
+    height: 1px;
+    left: 0;
+}
+
+.plot-grid-line.vertical {
+    width: 1px;
+    height: 100%;
+    top: 0;
+}
+
+/* Axis Labels */
+.axis-label {
+    position: absolute;
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.axis-label.x-axis {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.axis-label.y-axis {
+    left: 12px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(-50%);
+    transform-origin: left center;
+    white-space: nowrap;
+}
+
+/* Axis Ticks */
+.axis-tick {
+    position: absolute;
+    font-size: 9px;
+    color: var(--text-secondary);
+}
+
+.axis-tick.x-tick {
+    bottom: -20px;
+    transform: translateX(-50%);
+}
+
+.axis-tick.y-tick {
+    left: -30px;
+    transform: translateY(50%);
+}
+
+/* Plot Nodes */
+.plot-node {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    z-index: 2;
+}
+
+.plot-node:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+}
+
+.plot-node::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    margin-bottom: 6px;
+}
+
+.plot-node:hover::after {
+    opacity: 1;
+}
+
+/* Brightness Distribution Chart */
+.brightness-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 350px;
+    max-width: 500px;
+}
+
+.brightness-chart {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow-soft);
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bar-chart-area {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding-bottom: 40px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Y-axis reference lines for bar chart */
+.bar-chart-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent calc(25% - 1px),
+        rgba(255, 255, 255, 0.05) calc(25% - 1px),
+        rgba(255, 255, 255, 0.05) 25%
+    );
+    pointer-events: none;
+}
+
+.bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex: 1;
+    max-width: 80px;
+    /* Height needed for percentage-based bar heights to work */
+    /* 320px (container) - 48px (padding) - 40px (bottom padding) = 232px */
+    height: 232px;
+}
+
+.bar {
+    width: 50px;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.bar:hover {
+    filter: brightness(1.15);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bar-value {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.bar-label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 8px;
+}
+
+/* Color Distance Matrix - Extend existing pairwise-matrix */
+.distance-matrix-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Additional distance-specific styling */
+.distance-value {
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.matrix-cell.distance-low {
+    color: #4caf50;
+}
+
+.matrix-cell.distance-medium {
+    color: var(--accent-primary);
+}
+
+.matrix-cell.distance-high {
+    color: #f44336;
+    font-weight: 700;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+    .comparison-cards-row {
+        flex-wrap: wrap;
+    }
+
+    .comparison-cards-row .harmony-card {
+        flex: 0 1 calc(50% - 6px);
+        max-width: calc(50% - 6px);
+        min-width: auto;
+    }
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .visualizations-row {
+        flex-direction: column !important;
+        align-items: center;
+    }
+
+    .hue-sat-plot {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .brightness-container {
+        width: 100%;
+        max-width: 380px;
+    }
+}
+
+@media (max-width: 600px) {
+    .comparison-cards-row .harmony-card {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+}
