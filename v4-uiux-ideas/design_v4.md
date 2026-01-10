@@ -211,3 +211,21 @@ This document outlines the proposed UI/UX changes for the version 4.0 overhaul. 
         - Diagonal cells display "—" (self-comparison).
         - Color-coded percentages: `good` (green >50%), `warning` (gold 20-50%), `critical` (red <20%).
         - Warning callouts below for problem pairs.
+
+## 9. Themes and Visual Customization
+**Status**: [Implemented in Prototype]
+
+The application supports a robust theming system to cater to different user preferences and lighting conditions.
+
+### Theme Definitions
+- **Default (Premium Dark)**: The core V4 identity. Dark grey/black background with gold accents. Optimized for high contrast and "premium" feel.
+- **Standard Light**: Based on legacy V3 Light theme. Light grey/white backgrounds, Burgundy (`#8B1A1A`) primary color.
+- **Standard Dark**: Based on legacy V3 Dark theme. Dark grey background, Light Red (`#E85A5A`) primary color.
+- **Hydaelyn**: "Light Mode" alternative. Blue/White/Silver palette inspired by Hydaelyn. Blue-grey gradients (`#B2C4CE` to `#F9F8F4`).
+- **OG Classic**: "Dark Mode" alternative. Deep Indigo/Black palette. Very high contrast (`#1E40AF` primary).
+
+### Implementation Details
+- **CSS Variables**: The system uses a comprehensive set of CSS variables defined in `.theme-*` classes applied to the `<body>` tag.
+- **Gradient Support**: `app-container` and `card-details` use theme-aware gradients (`--bg-gradient-start/end` and `--card-gradient-end`) to ensure depth and visual interest across all themes, replacing hardcoded dark gradients.
+- **Header Contrast**: Text colors in the header (`--text-header`, `--text-header-muted`) adjust dynamically to ensure readability on both dark (Default, OG) and colored (Hydaelyn Blue) headers.
+- **Global Switcher**: Accessible via the "Theme" icon in the header (cycles through themes) or the "Theme" dropdown in the core Configuration sidebar.
