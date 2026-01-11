@@ -1913,21 +1913,35 @@ input[type=range]::-webkit-slider-runnable-track {
 .bar-chart-area {
     flex: 1;
     display: flex;
-    align-items: stretch;
+    align-items: flex-end;
     justify-content: space-around;
-    padding-bottom: 40px;
+    padding-top: 32px;
+    /* Space for percentage labels above bars */
+    padding-bottom: 16px;
+    /* Space for text labels below axis */
     position: relative;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* X-axis line - positioned above bottom labels */
+.bar-chart-area::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 16px;
+    /* Raised to sit above labels */
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Y-axis reference lines for bar chart */
 .bar-chart-area::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 32px;
     left: 0;
     right: 0;
-    bottom: 40px;
+    bottom: 16px;
     background: repeating-linear-gradient(to bottom,
             transparent,
             transparent calc(25% - 1px),
@@ -1941,12 +1955,11 @@ input[type=range]::-webkit-slider-runnable-track {
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
     flex: 1;
     max-width: 80px;
-    /* Height needed for percentage-based bar heights to work */
-    /* 320px (container) - 48px (padding) - 40px (bottom padding) = 232px */
-    height: 232px;
+    position: relative;
+    /* Height of bar area = 320px - 48px (padding) - 32px (top) - 32px (bottom) = 208px */
+    height: 208px;
 }
 
 .bar {
@@ -1974,6 +1987,11 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .bar-label {
+    position: absolute;
+    bottom: -24px;
+    /* Positioned below the axis line */
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 9px;
     color: var(--text-secondary);
     text-transform: uppercase;
@@ -1983,7 +2001,6 @@ input[type=range]::-webkit-slider-runnable-track {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: 8px;
 }
 
 /* Color Distance Matrix - Extend existing pairwise-matrix */
@@ -2442,4 +2459,90 @@ input[type=range]::-webkit-slider-runnable-track {
     .preset-stats-bar {
         flex-wrap: wrap;
     }
+}
+
+/* =============================================
+   Palette Extractor Styles
+   ============================================= */
+
+/* Zoom Controls - Default (Dark/Glass) */
+.zoom-controls {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    gap: 4px;
+    z-index: 10;
+}
+
+.zoom-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.8;
+}
+
+.zoom-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+.zoom-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.zoom-level {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 0 4px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.zoom-separator {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 4px;
+}
+
+/* Light Theme Overrides for Zoom Controls */
+.theme-standard-light .zoom-controls,
+.theme-hydaelyn-light .zoom-controls {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-standard-light .zoom-btn,
+.theme-hydaelyn-light .zoom-btn {
+    color: #333333;
+    /* Dark text for contrast */
+}
+
+.theme-standard-light .zoom-btn:hover,
+.theme-hydaelyn-light .zoom-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.theme-standard-light .zoom-separator,
+.theme-hydaelyn-light .zoom-separator {
+    background: rgba(0, 0, 0, 0.1);
 }
