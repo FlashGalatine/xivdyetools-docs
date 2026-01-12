@@ -659,13 +659,13 @@ input[type=range]::-webkit-slider-runnable-track {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 .harmony-card {
-    min-width: 320px;
+    min-width: 290px;
     background: var(--bg-panel);
     border-radius: 12px;
     overflow: hidden;
