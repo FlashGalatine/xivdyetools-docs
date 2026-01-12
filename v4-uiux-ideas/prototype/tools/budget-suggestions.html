@@ -176,45 +176,33 @@
             <div class="budget-view"
                 style="display: flex; width: 100%; height: 100%; flex-direction: column; padding: 32px; gap: 24px; overflow-y: auto; align-items: center;">
 
-                <!-- Quick Picks Section -->
-                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Quick Picks</div>
-                <div class="quick-picks-container"
-                    style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; justify-content: center;">
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #f7f7f7; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
+                <!-- Selected Dye Section -->
+                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Selected Dye</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                    <div class="harmony-card" style="width: 320px;">
+                        <div class="card-header"><span class="dye-name">Gloom Purple</span></div>
+                        <div class="card-preview" style="height: 100px;">
+                            <div style="width: 100%; height: 100%; background-color: #6f5a7a;"></div>
                         </div>
-                        <span class="dye-name" style="font-size: 12px;">Pure White</span>
-                    </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #1a1a1a; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
+                        <div class="card-details">
+                            <div class="detail-col">
+                                <div class="col-header">Technical</div>
+                                <div class="data-row"><span class="data-label">HEX</span><span class="data-value">#6F5A7A</span></div>
+                                <div class="data-row"><span class="data-label">RGB</span><span class="data-value">111, 90, 122</span></div>
+                            </div>
+                            <div class="detail-col">
+                                <div class="col-header">Acquisition</div>
+                                <div class="data-row"><span class="data-label">Source</span><span class="data-value">Marketboard</span></div>
+                                <div class="data-row"><span class="data-label">Market</span><span class="data-value">Zalera</span></div>
+                                <div class="data-row"><span class="price-large">75,000 G</span></div>
+                            </div>
                         </div>
-                        <span class="dye-name" style="font-size: 12px;">Jet Black</span>
-                    </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #e5dac1; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
+                        <div class="card-actions">
+                            <div class="action-row">
+                                <button class="primary-action-btn" style="background: var(--text-secondary); cursor: default;">Currently Selected</button>
+                            </div>
                         </div>
-                        <span class="dye-name" style="font-size: 12px; text-align: center;">Pearl White<br><span
-                                style="font-size: 10px; color: var(--text-secondary);">(Cosmic)</span></span>
                     </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #79664c; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
-                        </div>
-                        <span class="dye-name" style="font-size: 12px; text-align: center;">Metallic Brass<br><span
-                                style="font-size: 10px; color: var(--text-secondary);">(Cosmic)</span></span>
-                    </div>
-
                 </div>
 
                 <!-- Results List -->

@@ -176,63 +176,20 @@
             <div class="budget-view"
                 style="display: flex; width: 100%; height: 100%; flex-direction: column; padding: 32px; gap: 24px; overflow-y: auto; align-items: center;">
 
-                <!-- Target Color Input - Empty/Placeholder State -->
-                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Target Color</div>
-                <div class="target-color-empty"
-                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 200px; height: 120px; border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; background: rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease;">
-                    <svg style="width: 32px; height: 32px; opacity: 0.4;" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" opacity="0.3"/>
-                        <path d="M17.66 5.41L15.54 7.54l-1.41-1.41 2.12-2.12 1.41 1.4zM21 12l-3 3-1.41-1.41L18.17 12l-1.58-1.59L18 9l3 3zM3 12l3-3 1.41 1.41L5.83 12l1.58 1.59L6 15l-3-3zm9-9l3 3-1.41 1.41L12 5.83l-1.59 1.58L9 6l3-3zm0 18l-3-3 1.41-1.41L12 18.17l1.59-1.58L15 18l-3 3z"/>
+                <!-- Selected Dye - Empty/Placeholder State -->
+                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Selected Dye</div>
+                <div class="selected-dye-empty"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 320px; height: 200px; border: 2px dashed rgba(255,255,255,0.3); border-radius: 12px; background: rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease;">
+                    <svg style="width: 48px; height: 48px; opacity: 0.4;" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="9" opacity="0.2"/>
+                        <path d="M12 6v2m0 8v2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        <path d="M9 10c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2s-.9 2-2 2h-2c-1.1 0-2 .9-2 2s.9 2 2 2h2c1.1 0 2-.9 2-2" stroke="currentColor" stroke-width="1.5" fill="none"/>
                     </svg>
-                    <span style="font-size: 13px; color: var(--text-secondary); text-align: center;">Select target color</span>
-                </div>
-
-                <!-- Quick Picks Section -->
-                <div class="section-label" style="font-size: 14px; margin-bottom: 12px; margin-top: 24px;">
-                    Quick Picks
-                    <span style="font-size: 11px; color: var(--text-secondary); font-weight: normal; margin-left: 8px;">Popular affordable dyes</span>
-                </div>
-                <div class="quick-picks-container"
-                    style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; justify-content: center;">
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #f7f7f7; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
-                        </div>
-                        <span class="dye-name" style="font-size: 12px;">Pure White</span>
-                    </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #1a1a1a; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
-                        </div>
-                        <span class="dye-name" style="font-size: 12px;">Jet Black</span>
-                    </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #e5dac1; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
-                        </div>
-                        <span class="dye-name" style="font-size: 12px; text-align: center;">Pearl White<br><span
-                                style="font-size: 10px; color: var(--text-secondary);">(Cosmic)</span></span>
-                    </div>
-
-                    <div class="harmony-card"
-                        style="min-width: auto; height: 120px; align-items: center; justify-content: center; gap: 8px; padding: 16px; cursor: pointer;">
-                        <div class="swatch"
-                            style="width: 40px; height: 40px; background-color: #79664c; box-shadow: 0 2px 4px rgba(0,0,0,0.5); cursor: pointer;">
-                        </div>
-                        <span class="dye-name" style="font-size: 12px; text-align: center;">Metallic Brass<br><span
-                                style="font-size: 10px; color: var(--text-secondary);">(Cosmic)</span></span>
-                    </div>
-
+                    <span style="font-size: 13px; color: var(--text-secondary); text-align: center;">Select a dye to find<br>budget-friendly alternatives</span>
                 </div>
 
                 <!-- Empty State Results Section -->
-                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Budget Alternatives</div>
+                <div class="section-label" style="font-size: 14px; margin-bottom: 12px;">Budget Enhancements</div>
                 <div class="empty-state-container"
                     style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 48px 24px; width: 100%; max-width: 600px; background: rgba(0,0,0,0.15); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
 
@@ -245,8 +202,8 @@
 
                     <!-- Empty state message -->
                     <div style="text-align: center;">
-                        <p style="font-size: 15px; color: var(--text-primary); margin: 0 0 8px 0;">Select a target color to find budget-friendly alternatives</p>
-                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">Choose a color from the palette or use Quick Picks above</p>
+                        <p style="font-size: 15px; color: var(--text-primary); margin: 0 0 8px 0;">No dye selected</p>
+                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">Choose a dye from the Color Palette to see cheaper alternatives</p>
                     </div>
                 </div>
 
@@ -325,14 +282,14 @@
             });
         });
 
-        // Hover effect for target color placeholder
-        const targetColorEmpty = document.querySelector('.target-color-empty');
-        if (targetColorEmpty) {
-            targetColorEmpty.addEventListener('mouseenter', function() {
+        // Hover effect for selected dye placeholder
+        const selectedDyeEmpty = document.querySelector('.selected-dye-empty');
+        if (selectedDyeEmpty) {
+            selectedDyeEmpty.addEventListener('mouseenter', function() {
                 this.style.borderColor = 'rgba(255,255,255,0.5)';
                 this.style.background = 'rgba(0,0,0,0.3)';
             });
-            targetColorEmpty.addEventListener('mouseleave', function() {
+            selectedDyeEmpty.addEventListener('mouseleave', function() {
                 this.style.borderColor = 'rgba(255,255,255,0.3)';
                 this.style.background = 'rgba(0,0,0,0.2)';
             });
