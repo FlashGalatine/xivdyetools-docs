@@ -2102,6 +2102,7 @@ input[type=range]::-webkit-slider-runnable-track {
     flex-wrap: wrap;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border-subtle);
+    justify-content: center;
 }
 
 .category-tab {
@@ -2280,7 +2281,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .modal-content.detail-modal {
-    max-width: 900px;
+    max-width: 1600px;
 }
 
 .modal-close {
@@ -2413,14 +2414,17 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .preset-dyes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    justify-content: center;
     gap: 16px;
     margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
 .preset-dyes-grid .harmony-card {
-    min-width: auto;
+    min-width: 280px;
+    width: 280px;
+    flex: 0 0 280px;
 }
 
 .modal-actions {
