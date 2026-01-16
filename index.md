@@ -41,8 +41,8 @@ This wiki-style documentation serves developers, end users, and maintainers with
                        │              │           │
          ┌─────────────▼──┐    ┌──────▼─────┐    │
          │   Web App      │    │  Discord   │    │
-         │   (v3.2.8)     │    │  Worker    │    │
-         │   7 tools,     │    │  (v2.3.1)  │    │
+         │   (v4.0.0)     │    │  Worker    │    │
+         │   9 tools,     │    │  (v2.3.1)  │    │
          │   12 themes    │    │  21 cmds   │    │
          └───────┬────────┘    └──────┬─────┘    │
                  │                    │          │
@@ -75,7 +75,7 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 | Section | Description |
 |---------|-------------|
-| [Web App Guides](user-guides/web-app/getting-started.md) | Step-by-step guides for all 7 web tools |
+| [Web App Guides](user-guides/web-app/getting-started.md) | Step-by-step guides for all 9 web tools |
 | [Discord Bot Guides](user-guides/discord-bot/getting-started.md) | Command reference and usage examples |
 
 ### For Developers
@@ -83,6 +83,7 @@ This wiki-style documentation serves developers, end users, and maintainers with
 | Section | Description |
 |---------|-------------|
 | [Developer Guides](developer-guides/index.md) | Setup, testing, deployment, contributing |
+| [Discord Bot v4](discord-bot/index.md) | V4 parity update, command reference, migration notes |
 | [Reference](reference/index.md) | Quick reference materials, glossary |
 | [Specifications](specifications/index.md) | Feature specifications and roadmap |
 
@@ -102,7 +103,7 @@ This wiki-style documentation serves developers, end users, and maintainers with
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
 | [@xivdyetools/core](projects/core/overview.md) | npm library | v1.5.4 | Core color algorithms, 136-dye database, Universalis API |
-| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v3.2.8 | Interactive web toolkit with 7 color tools |
+| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v4.0.0 | Interactive web toolkit with 9 color tools |
 | [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.3.1 | Discord bot with 21 slash commands |
 | [xivdyetools-oauth](projects/oauth/overview.md) | CF Worker | v2.2.2 | Discord OAuth + JWT issuance |
 | [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.4.5 | Community presets with moderation |
@@ -126,11 +127,28 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 ## Recent Updates
 
-*Last updated: December 25, 2025*
+*Last updated: January 15, 2026*
+
+### January 2026 Highlights
+
+- **Web App v4.0.0** - Major release with tool renaming and new tools:
+  - Color Matcher → **Palette Extractor**
+  - Dye Mixer → **Gradient Builder**
+  - Preset Browser → **Community Presets**
+  - NEW: **Dye Mixer** (RGB color blending)
+  - NEW: **Swatch Matcher** (character color matching)
+- **9 Total Tools** - Up from 7 in v3.x
+- **Glassmorphism UI** - New design system with 12 theme variants
+- **Lit.js Web Components** - Modern component architecture
+- **Discord Bot v4.0.0** - Planned parity update ([see documentation](discord-bot/v4-parity-update.md)):
+  - `/match` + `/match_image` → `/extractor` (with subcommands)
+  - `/mixer` → `/gradient` (frees up `/mixer` for new feature)
+  - NEW: `/mixer` (dye blending) and `/swatch` (character colors)
+  - Removes `/favorites` and `/collection` (consolidated into `/preset`)
 
 ### December 2025 Highlights
 
-- **Budget Suggestions Tool** - New 7th tool in the web app for finding affordable dye alternatives
+- **Budget Suggestions Tool** - New tool in the web app for finding affordable dye alternatives
 - **Universalis Proxy** - New project providing CORS proxy with dual-layer caching for market data
 - **User Ban System** - Discord bot now supports `/preset ban_user` and `/preset unban_user` commands
 - **Facewear Dye Support** - Core library and types now support synthetic dye IDs for Facewear gear slot

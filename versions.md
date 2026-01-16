@@ -2,7 +2,7 @@
 
 **Single source of truth for all XIV Dye Tools project versions**
 
-*Last Updated: December 25, 2025*
+*Last Updated: January 15, 2026*
 
 ---
 
@@ -13,7 +13,7 @@
 | Project | Version | Package Name | Platform | Status |
 |---------|---------|--------------|----------|--------|
 | **Core Library** | v1.5.4 | `@xivdyetools/core` | npm | Active |
-| **Web Application** | v3.2.8 | — | Cloudflare Pages | Active |
+| **Web Application** | v4.0.0 | — | Cloudflare Pages | Active |
 | **Discord Bot** | v2.3.1 | — | Cloudflare Workers | Active |
 | **OAuth Worker** | v2.2.2 | — | Cloudflare Workers | Active |
 | **Presets API** | v1.4.5 | — | Cloudflare Workers | Active |
@@ -61,7 +61,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v3.2.8 | Dec 2025 | Current release |
+| v4.0.0 | Jan 2026 | **Major release**: Tool renaming (Color Matcher → Palette Extractor, Dye Mixer → Gradient Builder, Preset Browser → Community Presets), new Dye Mixer (RGB blending), new Swatch Matcher, 9 tools total, Glassmorphism UI, 12 themes, Lit.js web components |
+| v3.2.8 | Dec 2025 | Previous stable release |
 | v3.2.7 | Dec 2025 | Theme factory pattern (createThemePalette) |
 | v3.2.6 | Dec 2025 | SVG icons consolidated to ui-icons.ts (~10KB savings), SubscriptionManager utility |
 | v3.2.5 | Dec 2025 | Dye Mixer context menu (action dropdown for intermediate matches) |
@@ -141,7 +142,8 @@
 
 | Consumer | Minimum Core Version | Notes |
 |----------|---------------------|-------|
-| Web App v3.x | @xivdyetools/core v1.4.0+ | Requires facewear dye support |
+| Web App v4.x | @xivdyetools/core v1.5.4+ | Requires facewear dye support, 9 tools |
+| Web App v3.x | @xivdyetools/core v1.4.0+ | Requires facewear dye support, 7 tools |
 | Discord Worker v2.x | @xivdyetools/core v1.4.0+ | Requires facewear dye support |
 | Presets API v1.x | @xivdyetools/core v1.2.0+ | Requires localization |
 | Web App v3.2.0+ | Universalis Proxy v1.0.0+ | Budget Suggestions tool uses proxy |

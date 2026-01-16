@@ -13,7 +13,7 @@ The Accessibility Checker helps you understand how your color choices appear to 
 Enter colors to check:
 - **Single color** - See how one dye appears
 - **Multiple colors** - Check a color palette together
-- **From other tools** - Use dyes from Matcher, Harmonies, etc.
+- **From other tools** - Use dyes from Palette Extractor, Harmonies, etc.
 
 ### 2. Choose Vision Type
 
@@ -89,6 +89,6 @@ The tool also shows WCAG contrast ratios:
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Find alternative dyes
-- [Color Harmony](color-harmony.md) - Find accessible harmonies
+- [Palette Extractor](palette-extractor.md) - Find alternative dyes
+- [Color Harmony Explorer](color-harmony.md) - Find accessible harmonies
 - [Dye Comparison](dye-comparison.md) - Compare accessibility simulations

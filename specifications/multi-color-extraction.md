@@ -231,5 +231,5 @@ function centroidsConverged(
 ## Related Documentation
 
 - [Core Library: Algorithms](../projects/core/algorithms.md)
-- [Color Matcher Tool Guide](../user-guides/web-app/color-matcher.md)
+- [Palette Extractor Tool Guide](../user-guides/web-app/palette-extractor.md)
 - [Discord Bot Commands](../projects/discord-worker/commands.md)

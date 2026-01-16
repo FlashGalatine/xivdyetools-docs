@@ -1,8 +1,8 @@
-# Color Matcher
+# Palette Extractor
 
 **Find the closest FFXIV dye to any color**
 
-The Color Matcher is one of the most powerful tools in XIV Dye Tools, helping you find FFXIV dyes that match any color you can imagine.
+The Palette Extractor is one of the most powerful tools in XIV Dye Tools, helping you find FFXIV dyes that match any color you can imagine.
 
 ---
 
@@ -34,7 +34,7 @@ For each matched dye, you can:
 - **Add to Collection** - Organize into groups
 - **See Harmonies** - Find complementary dyes
 - **View in Comparison** - Compare with other dyes
-- **Add to Mixer** - Create gradients
+- **Add to Gradient Builder** - Create gradients
 
 ---
 

@@ -79,6 +79,6 @@ For each suggested dye:
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Match any color first
+- [Palette Extractor](palette-extractor.md) - Match any color first
 - [Dye Comparison](dye-comparison.md) - Compare harmony options
-- [Preset Browser](preset-browser.md) - See community color combinations
+- [Community Presets](community-presets.md) - See community color combinations

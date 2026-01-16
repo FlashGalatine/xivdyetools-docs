@@ -1,24 +1,35 @@
 # Web App Overview
 
-**xivdyetools-web-app** v3.2.8 - Interactive browser-based toolkit for FFXIV dye colors
+**xivdyetools-web-app** v4.0.0 - Interactive browser-based toolkit for FFXIV dye colors
 
 ---
 
 ## What is the Web App?
 
-A fully-featured web application built with Lit and Vite, offering 7 interactive tools for exploring FFXIV dye colors:
+A fully-featured web application built with Lit and Vite, offering 9 interactive tools for exploring FFXIV dye colors:
 
 | Tool | Purpose |
 |------|---------|
-| **Dye Mixer** | Create gradients between two dyes |
-| **Color Matcher** | Find closest dye to any color + palette extraction |
+| **Palette Extractor** | Find closest dye to any color + palette extraction |
 | **Color Harmony Explorer** | Discover harmonious dye combinations |
+| **Gradient Builder** | Create gradients between two dyes |
+| **Dye Mixer** | Blend two dyes together (RGB averaging) |
+| **Swatch Matcher** | Match character colors to dyes |
 | **Dye Comparison** | Compare dyes side-by-side |
 | **Accessibility Checker** | Colorblindness simulation |
-| **Preset Browser** | Browse community dye palettes |
+| **Community Presets** | Browse community dye palettes |
 | **Budget Suggestions** | Find affordable dye alternatives using market data |
 
-### Recent Features (v3.2.x)
+### New in v4.0.0
+
+- **Tool Renaming** - Color Matcher → Palette Extractor, Dye Mixer → Gradient Builder, Preset Browser → Community Presets
+- **New Dye Mixer** - Blend two dyes together using RGB color averaging
+- **Swatch Matcher** - Match character customization colors (hair, eyes, skin) to dyes
+- **Glassmorphism UI** - Modern design system with frosted glass effects
+- **Lit.js Web Components** - Full migration to Lit web component architecture
+- **9 Tools Total** - Up from 7 in v3.x
+
+### Previous Features (v3.2.x)
 
 - **Dye Action Dropdown** - Context menu for quick actions on dye matches
 - **Slot Selection Modal** - Choose which slot to replace when Comparison/Mixer is full
@@ -67,18 +78,25 @@ npm run build
 src/
 ├── components/                 # Lit web components
 │   ├── tools/                  # Tool-specific components
-│   │   ├── dye-mixer/
-│   │   ├── color-matcher/
+│   │   ├── palette-extractor/     # v4: was color-matcher
+│   │   ├── gradient-builder/      # v4: was dye-mixer
+│   │   ├── dye-mixer/             # v4 NEW: RGB blending
+│   │   ├── swatch-matcher/        # v4 NEW: character colors
 │   │   ├── harmony-explorer/
 │   │   ├── dye-comparison/
 │   │   ├── accessibility-checker/
-│   │   ├── preset-browser/
-│   │   └── budget-suggestions/    # NEW: Affordable alternatives
+│   │   ├── community-presets/     # v4: was preset-browser
+│   │   └── budget-suggestions/
+│   ├── v4/                     # v4 NEW: Glassmorphism components
+│   │   ├── v4-layout-shell.ts
+│   │   ├── glass-panel.ts
+│   │   ├── result-card.ts
+│   │   └── ...
 │   ├── shared/                 # Reusable components
 │   │   ├── color-swatch/
 │   │   ├── dye-picker/
-│   │   ├── dye-action-dropdown/   # NEW: Context menu actions
-│   │   ├── slot-selection-modal/  # NEW: Slot replacement UI
+│   │   ├── dye-action-dropdown/
+│   │   ├── slot-selection-modal/
 │   │   └── ...
 │   └── layout/                 # App shell components
 ├── services/                   # Business logic layer
@@ -86,9 +104,11 @@ src/
 │   ├── StorageService.ts       # localStorage persistence
 │   ├── AuthService.ts          # OAuth integration
 │   ├── PresetService.ts        # Preset API client
-│   └── SubscriptionManager.ts  # NEW: Reactive subscription cleanup
+│   ├── ConfigController.ts     # v4 NEW: Centralized tool config
+│   └── SubscriptionManager.ts  # Reactive subscription cleanup
 ├── styles/                     # Global styles
 │   ├── themes/                 # 12 theme files
+│   ├── v4-utilities.css        # v4 NEW: Glassmorphism styles
 │   └── tailwind.css
 └── utils/                      # Helper functions
 ```
@@ -157,7 +177,7 @@ git push origin main
 
 ## Related Documentation
 
-- [Tools](tools.md) - Detailed guide to all 7 tools
+- [Tools](tools.md) - Detailed guide to all 9 tools
 - [Components](components.md) - Lit component architecture
 - [Theming](theming.md) - Theme system documentation
 - [Deployment](deployment.md) - Deployment procedures

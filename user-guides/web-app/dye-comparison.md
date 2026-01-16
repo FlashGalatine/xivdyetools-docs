@@ -13,7 +13,7 @@ The Dye Comparison tool helps you make informed decisions by showing dyes next t
 Add up to 4 dyes using:
 - **Search** - Type a dye name
 - **Browse** - Select from categories
-- **From other tools** - Use "Add to Comparison" from Color Matcher, Harmonies, etc.
+- **From other tools** - Use "Add to Comparison" from Palette Extractor, Harmonies, etc.
 
 ### 2. View Comparison
 
@@ -55,7 +55,7 @@ For each dye in comparison:
 - **Add to Favorites** - Save for later
 - **Add to Collection** - Organize into groups
 - **See Harmonies** - Find complementary dyes
-- **Open in Mixer** - Create gradients
+- **Open in Gradient Builder** - Create gradients
 
 ---
 
@@ -93,6 +93,6 @@ Compare options within a category:
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Find dyes to compare
-- [Dye Mixer](dye-mixer.md) - See gradients between compared dyes
+- [Palette Extractor](palette-extractor.md) - Find dyes to compare
+- [Gradient Builder](gradient-builder.md) - See gradients between compared dyes
 - [Budget Suggestions](budget-suggestions.md) - Compare with affordable options

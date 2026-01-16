@@ -92,6 +92,6 @@ Choose your server/data center:
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Find dyes first
+- [Palette Extractor](palette-extractor.md) - Find dyes first
 - [Dye Comparison](dye-comparison.md) - Compare budget options
-- [Preset Browser](preset-browser.md) - Community palettes with price info
+- [Community Presets](community-presets.md) - Community palettes with price info

@@ -1,8 +1,22 @@
 # Dye Mixer
 
-**Create smooth color gradients between two dyes**
+**Blend two dyes together to create custom colors**
 
-The Dye Mixer helps you visualize color transitions and find intermediate dyes for gradient-style glamours.
+The Dye Mixer is a new tool in XIV Dye Tools v4.0.0 that lets you blend two dyes together using multiple color mixing algorithms, then find the closest matching FFXIV dyes.
+
+> **Note**: This is a completely different tool from the Gradient Builder (previously called "Dye Mixer" in v3.x). The Gradient Builder creates color *transitions*, while this tool creates color *blends*.
+
+---
+
+## How It Works
+
+The Dye Mixer blends two dyes using your choice of color mixing algorithm:
+
+1. **Input Slot 1** - First dye color
+2. **Input Slot 2** - Second dye color
+3. **Blending Mode** - Choose RGB, RYB, or LAB mixing
+4. **Result** - The blended color based on your selected mode
+5. **Matching** - Find FFXIV dyes closest to the blended result
 
 ---
 
@@ -10,80 +24,148 @@ The Dye Mixer helps you visualize color transitions and find intermediate dyes f
 
 ### 1. Select Two Dyes
 
-Choose your starting and ending colors:
+Fill both input slots:
 - **Search by name** - Type to find dyes
 - **Pick from list** - Browse by category
-- **Use favorites** - Quick access to saved dyes
+- **Use the palette drawer** - Quick access to all dyes
 
-### 2. View the Gradient
+### 2. View the Blend
 
-The mixer displays:
-- **Color gradient** - Smooth transition between the two dyes
-- **Intermediate points** - 5-10 steps along the gradient
-- **Matched dyes** - Closest FFXIV dye for each point
+The mixer shows:
+- **Blended color preview** - The averaged result
+- **Matched dyes** - 3-8 closest FFXIV dyes to the blend
+- **Delta E scores** - How close each match is
 
-### 3. Explore Intermediate Dyes
+### 3. Choose Blending Mode
 
-Each intermediate color shows:
-- The calculated color at that point
-- The closest matching FFXIV dye
-- How close the match is (Delta E)
+Select how colors are mixed:
+- **RGB** - Digital light-based mixing (default)
+- **RYB** - Traditional paint-based mixing
+- **LAB** - Perceptually uniform mixing
+
+### 4. Adjust Settings
+
+In the left panel:
+- **Blending mode** - RGB, RYB, or LAB
+- **Result count** - Show 3-8 matched dyes
+- **Dye filters** - Filter results by category (Metallic, Pastel, etc.)
+- **Market board** - See pricing for matched dyes
 
 ---
 
-## Slot Selection
+## Crafting-Style Interface
 
-When you add a dye and both slots are full:
-- A **Slot Selection Modal** appears
-- Choose which slot to replace
-- Your other selection is preserved
+The Dye Mixer uses a crafting-inspired UI:
+
+```
+┌─────────┐   ┌─────────┐
+│  Dye 1  │ + │  Dye 2  │
+└────┬────┘   └────┬────┘
+     │             │
+     └──────┬──────┘
+            ▼
+      ┌───────────┐
+      │  Result   │
+      │  (Blend)  │
+      └───────────┘
+```
+
+- **100x100px input slots** - Your selected dyes
+- **120x120px result slot** - The blended color
+
+---
+
+## Blending Modes Explained
+
+### RGB Mode (Digital)
+Blends colors as light would mix on a screen. Additive color mixing.
+
+| Dye 1 | Dye 2 | RGB Result |
+|-------|-------|------------|
+| Red + Blue | → | Purple |
+| Red + Green | → | Yellow |
+| White + Black | → | Gray |
+
+**Best for**: When you want results that match how colors appear on screens.
+
+### RYB Mode (Traditional)
+Blends colors like paint mixing in art class. Subtractive color mixing based on the traditional red-yellow-blue color wheel.
+
+| Dye 1 | Dye 2 | RYB Result |
+|-------|-------|------------|
+| Red + Blue | → | Purple |
+| Yellow + Blue | → | Green |
+| Red + Yellow | → | Orange |
+
+**Best for**: Intuitive mixing that matches traditional art expectations.
+
+### LAB Mode (Perceptual)
+Blends colors in CIE LAB color space, which is designed to match human perception. Creates the most "natural-looking" blends.
+
+**Best for**: Getting blends that look balanced and natural to the human eye.
+
+---
+
+**Tip**: Unlike gradient interpolation, blending creates a single averaged color rather than a transition path. Try different modes—the same two dyes can produce noticeably different results!
 
 ---
 
 ## Dye Action Menu
 
-Click the **⋮ menu** on any intermediate dye to:
+Click the **⋮ menu** on any result dye to:
 - **Add to Favorites** - Save for later
 - **Add to Collection** - Organize into groups
 - **See Color Harmonies** - Find complementary dyes
 - **Open in Comparison** - Compare side-by-side
-- **Replace in Mixer** - Use as new endpoint
 
 ---
 
 ## Use Cases
 
-### Ombre Effects
-Create gradual color shifts across multi-piece outfits:
-1. Dye hat with starting color
-2. Dye chest with middle gradient color
-3. Dye pants with ending color
+### Creating Custom Colors
+Find dyes that don't exist as single colors:
+1. Blend two close-but-not-quite dyes
+2. See what averaged color emerges
+3. Find the closest FFXIV match
 
-### Finding "In-Between" Colors
-When two dyes are too different:
-1. Set them as endpoints
-2. Find intermediate dyes that bridge the gap
-3. Use for transitional pieces
+### Color Experimentation
+Discover unexpected combinations:
+1. Try blending complementary colors
+2. Mix warm and cool tones
+3. Combine metallic and non-metallic dyes
 
-### Color Exploration
-Discover dyes you might not have considered:
-1. Pick two favorite dyes
-2. See what's "between" them
-3. Find new favorites in the gradient
+### Outfit Planning
+Find "middle ground" dyes for coordinated looks:
+1. Blend your two favorite outfit colors
+2. Use the result as an accent color
+3. Create cohesive multi-piece glamours
 
 ---
 
 ## Tips
 
-- **Bold gradients** work best with high-contrast endpoints
-- **Subtle gradients** use similar colors for gentle transitions
-- Some **intermediate matches** may be better than others
-- Try the **reverse direction** for different intermediate dyes
+- **Similar colors** create subtle variations
+- **Contrasting colors** can create muddy results in RGB/RYB, but often look better in LAB
+- Use **Delta E scores** to gauge match quality (lower = better)
+- **Try all three modes** - you might be surprised which gives the best result
+- **RYB mode** is great if you're thinking "what would happen if I mixed these paints?"
+- **LAB mode** often produces the most visually pleasing middle-ground
+
+---
+
+## Dye Mixer vs Gradient Builder
+
+| Feature | Dye Mixer | Gradient Builder |
+|---------|-----------|------------------|
+| Output | Single blended color | Multiple gradient steps |
+| Method | RGB, RYB, or LAB blending | HSV color space interpolation |
+| Use case | "Mix these colors" | "Transition between colors" |
+| Results | 3-8 matched dyes | 5-10 intermediate dyes |
 
 ---
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Find specific dyes first
-- [Dye Comparison](dye-comparison.md) - Compare gradient dyes
-- [Budget Suggestions](budget-suggestions.md) - Find affordable options
+- [Gradient Builder](gradient-builder.md) - Create color transitions
+- [Palette Extractor](palette-extractor.md) - Find dyes from any color
+- [Dye Comparison](dye-comparison.md) - Compare your blend results

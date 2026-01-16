@@ -125,6 +125,6 @@ Changes sync automatically between web and Discord.
 
 ## Related Tools
 
-- [Color Matcher](color-matcher.md) - Find dyes to save
-- [Preset Browser](preset-browser.md) - Save community presets
+- [Palette Extractor](palette-extractor.md) - Find dyes to save
+- [Community Presets](community-presets.md) - Save community presets
 - [All Tools](getting-started.md) - All support favorites/collections

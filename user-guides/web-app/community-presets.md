@@ -1,8 +1,10 @@
-# Preset Browser
+# Community Presets
 
 **Discover and share community dye palettes**
 
-The Preset Browser lets you explore color combinations created by the community, find inspiration, and share your own creations.
+Community Presets lets you explore color combinations created by the community, find inspiration, and share your own creations.
+
+> **Note**: This tool was previously called "Preset Browser" in v3.x.
 
 ---
 
@@ -49,8 +51,8 @@ Each preset shows:
 ## Voting
 
 Help curate the best presets:
-- **Upvote** (👍) - Good preset, well-designed
-- **Downvote** (👎) - Low quality or inappropriate
+- **Upvote** - Good preset, well-designed
+- **Downvote** - Low quality or inappropriate
 - You can change your vote anytime
 - Voting requires being logged in
 
@@ -106,6 +108,6 @@ If you try to submit a preset that already exists:
 
 ## Related Tools
 
-- [Color Harmony](color-harmony.md) - Create your own harmonies
+- [Color Harmony Explorer](color-harmony.md) - Create your own harmonies
 - [Dye Comparison](dye-comparison.md) - Compare preset dyes
 - [Favorites & Collections](favorites-collections.md) - Save presets you like

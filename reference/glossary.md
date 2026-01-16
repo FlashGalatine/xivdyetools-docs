@@ -88,6 +88,28 @@ Community-maintained API providing real-time FFXIV marketboard prices across all
 
 ---
 
+## XIV Dye Tools (v4)
+
+### Community Presets
+Web app tool (v4) for browsing and sharing community dye palettes. Formerly called "Preset Browser" in v3. Discord bot uses `/preset` commands.
+
+### Dye Mixer (v4)
+Web app tool (v4) for blending two dyes together to create custom color combinations. Supports three blending modes: RGB (digital/additive), RYB (traditional/subtractive), and LAB (perceptual). This is a **new tool in v4.0.0**, distinct from the renamed "Gradient Builder."
+
+### Glassmorphism
+UI design trend featuring frosted glass effects, transparency, and blur. Used in the web app v4.0.0 UI redesign.
+
+### Gradient Builder
+Web app tool (v4) for creating smooth color gradients between two dyes. Formerly called "Dye Mixer" in v3. Discord bot still uses `/mixer` command.
+
+### Palette Extractor
+Web app tool (v4) for finding the closest FFXIV dye to any color and extracting color palettes from images. Formerly called "Color Matcher" in v3. Discord bot still uses `/match` command.
+
+### Swatch Matcher
+Web app tool (v4) for matching specific colors sampled from FFXIV character customization (hair, eyes, skin) to FFXIV dyes. Formerly called "Character Color Matcher" in v3.
+
+---
+
 ## Technical Terms
 
 ### Branded Types

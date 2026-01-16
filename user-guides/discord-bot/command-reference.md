@@ -4,6 +4,20 @@
 
 ---
 
+> **Web App v4 Terminology Note**
+>
+> The Discord bot retains the original command names for backwards compatibility. If you're familiar with the web app v4, here's how commands map:
+>
+> | Discord Command | Web App v4 Equivalent |
+> |-----------------|----------------------|
+> | `/match`, `/match_image` | Palette Extractor |
+> | `/mixer` | Gradient Builder |
+> | `/preset` commands | Community Presets |
+>
+> The functionality is identical—only the names differ.
+
+---
+
 ## Color Tools
 
 ### /harmony
@@ -20,6 +34,8 @@ Generate harmonious dye combinations based on color theory.
 
 ### /match
 Find the closest FFXIV dye to a hex color.
+
+> *Web App v4: This corresponds to "Palette Extractor"*
 
 **Usage**: `/match color:#FF6B6B count:5`
 
@@ -44,6 +60,8 @@ Extract colors from an image and match to FFXIV dyes.
 
 ### /mixer
 Create a color gradient between two dyes.
+
+> *Web App v4: This corresponds to "Gradient Builder"*
 
 **Usage**: `/mixer start:Dalamud Red end:Jet Black steps:5`
 

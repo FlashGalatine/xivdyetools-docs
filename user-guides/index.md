@@ -17,16 +17,18 @@ Whether you're using the web app or Discord bot, these guides will help you make
 
 ## Web App Guides
 
-### The 7 Tools
+### The 9 Tools
 
 | Tool | Guide | Description |
 |------|-------|-------------|
-| **Color Matcher** | [Guide](web-app/color-matcher.md) | Find the closest FFXIV dye to any color |
+| **Palette Extractor** | [Guide](web-app/palette-extractor.md) | Find the closest FFXIV dye to any color |
 | **Color Harmony Explorer** | [Guide](web-app/color-harmony.md) | Discover harmonious dye combinations |
-| **Dye Mixer** | [Guide](web-app/dye-mixer.md) | Create gradients between dyes |
+| **Gradient Builder** | [Guide](web-app/gradient-builder.md) | Create gradients between dyes |
+| **Dye Mixer** | [Guide](web-app/dye-mixer.md) | Blend two dyes together |
+| **Swatch Matcher** | [Guide](web-app/swatch-matcher.md) | Match character colors to dyes |
 | **Dye Comparison** | [Guide](web-app/dye-comparison.md) | Compare dyes side-by-side |
 | **Accessibility Checker** | [Guide](web-app/accessibility.md) | Simulate colorblindness |
-| **Preset Browser** | [Guide](web-app/preset-browser.md) | Browse community dye palettes |
+| **Community Presets** | [Guide](web-app/community-presets.md) | Browse community dye palettes |
 | **Budget Suggestions** | [Guide](web-app/budget-suggestions.md) | Find affordable dye alternatives |
 
 ### Features
@@ -53,9 +55,10 @@ Whether you're using the web app or Discord bot, these guides will help you make
 
 ### Finding Dyes
 
-1. **Know the color?** Use Color Matcher to find the closest dye
+1. **Know the color?** Use Palette Extractor to find the closest dye
 2. **Have an image?** Extract colors from it with palette extraction
 3. **Looking for harmony?** Use Color Harmony Explorer for combinations
+4. **Match your character?** Use Swatch Matcher for character colors
 
 ### Saving Your Work
 

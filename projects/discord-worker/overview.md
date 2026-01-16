@@ -92,6 +92,16 @@ src/
 
 ## Available Commands
 
+> **Web App v4 Terminology Note**
+>
+> The Discord worker retains original command names for backwards compatibility. Here's how they map to web app v4 tool names:
+>
+> | Discord Command | Web App v4 Tool | Route |
+> |-----------------|-----------------|-------|
+> | `/match`, `/match_image` | Palette Extractor | `/extractor` |
+> | `/mixer` | Gradient Builder | `/gradient` |
+> | `/preset *` | Community Presets | `/presets` |
+
 ### Color Tools
 | Command | Description |
 |---------|-------------|

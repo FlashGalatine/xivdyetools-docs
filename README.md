@@ -42,19 +42,19 @@ This documentation covers the following projects:
 
 | Project | Version | Description |
 |---------|---------|-------------|
-| **xivdyetools-core** | v1.4.0 | Core color algorithms and dye database (npm library) |
-| **xivdyetools-web-app** | v3.1.0 | Interactive web-based color tools |
-| **xivdyetools-discord-worker** | v2.2.0 | Serverless Discord bot (Cloudflare Workers) |
-| **xivdyetools-oauth** | v2.1.0 | Discord OAuth authentication worker |
-| **xivdyetools-presets-api** | v1.3.0 | Community presets REST API |
+| **xivdyetools-core** | v1.5.4 | Core color algorithms and dye database (npm library) |
+| **xivdyetools-web-app** | v4.0.0 | Interactive web-based color tools (9 tools) |
+| **xivdyetools-discord-worker** | v2.3.1 | Serverless Discord bot (Cloudflare Workers) |
+| **xivdyetools-oauth** | v2.2.2 | Discord OAuth authentication worker |
+| **xivdyetools-presets-api** | v1.4.5 | Community presets REST API |
 
 ### Shared Libraries
 
 | Project | Version | Description |
 |---------|---------|-------------|
-| **@xivdyetools/types** | v1.0.0 | Shared TypeScript type definitions |
-| **@xivdyetools/logger** | v1.0.0 | Unified logging across environments |
-| **@xivdyetools/test-utils** | v1.0.2 | Shared testing utilities |
+| **@xivdyetools/types** | v1.1.1 | Shared TypeScript type definitions |
+| **@xivdyetools/logger** | v1.0.2 | Unified logging across environments |
+| **@xivdyetools/test-utils** | v1.0.3 | Shared testing utilities |
 
 ### Developer Tools
 

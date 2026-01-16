@@ -46,7 +46,7 @@ Delta E measures perceptual color difference. Lower is better:
 
 ### Can I match colors from screenshots?
 
-Yes! Use the image upload feature in Color Matcher. Note that screenshot colors may be affected by in-game lighting/effects.
+Yes! Use the image upload feature in Palette Extractor. Note that screenshot colors may be affected by in-game lighting/effects.
 
 ---
 
@@ -55,7 +55,7 @@ Yes! Use the image upload feature in Color Matcher. Note that screenshot colors 
 ### How do I submit a preset?
 
 1. Log in with Discord
-2. Go to Preset Browser
+2. Go to Community Presets
 3. Click "Submit Preset"
 4. Add 2-6 dyes
 5. Name and describe it

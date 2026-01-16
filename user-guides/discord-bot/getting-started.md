@@ -40,6 +40,16 @@ The bot will respond with:
 | `/harmony` | Generate color harmonies | `/harmony color:#FF6B6B type:triadic` |
 | `/mixer` | Create gradient between colors | `/mixer start:#FF0000 end:#0000FF` |
 
+> **Web App v4 Terminology Note**
+>
+> The Discord bot uses the original command names for backwards compatibility. Here's how they map to the v4 web app:
+>
+> | Discord Command | Web App v4 Tool |
+> |-----------------|-----------------|
+> | `/match`, `/match_image` | Palette Extractor |
+> | `/mixer` | Gradient Builder |
+> | `/preset` commands | Community Presets |
+
 ### Dye Database
 
 | Command | Description | Example |
