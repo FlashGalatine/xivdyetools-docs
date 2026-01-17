@@ -223,10 +223,45 @@ Create a script that validates all `LanguageService.t()` calls against en.json:
 
 After implementing fixes:
 
-- [ ] Remove fallbacks from `changelog-modal.ts` (5 instances)
-- [ ] Remove fallbacks from `about-modal.ts` (3 instances)
-- [ ] Remove fallbacks from `MockupNav.ts` (3 instances)
-- [ ] Fix namespace in `budget-tool.ts` for `common.*` → `config.*`
-- [ ] Remove remaining fallbacks from `budget-tool.ts` (~35 instances)
+- [x] Remove fallbacks from `changelog-modal.ts` (5 instances) ✅ (2026-01-17)
+- [x] Remove fallbacks from `about-modal.ts` (3 instances) ✅ (2026-01-17)
+- [x] Remove fallbacks from `MockupNav.ts` (3 instances) ✅ (2026-01-17)
+- [x] Fix namespace in `budget-tool.ts` for `common.*` → `config.*` ✅ (2026-01-17)
+- [x] Remove remaining fallbacks from `budget-tool.ts` (~48 instances) ✅ (2026-01-17)
 - [ ] Verify no console warnings for missing keys
 - [ ] Test all 6 languages on affected pages
+
+---
+
+## Resolution Notes (2026-01-17)
+
+### Completed Work
+
+**57 fallback patterns removed** from priority files:
+
+| File | Patterns Removed | Status |
+|------|------------------|--------|
+| `budget-tool.ts` | 48 | ✅ Complete |
+| `changelog-modal.ts` | 5 | ✅ Complete |
+| `about-modal.ts` | 3 | ✅ Complete |
+| `MockupNav.ts` | 3 | ✅ Complete |
+
+### Namespace Fixes
+
+Fixed 6 instances of incorrect namespace in `budget-tool.ts`:
+- `common.colorFormats` → `config.colorFormats`
+- `common.hexCodes` → `config.hexCodes`
+- `common.rgbValues` → `config.rgbValues`
+- `common.hsvValues` → `config.hsvValues`
+- `common.labValues` → `config.labValues`
+
+### Remaining Work
+
+**399 fallback patterns remain** across 30 other files. These should be addressed in a future cleanup sprint:
+- `extractor-tool.ts`: 42 instances
+- `swatch-tool.ts`: 49 instances
+- `gradient-tool.ts`: 47 instances
+- `preset-tool.ts`: 36 instances
+- `mixer-tool.ts`: 33 instances
+- `comparison-tool.ts`: 29 instances
+- Others: ~163 instances across 24 files

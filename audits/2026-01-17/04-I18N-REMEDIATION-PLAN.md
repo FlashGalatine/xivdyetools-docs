@@ -336,10 +336,11 @@ Evaluate tools like Crowdin, Lokalise, or Phrase for managing translations at sc
 Week 1:
 ├── P1-001: my-submissions-panel.ts (2-3h) ✅ DONE
 ├── P1-002: image-upload-display.ts (1h) ✅ DONE
-└── P2-001: budget-tool namespace fix (30m) ⏳ Pending
+├── P2-001: budget-tool namespace fix (30m) ✅ DONE
+└── P2-002: Remove fallback patterns - priority files (2h) ✅ DONE
 
 Week 2:
-├── P2-002: Remove fallback patterns (2-3h)
+├── P2-002: Remove remaining fallback patterns (~399 instances) ⏳ Pending
 └── P2-003: Audit ToastService (4-6h)
 
 Sprint 2:
@@ -387,3 +388,4 @@ After all remediations:
 |---------|------|--------|---------|
 | 1.0 | 2026-01-17 | Claude Code | Initial remediation plan |
 | 1.1 | 2026-01-17 | Claude Code | Marked P1-001 and P1-002 as complete |
+| 1.2 | 2026-01-17 | Claude Code | Marked P2-001 and P2-002 (priority files) as complete |
