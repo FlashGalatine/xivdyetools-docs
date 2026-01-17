@@ -18,7 +18,7 @@ The application has a well-designed i18n architecture with comprehensive transla
 
 | Severity | Count | Status |
 |----------|-------|--------|
-| High | 3 | Needs attention |
+| High | 3 | 2 Resolved (P1-001, P1-002), 1 Remaining |
 | Medium | 2 | Should fix |
 | Low | 2 | Nice to have |
 | Informational | 5+ | Documented |
@@ -176,3 +176,4 @@ All game terminology is sourced from official FFXIV data and cross-referenced wi
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-01-17 | Claude Code | Initial audit |
+| 1.1 | 2026-01-17 | Claude Code | Marked P1-001, P1-002 as resolved |

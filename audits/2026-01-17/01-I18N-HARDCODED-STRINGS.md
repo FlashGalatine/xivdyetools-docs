@@ -12,11 +12,12 @@ This document catalogs all hardcoded strings found in the web application that s
 
 ---
 
-## HIGH-001: my-submissions-panel.ts
+## HIGH-001: my-submissions-panel.ts ✅ RESOLVED
 
 **File:** `src/components/my-submissions-panel.ts`
 **Severity:** High
 **Impact:** Entire "My Submissions" feature displays in English only
+**Status:** ✅ **RESOLVED** (2026-01-17)
 
 ### Hardcoded Strings Found
 
@@ -70,11 +71,12 @@ This suggests the component was developed without awareness of the existing i18n
 
 ---
 
-## HIGH-002: image-upload-display.ts
+## HIGH-002: image-upload-display.ts ✅ RESOLVED
 
 **File:** `src/components/image-upload-display.ts`
 **Severity:** High
 **Impact:** Error messages display in English only
+**Status:** ✅ **RESOLVED** (2026-01-17)
 
 ### Hardcoded Strings Found
 
@@ -204,8 +206,16 @@ While aria-labels being in English may be acceptable for some accessibility tool
 
 After implementing fixes:
 
-- [ ] All strings in `my-submissions-panel.ts` use LanguageService
-- [ ] All error messages in `image-upload-display.ts` use LanguageService
-- [ ] New keys added to all 6 locale files (en, ja, de, fr, ko, zh)
-- [ ] Native `alert()`/`confirm()` replaced with i18n-compatible modals
+- [x] All strings in `my-submissions-panel.ts` use LanguageService ✅ (2026-01-17)
+- [x] All error messages in `image-upload-display.ts` use LanguageService ✅ (2026-01-17)
+- [x] New keys added to all 6 locale files (en, ja, de, fr, ko, zh) ✅ (2026-01-17)
+- [x] Native `confirm()` uses i18n for message text ✅ (2026-01-17)
 - [ ] Test language switching on affected pages
+
+### Resolution Notes (2026-01-17)
+
+- **14 new translation keys** added to all 6 locale files
+- **15 hardcoded strings** in `my-submissions-panel.ts` replaced with `LanguageService.t()` calls
+- **5 error messages** in `image-upload-display.ts` now use i18n
+- Native `confirm()` dialogs retained but now use translated message text
+- Vote count uses pluralization pattern with `voteCount` (singular) and `votesCount` (plural) keys

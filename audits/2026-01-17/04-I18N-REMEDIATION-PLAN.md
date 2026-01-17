@@ -2,7 +2,7 @@
 
 **Project:** xivdyetools-web-app
 **Date:** January 17, 2026
-**Status:** Action Items Defined
+**Status:** In Progress (P1 items completed)
 
 ---
 
@@ -25,12 +25,12 @@ This document provides a prioritized action plan to address the i18n issues iden
 
 ## P1: Critical (This Week)
 
-### P1-001: Internationalize my-submissions-panel.ts
+### P1-001: Internationalize my-submissions-panel.ts ✅ COMPLETE
 
 **Severity:** High
 **File:** `src/components/my-submissions-panel.ts`
 **Estimated Effort:** 2-3 hours
-**Assigned To:** TBD
+**Status:** ✅ **COMPLETED** (2026-01-17)
 
 #### Task Description
 
@@ -73,20 +73,27 @@ Update the My Submissions panel to use the i18n system for all user-facing text.
 
 #### Testing
 
-- [ ] Switch to each of the 6 languages
-- [ ] Verify all text in My Submissions panel updates
-- [ ] Test with signed-in and signed-out states
-- [ ] Test delete confirmation dialog
-- [ ] Test error states
+- [x] Switch to each of the 6 languages
+- [x] Verify all text in My Submissions panel updates
+- [x] Test with signed-in and signed-out states
+- [x] Test delete confirmation dialog
+- [x] Test error states
+
+#### Completion Notes
+
+- 15 hardcoded strings replaced with `LanguageService.t()` calls
+- 10 new translation keys added to all 6 locale files
+- Vote count implemented with pluralization (`voteCount`/`votesCount`)
+- Native `confirm()` retained but uses translated message text
 
 ---
 
-### P1-002: Internationalize image-upload-display.ts Error Messages
+### P1-002: Internationalize image-upload-display.ts Error Messages ✅ COMPLETE
 
 **Severity:** High
 **File:** `src/components/image-upload-display.ts`
 **Estimated Effort:** 1 hour
-**Assigned To:** TBD
+**Status:** ✅ **COMPLETED** (2026-01-17)
 
 #### Task Description
 
@@ -128,10 +135,16 @@ this.emit('error', { message: LanguageService.t('errors.failedToReadFile') });
 
 #### Testing
 
-- [ ] Upload invalid file type (non-image)
-- [ ] Upload file larger than 20MB
-- [ ] Test with corrupted image file
-- [ ] Verify error messages in all 6 languages
+- [x] Upload invalid file type (non-image)
+- [x] Upload file larger than 20MB
+- [x] Test with corrupted image file
+- [x] Verify error messages in all 6 languages
+
+#### Completion Notes
+
+- 5 error messages replaced with `LanguageService.t()` calls
+- 4 new error translation keys added to all 6 locale files
+- Corrected `imageTooLarge` message from 10MB to 20MB (matching actual code limit)
 
 ---
 
@@ -321,9 +334,9 @@ Evaluate tools like Crowdin, Lokalise, or Phrase for managing translations at sc
 
 ```
 Week 1:
-├── P1-001: my-submissions-panel.ts (2-3h)
-├── P1-002: image-upload-display.ts (1h)
-└── P2-001: budget-tool namespace fix (30m)
+├── P1-001: my-submissions-panel.ts (2-3h) ✅ DONE
+├── P1-002: image-upload-display.ts (1h) ✅ DONE
+└── P2-001: budget-tool namespace fix (30m) ⏳ Pending
 
 Week 2:
 ├── P2-002: Remove fallback patterns (2-3h)
@@ -373,3 +386,4 @@ After all remediations:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-01-17 | Claude Code | Initial remediation plan |
+| 1.1 | 2026-01-17 | Claude Code | Marked P1-001 and P1-002 as complete |
