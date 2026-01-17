@@ -179,28 +179,33 @@ Fix incorrect namespace references from `common.*` to `config.*`.
 
 ---
 
-### P2-002: Remove Redundant Fallback Patterns
+### P2-002: Remove Redundant Fallback Patterns ✅ COMPLETE
 
 **Severity:** Medium
-**Files:** Multiple (see 02-I18N-FALLBACK-PATTERNS.md)
+**Files:** 27 files (see 02-I18N-FALLBACK-PATTERNS.md)
 **Estimated Effort:** 2-3 hours
-**Assigned To:** TBD
+**Status:** ✅ **COMPLETED** (2026-01-17)
 
 #### Task Description
 
 Remove all `|| 'fallback'` patterns where keys exist.
 
-#### Steps
+#### Completion Notes
 
-1. **changelog-modal.ts** (5 instances)
-2. **about-modal.ts** (3 instances)
-3. **MockupNav.ts** (3 instances)
-4. **budget-tool.ts** (~35 instances after namespace fix)
+**497 fallback patterns removed** across 27 files including:
+- `accessibility-tool.ts` (25 instances)
+- `budget-tool.ts` (56 instances)
+- `swatch-tool.ts` (50 instances)
+- `v4/result-card.ts` (28 instances)
+- `dye-action-dropdown.ts` (24 instances)
+- And 22 more files
+
+See full breakdown in 02-I18N-FALLBACK-PATTERNS.md
 
 #### Testing
 
-- [ ] No console warnings for missing keys
-- [ ] All affected pages render correctly
+- [x] No console warnings for missing keys
+- [x] All affected pages render correctly
 - [ ] Test with network throttling (ensure lazy loading works)
 
 ---
@@ -340,7 +345,7 @@ Week 1:
 └── P2-002: Remove fallback patterns - priority files (2h) ✅ DONE
 
 Week 2:
-├── P2-002: Remove remaining fallback patterns (~399 instances) ⏳ Pending
+├── P2-002: Remove remaining fallback patterns (497 instances) ✅ DONE
 └── P2-003: Audit ToastService (4-6h)
 
 Sprint 2:
@@ -359,12 +364,12 @@ Backlog:
 
 After completing P1 and P2 items:
 
-| Metric | Before | Target |
-|--------|--------|--------|
-| Hardcoded user-facing strings | 20+ | 0 |
-| Fallback patterns | 50+ | 0 |
-| Components with i18n issues | 3 | 0 |
-| Console i18n warnings | Unknown | 0 |
+| Metric | Before | After | Target |
+|--------|--------|-------|--------|
+| Hardcoded user-facing strings | 20+ | 0 | 0 ✅ |
+| Fallback patterns | 497 | 0 | 0 ✅ |
+| Components with i18n issues | 3 | 0 | 0 ✅ |
+| Console i18n warnings | Unknown | 0 | 0 |
 
 ---
 
@@ -389,3 +394,4 @@ After all remediations:
 | 1.0 | 2026-01-17 | Claude Code | Initial remediation plan |
 | 1.1 | 2026-01-17 | Claude Code | Marked P1-001 and P1-002 as complete |
 | 1.2 | 2026-01-17 | Claude Code | Marked P2-001 and P2-002 (priority files) as complete |
+| 1.3 | 2026-01-17 | Claude Code | P2-002 COMPLETE: All 497 fallback patterns removed from 27 files |
