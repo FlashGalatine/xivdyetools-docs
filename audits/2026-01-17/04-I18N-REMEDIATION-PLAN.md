@@ -354,12 +354,40 @@ Also updated `docs/STYLE_GUIDE.md` to reference the new I18N guide.
 
 ## P4: Low (Backlog)
 
-### P4-001: Add ESLint Rule for Fallback Patterns
+### P4-001: Add ESLint Rule for Fallback Patterns ✅ COMPLETE
 
 **Severity:** Informational
 **Estimated Effort:** 2 hours
+**Status:** ✅ **COMPLETED** (2026-01-17)
+
+#### Task Description
 
 Add a custom ESLint rule to warn about `LanguageService.t('key') || 'fallback'` patterns.
+
+#### Completion Notes
+
+**Files created:**
+- `eslint-rules/no-i18n-fallback.js` - Custom ESLint plugin with the rule
+
+**ESLint config updated:**
+- `eslint.config.js` - Added `xivdyetools-i18n` plugin with `no-i18n-fallback` rule (set to `warn`)
+
+**Rule features:**
+- Detects `LanguageService.t('key') || 'fallback'` patterns
+- Detects `LanguageService.tInterpolate('key', params) || 'fallback'` patterns
+- Reports the specific translation key in the warning message
+- Suggests running `npm run validate:i18n` to check for missing keys
+
+**Example warning output:**
+```
+warning  Avoid fallback patterns with LanguageService.t().
+         If the key "some.key" is missing, add it to en.json.
+         Run `npm run validate:i18n` to check.
+```
+
+**Verification:**
+- Tested on synthetic file with fallback patterns - rule correctly detected both patterns
+- Ran ESLint on full codebase - confirmed 0 fallback patterns remain (P2-002 cleanup verified)
 
 ---
 
@@ -399,7 +427,7 @@ Week 3:
 └── P3-002: Documentation (1h) ✅ DONE
 
 Backlog:
-├── P4-001: ESLint rule
+├── P4-001: ESLint rule ✅ DONE
 ├── P4-002: Typed keys
 └── P4-003: Tool evaluation
 ```
@@ -420,6 +448,7 @@ After completing P1, P2, and P3 items:
 | Build-time key validation | ❌ None | ✅ Available | ✅ Available |
 | Invalid key references | 29 | 0 | 0 ✅ |
 | i18n documentation | ❌ None | ✅ docs/I18N.md | ✅ Available |
+| ESLint fallback prevention | ❌ None | ✅ Available | ✅ Available |
 
 ---
 
@@ -448,3 +477,4 @@ After all remediations:
 | 1.4 | 2026-01-17 | Claude Code | P2-003 COMPLETE: All 55 ToastService hardcoded strings internationalized |
 | 1.5 | 2026-01-17 | Claude Code | P3-001 COMPLETE: Build-time i18n validation script added, 29 key issues fixed |
 | 1.6 | 2026-01-17 | Claude Code | P3-002 COMPLETE: Comprehensive i18n documentation added (docs/I18N.md) |
+| 1.7 | 2026-01-17 | Claude Code | P4-001 COMPLETE: Custom ESLint rule added (eslint-rules/no-i18n-fallback.js) |
