@@ -320,23 +320,35 @@ Create a script that validates all `LanguageService.t()` calls against locale fi
 
 ---
 
-### P3-002: Document i18n Patterns for Contributors
+### P3-002: Document i18n Patterns for Contributors ✅ COMPLETE
 
 **Severity:** Low
-**Files:** CONTRIBUTING.md or new I18N.md
+**Files:** New `docs/I18N.md`
 **Estimated Effort:** 1 hour
-**Assigned To:** TBD
+**Status:** ✅ **COMPLETED** (2026-01-17)
 
 #### Task Description
 
 Document the correct patterns for using i18n in new components.
 
-#### Content
+#### Completion Notes
 
-1. How to use LanguageService.t()
-2. How to add new keys to locale files
-3. When to use core library vs. web app translations
-4. Examples of good and bad patterns
+**Documentation created:** `docs/I18N.md`
+
+Comprehensive guide covering:
+1. Overview of the two-layer i18n system (core library vs. web app)
+2. Quick reference for common patterns
+3. `LanguageService.t()` usage with examples
+4. `LanguageService.tInterpolate()` for parameterized translations
+5. Game data translation methods (dye names, categories, etc.)
+6. Namespace structure and naming conventions
+7. Step-by-step guide for adding new translation keys
+8. Common patterns (toasts, modals, accessibility)
+9. Anti-patterns to avoid (with examples)
+10. Validation script usage
+11. Full API reference
+
+Also updated `docs/STYLE_GUIDE.md` to reference the new I18N guide.
 
 ---
 
@@ -383,10 +395,10 @@ Week 2:
 └── P2-003: Audit ToastService (4-6h) ✅ DONE
 
 Week 3:
-└── P3-001: Build-time validation (4h) ✅ DONE
+├── P3-001: Build-time validation (4h) ✅ DONE
+└── P3-002: Documentation (1h) ✅ DONE
 
-Remaining:
-├── P3-002: Documentation (1h)
+Backlog:
 ├── P4-001: ESLint rule
 ├── P4-002: Typed keys
 └── P4-003: Tool evaluation
@@ -396,7 +408,7 @@ Remaining:
 
 ## Success Metrics
 
-After completing P1, P2, and P3-001 items:
+After completing P1, P2, and P3 items:
 
 | Metric | Before | After | Target |
 |--------|--------|-------|--------|
@@ -407,6 +419,7 @@ After completing P1, P2, and P3-001 items:
 | Console i18n warnings | Unknown | 0 | 0 |
 | Build-time key validation | ❌ None | ✅ Available | ✅ Available |
 | Invalid key references | 29 | 0 | 0 ✅ |
+| i18n documentation | ❌ None | ✅ docs/I18N.md | ✅ Available |
 
 ---
 
@@ -434,3 +447,4 @@ After all remediations:
 | 1.3 | 2026-01-17 | Claude Code | P2-002 COMPLETE: All 497 fallback patterns removed from 27 files |
 | 1.4 | 2026-01-17 | Claude Code | P2-003 COMPLETE: All 55 ToastService hardcoded strings internationalized |
 | 1.5 | 2026-01-17 | Claude Code | P3-001 COMPLETE: Build-time i18n validation script added, 29 key issues fixed |
+| 1.6 | 2026-01-17 | Claude Code | P3-002 COMPLETE: Comprehensive i18n documentation added (docs/I18N.md) |
