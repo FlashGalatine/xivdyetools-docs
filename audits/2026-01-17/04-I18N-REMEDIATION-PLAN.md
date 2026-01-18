@@ -265,12 +265,12 @@ See detailed audit: [05-I18N-TOAST-SERVICE-AUDIT.md](05-I18N-TOAST-SERVICE-AUDIT
 
 ## P3: Medium (Next Sprint)
 
-### P3-001: Add Build-Time Translation Validation
+### P3-001: Add Build-Time Translation Validation ✅ COMPLETE
 
 **Severity:** Low
 **Files:** New script + package.json
 **Estimated Effort:** 4 hours
-**Assigned To:** TBD
+**Status:** ✅ **COMPLETED** (2026-01-17)
 
 #### Task Description
 
@@ -278,27 +278,45 @@ Create a script that validates all `LanguageService.t()` calls against locale fi
 
 #### Steps
 
-1. Create `scripts/validate-i18n.ts`:
+1. Create `scripts/validate-i18n.js`:
    - Parse all TypeScript files for `LanguageService.t('...')` calls
+   - Parse all TypeScript files for `LanguageService.tInterpolate('...')` calls
    - Extract key strings
    - Validate each key exists in en.json
    - Report missing keys with file:line references
+   - Support `--fix` flag for typo suggestions
 
 2. Add npm script:
 ```json
 {
   "scripts": {
-    "validate:i18n": "ts-node scripts/validate-i18n.ts"
+    "validate:i18n": "node scripts/validate-i18n.js"
   }
 }
 ```
 
-3. Add to CI pipeline (optional)
+3. Add to CI pipeline (optional - not yet implemented)
+
+#### Completion Notes
+
+**Script created:** `scripts/validate-i18n.js`
+- Scans 137 source files for translation key usage
+- Validates 967 translation key references against 988 keys in en.json
+- Provides file:line references for missing keys
+- Supports `--fix` flag for Levenshtein-based typo suggestions
+- Reports unused keys for potential cleanup
+
+**Issues found and fixed during validation:**
+- Added 20 missing translation keys to en.json
+- Fixed 4 namespace mismatches in source code:
+  - `swatch-tool.ts`: `actions.*` → `success.*` / `common.*`
+  - `comparison-tool.ts`: `common.colorFormats/hexCodes/rgbValues/hsvValues` → `config.*`
+  - `budget-tool.ts`: `common.copiedToClipboard` → `success.copiedToClipboard`
 
 #### Testing
 
-- [ ] Script catches intentionally missing key
-- [ ] Script passes with current codebase (after P1/P2 fixes)
+- [x] Script catches intentionally missing key
+- [x] Script passes with current codebase (after P1/P2/P3 fixes)
 
 ---
 
@@ -364,11 +382,11 @@ Week 2:
 ├── P2-002: Remove remaining fallback patterns (497 instances) ✅ DONE
 └── P2-003: Audit ToastService (4-6h) ✅ DONE
 
-Sprint 2:
-├── P3-001: Build-time validation (4h)
-└── P3-002: Documentation (1h)
+Week 3:
+└── P3-001: Build-time validation (4h) ✅ DONE
 
-Backlog:
+Remaining:
+├── P3-002: Documentation (1h)
 ├── P4-001: ESLint rule
 ├── P4-002: Typed keys
 └── P4-003: Tool evaluation
@@ -378,7 +396,7 @@ Backlog:
 
 ## Success Metrics
 
-After completing P1 and P2 items:
+After completing P1, P2, and P3-001 items:
 
 | Metric | Before | After | Target |
 |--------|--------|-------|--------|
@@ -387,6 +405,8 @@ After completing P1 and P2 items:
 | Components with i18n issues | 3 | 0 | 0 ✅ |
 | ToastService hardcoded strings | 55 | 0 | 0 ✅ |
 | Console i18n warnings | Unknown | 0 | 0 |
+| Build-time key validation | ❌ None | ✅ Available | ✅ Available |
+| Invalid key references | 29 | 0 | 0 ✅ |
 
 ---
 
@@ -400,7 +420,7 @@ After all remediations:
 - [ ] Verify accessibility labels are translated
 - [ ] Test with screen reader (optional)
 - [ ] Performance: ensure no lazy loading issues
-- [ ] Run `npm run validate:i18n` (when available)
+- [x] Run `npm run validate:i18n` ✅
 
 ---
 
@@ -413,3 +433,4 @@ After all remediations:
 | 1.2 | 2026-01-17 | Claude Code | Marked P2-001 and P2-002 (priority files) as complete |
 | 1.3 | 2026-01-17 | Claude Code | P2-002 COMPLETE: All 497 fallback patterns removed from 27 files |
 | 1.4 | 2026-01-17 | Claude Code | P2-003 COMPLETE: All 55 ToastService hardcoded strings internationalized |
+| 1.5 | 2026-01-17 | Claude Code | P3-001 COMPLETE: Build-time i18n validation script added, 29 key issues fixed |
