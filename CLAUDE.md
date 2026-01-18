@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Monorepo Quick Reference
 
-**10 Active Projects** - see [versions.md](versions.md) for current versions
+**12 Active Projects** - see [versions.md](versions.md) for current versions
 
 | Project | Type | Quick Link |
 |---------|------|------------|
@@ -33,14 +33,14 @@ Changes to core require publishing to npm before consumers can use them.
 
 ---
 
-## Quick Commands
+## Commands
 
 ### xivdyetools-core (Library)
 ```bash
 cd xivdyetools-core
 npm run build              # Compile TypeScript + build locales
 npm test                   # Run vitest
-npm run test:coverage      # Test with coverage (85% threshold)
+npm run test:coverage      # Test with coverage (90% threshold)
 npm run test:integration   # Integration tests only
 npm run lint               # ESLint check
 npm run type-check         # TypeScript check only
