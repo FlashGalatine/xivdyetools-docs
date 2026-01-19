@@ -922,7 +922,7 @@ export type { HarmonyTypeInfo, ScoredDyeMatch, HarmonyConfig } from './harmony-g
 |-------|--------|-------------|
 | Phase 1 (Pure Logic) | ✅ DONE | Extract algorithmic logic to services |
 | Phase 2 (Mobile Dedup) | ✅ DONE | Eliminate desktop ↔ drawer duplication |
-| Phase 3 (Desktop UI) | ⏸️ PENDING | Extract panel controllers |
+| Phase 3 (Desktop UI) | ✅ DONE | Extract panel controllers to shared service |
 | Phase 4 (Shared Services) | ⏸️ PENDING | Price mixin, state management |
 
 ##### Phase 2 Fix Details: Eliminate Desktop ↔ Drawer Duplication
@@ -1019,6 +1019,71 @@ interface MarketPanelRefs {
 2. **Conditional rendering**: `renderSelectedDyesDisplayInto()` uses `container === this.selectedDyesContainer` check to only show remove buttons on desktop
 3. **Cross-sync events**: Slider bindings accept a `sync` parameter to update the opposite slider (desktop ↔ drawer)
 4. **Unified style updates**: `updateHarmonyTypeButtonStyles()` handles null containers gracefully, allowing safe calls for both desktop and drawer containers
+
+##### Phase 3 Fix Details: Extract Panel Controllers to Shared Service
+
+**Status:** ✅ FIXED
+
+Phase 3 extracts the common CollapsiblePanel + DyeFilters/MarketBoard creation patterns into a shared service that any tool can import, eliminating ~30-60 lines of duplicated code per tool.
+
+###### New Service Created
+
+**`xivdyetools-web-app/src/services/tool-panel-builders.ts`** (~170 lines)
+
+Provides reusable builder functions:
+```typescript
+// Shared types
+export interface FiltersPanelRefs { panel: CollapsiblePanel; filters: DyeFilters; }
+export interface MarketPanelRefs { panel: CollapsiblePanel; marketBoard: MarketBoard; }
+export interface FiltersPanelConfig { storageKey, storageKeyPrefix, onFilterChange, defaultOpen? }
+export interface MarketPanelConfig { storageKey, getShowPrices, fetchPrices, onPricesToggled?, ... }
+
+// Builder functions
+export function buildFiltersPanel(host, container, config): FiltersPanelRefs;
+export function buildMarketPanel(host, container, config): MarketPanelRefs;
+```
+
+###### Tools Refactored
+
+**gradient-tool.ts** - Reduced ~40 lines:
+```typescript
+// BEFORE: 22 lines for filters + 38 lines for market = 60 lines
+this.filtersPanel = new CollapsiblePanel(container, {...});
+this.filtersPanel.init();
+const filtersContent = this.createElement('div');
+this.dyeFilters = new DyeFilters(filtersContent, {...});
+this.dyeFilters.render();
+this.dyeFilters.bindEvents();
+// ... more setup
+
+// AFTER: 12 lines for filters + 16 lines for market = 28 lines
+const filtersRefs = buildFiltersPanel(this, filtersContainer, {
+  storageKey: 'v3_mixer_filters',
+  storageKeyPrefix: 'v3_mixer',
+  onFilterChange: () => this.updateInterpolation(),
+});
+this.filtersPanel = filtersRefs.panel;
+this.dyeFilters = filtersRefs.filters;
+```
+
+**extractor-tool.ts** - Reduced ~50 lines:
+- `renderFiltersPanel()` reduced from 28 lines to 13 lines
+- `renderMarketPanel()` reduced from 46 lines to 28 lines
+
+###### Key Design Decisions
+
+1. **Host parameter**: Builders accept the host component to access `createElement()` for consistent element creation
+2. **Config objects**: All customization via typed config objects with sensible defaults
+3. **Callback-based**: Tool-specific behavior handled via callbacks (`onFilterChange`, `onPricesToggled`, etc.)
+4. **Post-init hooks**: Tools can add additional setup after builder returns (e.g., `loadServerData()`)
+5. **Incremental adoption**: Other tools can adopt the pattern without breaking existing code
+
+###### Files Modified
+
+- `xivdyetools-web-app/src/services/tool-panel-builders.ts` (created)
+- `xivdyetools-web-app/src/services/index.ts` (exports added)
+- `xivdyetools-web-app/src/components/gradient-tool.ts` (refactored)
+- `xivdyetools-web-app/src/components/extractor-tool.ts` (refactored)
 
 ---
 
