@@ -63,15 +63,15 @@
 | ID | Project | Title | Priority | Effort |
 |----|---------|-------|----------|--------|
 | ✅CORE-REF-001 | xivdyetools-core | Excessive Error Swallowing in DyeSearch | HIGH | LOW |
-| CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
-| DISCORD-REF-001 | xivdyetools-discord-worker | Repeated Command Handler Pattern | LOW | MEDIUM |
+| ⏸️CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
+| ⏸️DISCORD-REF-001 | xivdyetools-discord-worker | Repeated Command Handler Pattern | LOW | MEDIUM |
 | ⚠️DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
-| LOGGER-REF-003 | xivdyetools-logger | Hardcoded Redact Fields in Multiple Locations | MEDIUM | MEDIUM |
-| MAINT-REF-003 | xivdyetools-maintainer | Hardcoded Locale Lists in Multiple Files | MEDIUM | MEDIUM |
-| MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
+| ✅LOGGER-REF-003 | xivdyetools-logger | Hardcoded Redact Fields in Multiple Locations | MEDIUM | MEDIUM |
+| ✅MAINT-REF-003 | xivdyetools-maintainer | Hardcoded Locale Lists in Multiple Files | MEDIUM | MEDIUM |
+| ⏸️MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
 | ✅MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
 | ✅OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
-| PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
+| ⏸️PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
 | ⚠️TEST-REF-001 | xivdyetools-test-utils | Long Method in setupFetchMock Handler Logic | MEDIUM | LOW |
 | ⚠️TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
 | ✅TYPES-REF-002 | xivdyetools-types | Missing Discriminated Union Audit | MEDIUM | HIGH |
@@ -117,11 +117,11 @@
 
 ### Technical Debt Backlog (Lower Priority)
 
-1. **LOGGER-REF-003** - Extract DEFAULT_REDACT_FIELDS to shared constant
-2. **MAINT-REF-003** - Consolidate hardcoded locale lists
-3. **TEST-REF-004** - Standardize factory function naming
-4. **PROXY-REF-001** - Add proper error logging to catch blocks
-5. **WEB-OPT-002** - Add memoization to color distance calculations
+1. ~~**LOGGER-REF-003**~~ - ✅ FIXED: Consolidated redact fields to shared constants
+2. ~~**MAINT-REF-003**~~ - ✅ FIXED: Consolidated locale lists to shared constants
+3. **TEST-REF-004** - ⚠️ ACCEPTABLE: Factory naming already consistent
+4. **PROXY-REF-001** - ⚠️ INTENTIONAL: Fail-soft design for non-critical caching
+5. **WEB-OPT-002** - ⚠️ ACCEPTABLE: N² calculations acceptable for small sets
 
 ---
 
@@ -403,6 +403,72 @@ export function getModalUsername(interaction, defaultName): string;
 Updated handlers to import from shared module:
 - `preset-rejection.ts` - Removed local `ModalInteraction`, `ModalComponents`, `extractTextInputValue`
 - `ban-reason.ts` - Removed local `ModalInteraction`, `ModalComponents`, `extractTextInputValue`
+
+---
+
+### Medium Effort Refactoring Addressed (2026-01-19)
+
+| ID | Status | Rationale |
+|----|--------|-----------|
+| **LOGGER-REF-003** | ✅ FIXED | Consolidated hardcoded redact fields to centralized `constants.ts`. Core fields (9) and worker-specific fields (4) now defined in single source of truth. |
+| **MAINT-REF-003** | ✅ FIXED | Consolidated hardcoded locale lists across 5 files to `constants.ts`. Added `LOCALE_CODES`, `LocaleCode` type, and `XIVAPI_SUPPORTED_LOCALES` constants. |
+| **CORE-REF-002** | ⏸️ DEFERRED | Price parsing logic duplicated in `parseApiResponse()` (~35 lines) and `parseBatchApiResponse()` (~30 lines). Valid refactoring target but requires careful testing - pricing logic is business-critical. Extract to `parsePriceFromApiItem()` helper. |
+| **DISCORD-REF-001** | ⏸️ DEFERRED | Command handler pattern across 16+ files shares common patterns (user ID extraction, option parsing, error responses). LOW priority - abstraction would be a large architectural change with limited benefit. Patterns are clear and files are manageable. |
+| **MOD-REF-001** | ⏸️ DEFERRED | `processModerateCommand` is 162 lines with 4 switch cases (pending, approve, reject, stats). Valid refactoring target to extract each case to separate handler, but requires careful testing of moderator workflows. |
+| **PRESETS-REF-001** | ⏸️ DEFERRED | Validation logic ~60% scattered across `presets.ts`, `moderation.ts`, `moderation-service.ts`, `auth.ts`. Valid target for consolidation into `validation-service.ts`, but requires comprehensive testing. |
+
+#### LOGGER-REF-003 Fix: Centralized Redact Fields
+
+Created `xivdyetools-logger/src/constants.ts` to eliminate duplicated redact field arrays:
+
+```typescript
+// BEFORE: Duplicated in base-logger.ts (9 fields) and worker.ts (13 fields)
+const DEFAULT_REDACT_FIELDS = ['password', 'token', 'secret', ...];  // base-logger.ts
+const redactFields: [...] = ['password', 'token', ...];  // worker.ts (13 fields)
+
+// AFTER: Single source of truth
+// constants.ts
+export const CORE_REDACT_FIELDS = [
+  'password', 'token', 'secret', 'authorization', 'cookie',
+  'api_key', 'apiKey', 'access_token', 'refresh_token',
+] as const;
+
+export const WORKER_SPECIFIC_REDACT_FIELDS = [
+  'jwt_secret', 'bot_api_secret', 'bot_signing_secret', 'discord_client_secret',
+] as const;
+
+export const WORKER_REDACT_FIELDS = [...CORE_REDACT_FIELDS, ...WORKER_SPECIFIC_REDACT_FIELDS] as const;
+export const DEFAULT_REDACT_FIELDS = CORE_REDACT_FIELDS;
+```
+
+Files modified:
+- `xivdyetools-logger/src/constants.ts` (created)
+- `xivdyetools-logger/src/core/base-logger.ts` (imports from constants)
+- `xivdyetools-logger/src/presets/worker.ts` (imports from constants)
+
+#### MAINT-REF-003 Fix: Centralized Locale Lists
+
+Added locale constants to `xivdyetools-maintainer/src/utils/constants.ts`:
+
+```typescript
+// BEFORE: Hardcoded in 5+ locations
+const validCodes = ['en', 'ja', 'de', 'fr', 'ko', 'zh'];  // server/api.ts (3 places)
+const locales = ['en', 'ja', 'de', 'fr', 'ko', 'zh'];     // fileService.ts
+z.enum(['en', 'ja', 'de', 'fr', 'ko', 'zh']);              // schemas.ts
+const SUPPORTED_LANGUAGES = ['en', 'ja', 'de', 'fr'];      // xivapiService.ts
+
+// AFTER: Single source of truth
+export const LOCALE_CODES = ['en', 'ja', 'de', 'fr', 'ko', 'zh'] as const;
+export type LocaleCode = (typeof LOCALE_CODES)[number];
+export const XIVAPI_SUPPORTED_LOCALES = ['en', 'ja', 'de', 'fr'] as const;
+```
+
+Files modified:
+- `xivdyetools-maintainer/src/utils/constants.ts` (added LOCALE_CODES, XIVAPI_SUPPORTED_LOCALES)
+- `xivdyetools-maintainer/src/services/xivapiService.ts` (imports XIVAPI_SUPPORTED_LOCALES)
+- `xivdyetools-maintainer/src/services/fileService.ts` (imports LOCALE_CODES)
+- `xivdyetools-maintainer/server/api.ts` (imports LOCALE_CODES)
+- `xivdyetools-maintainer/server/schemas.ts` (imports LOCALE_CODES for z.enum)
 
 ---
 
