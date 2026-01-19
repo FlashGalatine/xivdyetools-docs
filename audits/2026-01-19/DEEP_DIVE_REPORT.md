@@ -63,7 +63,7 @@
 | ID | Project | Title | Priority | Effort |
 |----|---------|-------|----------|--------|
 | ✅CORE-REF-001 | xivdyetools-core | Excessive Error Swallowing in DyeSearch | HIGH | LOW |
-| ⏸️CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
+| ✅CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
 | ⏸️DISCORD-REF-001 | xivdyetools-discord-worker | Repeated Command Handler Pattern | LOW | MEDIUM |
 | ⚠️DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
 | ✅LOGGER-REF-003 | xivdyetools-logger | Hardcoded Redact Fields in Multiple Locations | MEDIUM | MEDIUM |
@@ -76,7 +76,7 @@
 | ⚠️TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
 | ✅TYPES-REF-002 | xivdyetools-types | Missing Discriminated Union Audit | MEDIUM | HIGH |
 | ⚠️PROXY-REF-001 | xivdyetools-universalis-proxy | Over-Broad Empty Catch Blocks | MEDIUM | LOW |
-| WEB-REF-003 | xivdyetools-web-app | Component Size - MixerTool and HarmonyTool Exceed 500 Lines | MEDIUM | MEDIUM |
+| WEB-REF-003 | xivdyetools-web-app | Component Size - MixerTool and HarmonyTool Exceed 500 Lines | MEDIUM | HIGH |
 
 ### Optimization Opportunities
 
@@ -412,7 +412,7 @@ Updated handlers to import from shared module:
 |----|--------|-----------|
 | **LOGGER-REF-003** | ✅ FIXED | Consolidated hardcoded redact fields to centralized `constants.ts`. Core fields (9) and worker-specific fields (4) now defined in single source of truth. |
 | **MAINT-REF-003** | ✅ FIXED | Consolidated hardcoded locale lists across 5 files to `constants.ts`. Added `LOCALE_CODES`, `LocaleCode` type, and `XIVAPI_SUPPORTED_LOCALES` constants. |
-| **CORE-REF-002** | ⏸️ DEFERRED | Price parsing logic duplicated in `parseApiResponse()` (~35 lines) and `parseBatchApiResponse()` (~30 lines). Valid refactoring target but requires careful testing - pricing logic is business-critical. Extract to `parsePriceFromApiItem()` helper. |
+| **CORE-REF-002** | ✅ FIXED | Extracted duplicated price parsing logic (~65 lines total) into shared `extractPriceFromApiItem()` helper. Added `UniversalisItemResult` type for consistency. |
 | **DISCORD-REF-001** | ⏸️ DEFERRED | Command handler pattern across 16+ files shares common patterns (user ID extraction, option parsing, error responses). LOW priority - abstraction would be a large architectural change with limited benefit. Patterns are clear and files are manageable. |
 | **MOD-REF-001** | ⏸️ DEFERRED | `processModerateCommand` is 162 lines with 4 switch cases (pending, approve, reject, stats). Valid refactoring target to extract each case to separate handler, but requires careful testing of moderator workflows. |
 | **PRESETS-REF-001** | ⏸️ DEFERRED | Validation logic ~60% scattered across `presets.ts`, `moderation.ts`, `moderation-service.ts`, `auth.ts`. Valid target for consolidation into `validation-service.ts`, but requires comprehensive testing. |
@@ -469,6 +469,70 @@ Files modified:
 - `xivdyetools-maintainer/src/services/fileService.ts` (imports LOCALE_CODES)
 - `xivdyetools-maintainer/server/api.ts` (imports LOCALE_CODES)
 - `xivdyetools-maintainer/server/schemas.ts` (imports LOCALE_CODES for z.enum)
+
+#### CORE-REF-002 Fix: Centralized Price Extraction Logic
+
+Extracted duplicated price parsing logic from `APIService.ts` into a shared helper function:
+
+```typescript
+// BEFORE: ~35 lines duplicated in parseApiResponse() and ~30 lines in parseBatchApiResponse()
+// Both contained identical logic:
+let price: number | null = null;
+let worldId: number | undefined = undefined;
+
+if (result.nq?.minListing) {
+  if (result.nq.minListing.dc?.price) { price = ...; worldId = ...; }
+  else if (result.nq.minListing.world?.price) { price = ...; worldId = ...; }
+  else if (result.nq.minListing.region?.price) { price = ...; worldId = ...; }
+}
+if (!price && result.hq?.minListing) {
+  // Same pattern for HQ prices...
+}
+
+// AFTER: Single source of truth with documented priority order
+export interface UniversalisItemResult {
+  itemId: number;
+  nq?: QualityData;
+  hq?: QualityData;
+}
+
+/**
+ * Extract price and worldId from a Universalis API item result
+ * Priority: NQ DC → NQ World → NQ Region → HQ DC → HQ World → HQ Region
+ */
+function extractPriceFromApiItem(result: UniversalisItemResult): ExtractedPriceInfo {
+  let price: number | null = null;
+  let worldId: number | undefined = undefined;
+
+  if (result.nq?.minListing) {
+    const nqListing = result.nq.minListing;
+    if (nqListing.dc?.price) { price = nqListing.dc.price; worldId = nqListing.dc.worldId; }
+    else if (nqListing.world?.price) { price = nqListing.world.price; worldId = nqListing.world.worldId; }
+    else if (nqListing.region?.price) { price = nqListing.region.price; worldId = nqListing.region.worldId; }
+  }
+
+  if (!price && result.hq?.minListing) {
+    // Same pattern for HQ...
+  }
+
+  return { price, worldId };
+}
+```
+
+**Benefits:**
+- **Single Source of Truth**: Price extraction priority logic now documented in one place
+- **Type Safety**: New `UniversalisItemResult` type replaces 3 identical inline type definitions
+- **Reduced Line Count**: ~65 lines of duplicated code reduced to single helper (~35 lines)
+- **Testability**: Helper function can be unit tested independently
+- **Maintainability**: Future Universalis API changes only need updates in one location
+
+Files modified:
+- `xivdyetools-core/src/services/APIService.ts`
+  - Added `UniversalisItemResult` exported interface (line 191)
+  - Added `extractPriceFromApiItem()` helper function (line 220)
+  - Updated `fetchWithTimeout()` return type to use `UniversalisItemResult[]`
+  - Updated `parseApiResponse()` to use helper
+  - Updated `parseBatchApiResponse()` to use helper
 
 ---
 
