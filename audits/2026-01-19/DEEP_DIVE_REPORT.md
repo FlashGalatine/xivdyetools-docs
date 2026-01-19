@@ -923,7 +923,7 @@ export type { HarmonyTypeInfo, ScoredDyeMatch, HarmonyConfig } from './harmony-g
 | Phase 1 (Pure Logic) | ✅ DONE | Extract algorithmic logic to services |
 | Phase 2 (Mobile Dedup) | ✅ DONE | Eliminate desktop ↔ drawer duplication |
 | Phase 3 (Desktop UI) | ✅ DONE | Extract panel controllers to shared service |
-| Phase 4 (Shared Services) | ⏸️ PENDING | Price mixin, state management |
+| Phase 4 (Shared Services) | ✅ DONE | Price utilities, display options, Extractor modernization |
 
 ##### Phase 2 Fix Details: Eliminate Desktop ↔ Drawer Duplication
 
@@ -1084,6 +1084,102 @@ this.dyeFilters = filtersRefs.filters;
 - `xivdyetools-web-app/src/services/index.ts` (exports added)
 - `xivdyetools-web-app/src/components/gradient-tool.ts` (refactored)
 - `xivdyetools-web-app/src/components/extractor-tool.ts` (refactored)
+
+##### Phase 4 Fix Details: Shared Price Utilities and Extractor Modernization
+
+**Status:** ✅ FIXED
+
+Phase 4 completes the WEB-REF-003 refactoring by creating shared utilities for price formatting and display options handling, and modernizing the ExtractorTool to use the centralized MarketBoardService instead of local state.
+
+###### New Services Created
+
+**`xivdyetools-web-app/src/services/price-utilities.ts`** (~170 lines)
+
+Provides reusable utilities for price formatting and card data preparation:
+```typescript
+// Price formatting
+export function formatPriceWithSuffix(price: number, suffix?: string): string;
+export function getDyePriceDisplay(dye: Dye, options: DyePriceDisplayOptions): string | null;
+export function getPriceInfo(dye: Dye, priceData: Map<number, PriceData>): PriceData | undefined;
+
+// Card data preparation
+export interface PriceCardData {
+  marketServer?: string;
+  price?: number;
+  showPrice: boolean;
+}
+export function preparePriceCardData(dye: Dye, service: MarketBoardService): PriceCardData;
+export function preparePriceCardDataFromMap(dye, priceData, showPrices, serverName?): PriceCardData;
+
+// Batch operations
+export function getItemIdsForPriceFetch(dyes: Dye[], service: MarketBoardService): number[];
+export function hasCachedPrices(dyes: Dye[], priceData: Map<number, PriceData>): boolean;
+```
+
+**`xivdyetools-web-app/src/services/display-options-helper.ts`** (~120 lines)
+
+Provides standardized display options handling:
+```typescript
+// Default configuration
+export const DEFAULT_DISPLAY_OPTIONS: DisplayOptionsConfig;
+
+// Apply and compare options
+export function applyDisplayOptions(config: ApplyDisplayOptionsConfig): ApplyDisplayOptionsResult;
+export function hasDisplayOptionsChanges(current, incoming): boolean;
+export function getCardDisplayOptions(options, showPrices): Partial<DisplayOptionsConfig>;
+export function mergeWithDefaults(partial): DisplayOptionsConfig;
+```
+
+###### ExtractorTool Modernization
+
+Migrated ExtractorTool from local price state to centralized MarketBoardService:
+
+**Before (local state):**
+```typescript
+private showPrices: boolean = false;
+private priceData: Map<number, PriceData> = new Map();
+
+// Manual state management
+this.showPrices = this.marketBoard.getShowPrices();
+this.priceData.clear();
+this.priceData.set(id, price);
+```
+
+**After (service-backed getters):**
+```typescript
+private marketBoardService: MarketBoardService;
+
+// Getters delegate to service
+private get showPrices(): boolean {
+  return this.marketBoardService.getShowPrices();
+}
+private get priceData(): Map<number, PriceData> {
+  return this.marketBoardService.getAllPrices();
+}
+
+// Service handles cache management
+await this.marketBoardService.fetchPricesForDyes(dyes);
+```
+
+**Benefits:**
+- Race condition protection via MarketBoardService's request versioning
+- Shared price cache across all tools (no duplicate fetches)
+- Automatic cache clearing on server change
+- Consistent behavior with Mixer, Harmony, and Gradient tools
+
+###### Key Design Decisions
+
+1. **Getter pattern**: `showPrices` and `priceData` are getters that delegate to MarketBoardService
+2. **Service initialization**: MarketBoardService initialized in constructor
+3. **Cache management**: Service handles all cache clearing/updating; tools just re-render
+4. **Callback-based updates**: onPricesToggled and onServerChanged just trigger re-renders
+
+###### Files Modified
+
+- `xivdyetools-web-app/src/services/price-utilities.ts` (created)
+- `xivdyetools-web-app/src/services/display-options-helper.ts` (created)
+- `xivdyetools-web-app/src/services/index.ts` (exports added)
+- `xivdyetools-web-app/src/components/extractor-tool.ts` (migrated to MarketBoardService)
 
 ---
 
