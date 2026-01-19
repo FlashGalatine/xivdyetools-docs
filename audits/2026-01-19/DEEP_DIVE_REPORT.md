@@ -37,26 +37,26 @@
 | ✅CORE-BUG-003 | xivdyetools-core | Potential Null Reference in KDTree Nearest Neighbor | HIGH | Null Safety |
 | ✅CORE-BUG-004 | xivdyetools-core | Unvalidated Type Cast in DyeDatabase | HIGH | Type Safety |
 | ✅DISCORD-BUG-001 | xivdyetools-discord-worker | Race Condition in Analytics Counter Increment | MEDIUM | Race Condition |
-| DISCORD-BUG-002 | xivdyetools-discord-worker | Missing Error Handling in Analytics.writeDataPoint | MEDIUM | Error Handling |
+| ✅DISCORD-BUG-002 | xivdyetools-discord-worker | Missing Error Handling in Analytics.writeDataPoint | MEDIUM | Error Handling |
 | ✅LOGGER-BUG-001 | xivdyetools-logger | Race Condition in Concurrent perf.start() Calls | HIGH | Concurrency |
 | LOGGER-BUG-002 | xivdyetools-logger | Error Sanitization Regex Edge Cases | MEDIUM | Security |
-| MAINT-BUG-001 | xivdyetools-maintainer | Unhandled Promise Rejection in Server Health Check | MEDIUM | Async Handling |
-| MAINT-BUG-005 | xivdyetools-maintainer | Stale Session Token Caching | MEDIUM | State Management |
+| ✅MAINT-BUG-001 | xivdyetools-maintainer | Unhandled Promise Rejection in Server Health Check | MEDIUM | Async Handling |
+| ✅MAINT-BUG-005 | xivdyetools-maintainer | Stale Session Token Caching | MEDIUM | State Management |
 | ✅MOD-BUG-001 | xivdyetools-moderation-worker | Race Condition in Rate Limiting | HIGH | Concurrency |
 | MOD-BUG-006 | xivdyetools-moderation-worker | Race Condition in Modal Submission Processing | MEDIUM | Concurrency |
-| OAUTH-BUG-001 | xivdyetools-oauth | String Spread with charCodeAt Encoding | MEDIUM | Encoding |
+| ✅OAUTH-BUG-001 | xivdyetools-oauth | String Spread with charCodeAt Encoding | MEDIUM | Encoding |
 | OAUTH-SEC-004 | xivdyetools-oauth | Race Condition in Rate Limiter DO Persistence | MEDIUM | Concurrency |
-| PRESETS-BUG-001 | xivdyetools-presets-api | Potential Memory Leak in Rate Limiter | MEDIUM | Memory Leak |
+| ✅PRESETS-BUG-001 | xivdyetools-presets-api | Potential Memory Leak in Rate Limiter | MEDIUM | Memory Leak |
 | PRESETS-BUG-002 | xivdyetools-presets-api | Race Condition in Vote Count Inconsistency | MEDIUM | Race Condition |
-| TEST-BUG-001 | xivdyetools-test-utils | Race Condition in KV Mock TTL Expiration | HIGH | Concurrency |
-| TEST-BUG-002 | xivdyetools-test-utils | Memory Leak in Fetcher Mock Call History | MEDIUM | Memory Leak |
-| TEST-BUG-005 | xivdyetools-test-utils | Base64URL Encoding May Produce Invalid Results | MEDIUM | Encoding |
-| TYPES-BUG-002 | xivdyetools-types | Missing Discriminant Union in AuthResponse | MEDIUM | Type Safety |
+| ✅TEST-BUG-001 | xivdyetools-test-utils | Race Condition in KV Mock TTL Expiration | HIGH | Concurrency |
+| ✅TEST-BUG-002 | xivdyetools-test-utils | Memory Leak in Fetcher Mock Call History | MEDIUM | Memory Leak |
+| ✅TEST-BUG-005 | xivdyetools-test-utils | Base64URL Encoding May Produce Invalid Results | MEDIUM | Encoding |
+| ✅TYPES-BUG-002 | xivdyetools-types | Missing Discriminant Union in AuthResponse | MEDIUM | Type Safety |
 | ✅TYPES-BUG-011 | xivdyetools-types | XIVAuthUser Type Doesn't Match Documented Response | HIGH | Type Mismatch |
 | ✅PROXY-BUG-001 | xivdyetools-universalis-proxy | Race Condition in Response.json() Double-Parsing | HIGH | Async Handling |
 | ✅PROXY-BUG-002 | xivdyetools-universalis-proxy | Unhandled Promise Rejection in Request Coalescer | HIGH | Error Handling |
 | ✅WEB-BUG-001 | xivdyetools-web-app | Event Listener Accumulation Risk in DyeSelector | HIGH | Memory Leak |
-| WEB-BUG-003 | xivdyetools-web-app | Race Condition in Palette Service Import Count | MEDIUM | Race Condition |
+| ✅WEB-BUG-003 | xivdyetools-web-app | Race Condition in Palette Service Import Count | MEDIUM | Race Condition |
 
 ### Refactoring Opportunities
 
@@ -247,6 +247,97 @@ start(label: string): boolean {
 
 #### MOD-BUG-001 - Rate Limiter Race Condition
 Same pattern as DISCORD-BUG-001: read-then-write without atomicity. Applied the same optimistic concurrency fix with retries and version metadata.
+
+---
+
+## Hidden Bugs Fixed (2026-01-19)
+
+The following MEDIUM severity hidden bugs have been addressed:
+
+| ID | Status | Description | Files Modified |
+|----|--------|-------------|----------------|
+| **TEST-BUG-002** | ✅ FIXED | Memory leak in Fetcher Mock call history. Added `maxCallHistory` config with FIFO eviction to prevent unbounded memory growth. | `xivdyetools-test-utils/src/cloudflare/fetcher.ts` |
+| **TEST-BUG-005** | ✅ FIXED | Base64URL decode failed to properly handle UTF-8 multi-byte characters. Added `base64UrlDecodeBytes()` helper with `TextDecoder`. | `xivdyetools-test-utils/src/utils/crypto.ts` |
+| **MAINT-BUG-005** | ✅ FIXED | Stale session token caching caused 401 errors after server restart. Added `invalidateSession()` and `fetchWithRetry()` with automatic token refresh on 401/403. | `xivdyetools-maintainer/src/services/fileService.ts` |
+| **WEB-BUG-003** | ✅ FIXED | Race condition in palette import count. Consolidated two separate storage reads into one to prevent TOCTOU race. | `xivdyetools-web-app/src/services/palette-service.ts` |
+| **PRESETS-BUG-001** | ✅ FIXED | Memory leak in IP rate limiter. Added `maxTrackedIps` limit (10,000) with LRU-style eviction to prevent unbounded memory growth under DDoS. | `xivdyetools-presets-api/src/services/rate-limit-service.ts` |
+| **MAINT-BUG-001** | ✅ FIXED | Unhandled promise rejection in server health check. Added `.catch()` handler to set `serverOnline = false` on failure. | `xivdyetools-maintainer/src/components/DyeForm.vue` |
+| **OAUTH-BUG-001** | ✅ FIXED | String spread with `charCodeAt` could fail on large arrays due to call stack limits. Replaced with `Array.from().map().join()` pattern. | `xivdyetools-oauth/src/services/jwt-service.ts` |
+| **DISCORD-BUG-002** | ✅ VERIFIED | Analytics.writeDataPoint already had try-catch error handling with logger support. No changes needed. | — |
+
+### Fix Details
+
+#### TEST-BUG-002 - Fetcher Mock Memory Leak
+The mock fetcher's `_calls` array grew unbounded, which could cause memory issues in long-running test suites:
+
+```typescript
+// BEFORE: Array grows without limit
+const calls: FetcherCall[] = [];
+
+// AFTER: FIFO eviction when limit exceeded
+let maxCallHistory = config?.maxCallHistory ?? DEFAULT_MAX_CALL_HISTORY;
+
+// In fetch handler:
+while (calls.length > maxCallHistory) {
+  calls.shift(); // FIFO eviction
+}
+```
+
+#### MAINT-BUG-005 - Session Token Invalidation
+When server restarts, old tokens become invalid but client kept using them:
+
+```typescript
+// ADDED: Token invalidation on 401/403
+export function invalidateSession(): void {
+  sessionToken = null;
+  console.warn('Session token invalidated - will request new token on next mutation');
+}
+
+// ADDED: Automatic retry with fresh token
+async function fetchWithRetry(url, options, timeout): Promise<Response> {
+  const response = await fetchWithTimeout(url, { ...options, headers }, timeout);
+
+  if (response.status === 401 || response.status === 403) {
+    invalidateSession();
+    const newToken = await getSessionToken(true);
+    return fetchWithTimeout(url, { ...options, headers: retryHeaders }, timeout);
+  }
+  return response;
+}
+```
+
+#### PRESETS-BUG-001 - Rate Limiter Memory Bound
+Added maximum IP tracking limit to prevent memory exhaustion under attack:
+
+```typescript
+const PUBLIC_RATE_LIMIT = {
+  maxRequests: 100,
+  windowMs: 60_000,
+  maxTrackedIps: 10_000,  // NEW: Prevents unbounded growth
+};
+
+function enforceMaxTrackedIps(): void {
+  if (ipRequestLog.size <= PUBLIC_RATE_LIMIT.maxTrackedIps) return;
+
+  // LRU-style eviction (Map maintains insertion order)
+  const entriesToRemove = ipRequestLog.size - PUBLIC_RATE_LIMIT.maxTrackedIps;
+  const keys = Array.from(ipRequestLog.keys());
+  for (let i = 0; i < entriesToRemove; i++) {
+    ipRequestLog.delete(keys[i]);
+  }
+}
+```
+
+### Deferred Bugs
+
+The following bugs require more complex architectural changes and are deferred:
+
+| ID | Reason for Deferral |
+|----|---------------------|
+| **LOGGER-BUG-002** | Regex edge cases in error sanitization require careful engineering and comprehensive testing |
+| **MOD-BUG-006** | Modal submission race condition needs architectural changes to async flow |
+| **OAUTH-SEC-004** | DO persistence race is intentional trade-off for performance; documented as acceptable |
+| **PRESETS-BUG-002** | Vote count race needs D1 transaction support or schema change |
 
 ---
 
