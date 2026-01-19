@@ -68,7 +68,7 @@
 | ⚠️DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
 | ✅LOGGER-REF-003 | xivdyetools-logger | Hardcoded Redact Fields in Multiple Locations | MEDIUM | MEDIUM |
 | ✅MAINT-REF-003 | xivdyetools-maintainer | Hardcoded Locale Lists in Multiple Files | MEDIUM | MEDIUM |
-| ⏸️MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
+| ✅MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
 | ✅MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
 | ✅OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
 | ✅PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
@@ -414,7 +414,7 @@ Updated handlers to import from shared module:
 | **MAINT-REF-003** | ✅ FIXED | Consolidated hardcoded locale lists across 5 files to `constants.ts`. Added `LOCALE_CODES`, `LocaleCode` type, and `XIVAPI_SUPPORTED_LOCALES` constants. |
 | **CORE-REF-002** | ✅ FIXED | Extracted duplicated price parsing logic (~65 lines total) into shared `extractPriceFromApiItem()` helper. Added `UniversalisItemResult` type for consistency. |
 | **DISCORD-REF-001** | ✅ FIXED | Extracted duplicated hex color validation (~50 lines) and dye resolution (~60 lines) into shared `src/utils/color.ts`. While full command handler abstraction was deferred, these utilities reduce duplication across 5 command handlers. |
-| **MOD-REF-001** | ⏸️ DEFERRED | `processModerateCommand` is 162 lines with 4 switch cases (pending, approve, reject, stats). Valid refactoring target to extract each case to separate handler, but requires careful testing of moderator workflows. |
+| **MOD-REF-001** | ✅ FIXED | Refactored `processModerateCommand` (162 lines) into 4 focused handler functions plus shared validation helper. Main function reduced to thin dispatcher (~45 lines). |
 | **PRESETS-REF-001** | ✅ FIXED | Created centralized `validation-service.ts` with generic validators and domain-specific functions. Consolidated preset validators (name, description, dyes, tags) and moderation validators (status, reason). ~85 lines of scattered logic replaced by ~100 lines of reusable service. |
 
 #### LOGGER-REF-003 Fix: Centralized Redact Fields
@@ -644,6 +644,83 @@ Files modified:
 - `xivdyetools-presets-api/src/services/validation-service.ts` (created - 100 lines)
 - `xivdyetools-presets-api/src/handlers/presets.ts` (imports validators, removed ~36 lines)
 - `xivdyetools-presets-api/src/handlers/moderation.ts` (imports validators, removed ~8 lines)
+
+#### MOD-REF-001 Fix: Extract Moderation Action Handlers
+
+Refactored the 162-line `processModerateCommand` function into focused, single-responsibility handlers:
+
+```typescript
+// BEFORE: Monolithic 162-line function with 4 switch cases
+async function processModerateCommand(
+  interaction, env, t, userId, action, presetId, reason, logger
+): Promise<void> {
+  try {
+    switch (action) {
+      case 'pending': { /* ~34 lines */ }
+      case 'approve': { /* ~40 lines with duplicated ID validation */ }
+      case 'reject': { /* ~35 lines with duplicated ID validation */ }
+      case 'stats': { /* ~18 lines */ }
+    }
+  } catch (error) { /* error handling */ }
+}
+
+// AFTER: Context object + extracted handlers + shared validation
+interface ModerationContext {
+  interaction: DiscordInteraction;
+  env: Env;
+  t: Translator;
+  userId: string;
+  logger?: ExtendedLogger;
+}
+
+// Shared validation eliminates duplication from approve/reject
+async function validatePresetIdOrSendError(ctx, presetId): Promise<boolean>;
+
+// Focused handlers with single responsibility
+async function handlePendingAction(ctx: ModerationContext): Promise<void>;
+async function handleApproveAction(ctx, presetId, reason): Promise<void>;
+async function handleRejectAction(ctx, presetId, reason): Promise<void>;
+async function handleStatsAction(ctx: ModerationContext): Promise<void>;
+
+// Thin dispatcher (~45 lines including error handling)
+async function processModerateCommand(...): Promise<void> {
+  const ctx: ModerationContext = { interaction, env, t, userId, logger };
+  try {
+    switch (action) {
+      case 'pending': await handlePendingAction(ctx); break;
+      case 'approve': await handleApproveAction(ctx, presetId, reason); break;
+      case 'reject': await handleRejectAction(ctx, presetId, reason); break;
+      case 'stats': await handleStatsAction(ctx); break;
+      default: /* error response */
+    }
+  } catch (error) { /* centralized error handling */ }
+}
+```
+
+**Key improvements:**
+- `ModerationContext` interface - Reduces parameter passing from 8 params to 1 context object
+- `validatePresetIdOrSendError()` - Eliminates ~20 lines of duplicated UUID validation from approve/reject
+- `sendModerationResponse()` - Standardizes response sending pattern
+- Individual handlers - Each is focused, testable, and self-documenting
+- Thin dispatcher - Main function reduced from 162 to ~45 lines
+
+**Benefits:**
+- **Single Responsibility**: Each handler does one thing well
+- **Testability**: Individual handlers can be unit tested in isolation
+- **Maintainability**: Adding new actions only requires a new handler + dispatch case
+- **Reduced Duplication**: UUID validation logic consolidated to shared helper
+- **Type Safety**: `ModerationContext` interface provides better IDE support
+
+Files modified:
+- `xivdyetools-moderation-worker/src/handlers/commands/preset.ts`
+  - Added `ModerationContext` interface
+  - Added `sendModerationResponse()` helper
+  - Added `validatePresetIdOrSendError()` shared validation
+  - Added `handlePendingAction()` handler (~34 lines)
+  - Added `handleApproveAction()` handler (~35 lines)
+  - Added `handleRejectAction()` handler (~31 lines)
+  - Added `handleStatsAction()` handler (~18 lines)
+  - Refactored `processModerateCommand()` to thin dispatcher (~45 lines)
 
 ---
 
