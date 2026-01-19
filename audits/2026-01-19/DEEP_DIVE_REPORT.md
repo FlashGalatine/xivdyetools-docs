@@ -481,7 +481,7 @@ The following items from the "Plan for Next Sprint" priority matrix have been ad
 | **TYPES-REF-002** | ✅ FIXED | Implemented discriminated unions for all response types. AuthResponse, RefreshResponse, UserInfoResponse, APIResponse, PresetSubmitResponse, PresetEditResponse, VoteResponse, and ModerationResponse now use `success: true` / `success: false` literal types for proper type narrowing. | `xivdyetools-types/src/auth/response.ts`, `xivdyetools-types/src/api/response.ts`, `xivdyetools-types/src/preset/response.ts`, `xivdyetools-types/src/*/index.ts` |
 | **PRESETS-OPT-003** | ✅ VERIFIED | Database indexes already comprehensive. `schema.sql` includes composite indexes for filtered+sorted queries (status+category+vote, status+vote, status+created, author+created) plus unique index on `dye_signature`. No changes needed. | `xivdyetools-presets-api/schema.sql` (no changes needed) |
 | **TEST-BUG-001** | ✅ FIXED | Race condition in KV mock TTL expiration. Added snapshot-based timestamp capture (`Date.now() / 1000` at start of operation) to prevent TOCTOU races with mocked time. Also added proper expired key cleanup in `list()`. | `xivdyetools-test-utils/src/cloudflare/kv.ts` |
-| **WEB-REF-003** | ⏸️ DEFERRED | Breaking down MixerTool (~2000 lines) and HarmonyTool (~2000 lines) into smaller components. HIGH effort requiring architectural planning. Deferred to future sprint. | — |
+| **WEB-REF-003** | ⏸️ DEFERRED | Breaking down MixerTool (1,994 lines) and HarmonyTool (2,072 lines) into smaller components. HIGH effort requiring architectural planning. See detailed analysis below. | — |
 | **DISCORD-OPT-001** | ⏸️ DEFERRED | Refactoring collection storage from O(n) array to indexed individual KV entries. Requires migration logic and careful atomic operation handling. HIGH effort. Deferred to future sprint. | — |
 
 ### Fix Details
@@ -547,6 +547,97 @@ get: async (key) => {
 ```
 
 Also added proper cleanup of expired entries in `list()` to prevent stale data accumulation.
+
+#### WEB-REF-003 - Large Component Analysis (Deep-Dive)
+
+**Status:** ⏸️ DEFERRED - HIGH effort requiring dedicated sprint
+
+Both MixerTool and HarmonyTool exceed 2,000 lines with similar architectural issues. A comprehensive deep-dive analysis has been completed to provide a refactoring roadmap.
+
+##### MixerTool Analysis (1,994 lines)
+
+| Metric | Value |
+|--------|-------|
+| Total lines | 1,994 |
+| Methods | ~35 private methods |
+| State properties | ~25 |
+| Child components | 12 (6 desktop + 6 mobile) |
+
+**Extractable Sub-Components:**
+
+| Component | Lines | Priority | Description |
+|-----------|-------|----------|-------------|
+| **ColorMixerEngine** | ~150 | HIGH | Pure color blending logic (RGB, LAB, OKLAB, RYB, HSL, Spectral). No DOM dependencies, highly testable, reusable. |
+| **CraftingUIRenderer** | ~350 | HIGH | Slot rendering, result display, hover effects. Self-contained DOM logic. |
+| **MobileDrawerManager** | ~400 | HIGH | Mobile-specific UI. Currently duplicates desktop logic. Could be lazy-loaded. |
+| **DesktopLeftPanelManager** | ~300 | MEDIUM | Coordinates DyeSelector, DyeFilters, MarketBoard, CollapsiblePanel instances. |
+| **ResultsGridRenderer** | ~100 | LOW | v4-result-card WebComponent integration. |
+
+**Post-Refactor Projection:** Main class reduced from 1,994 → ~800 lines (60% reduction)
+
+##### HarmonyTool Analysis (2,072 lines)
+
+| Metric | Value |
+|--------|-------|
+| Total lines | 2,072 |
+| Methods | ~45 |
+| State properties | ~21 |
+| Child components | 18 (desktop + mobile drawer) |
+| Code duplication | **95% (desktop ↔ drawer)** |
+
+**Extractable Sub-Components:**
+
+| Component | Lines | Priority | Description |
+|-----------|-------|----------|-------------|
+| **HarmonyGenerationEngine** | ~450 | HIGH | Core harmony calculation, hue matching, color distance. Pure business logic. |
+| **LeftPanelController** | ~450 | HIGH | Desktop panel rendering and event handling (13 methods). |
+| **MobileDrawerController** | ~400 | HIGH | **Critical:** 95% duplicate code with desktop. Eliminating this duplication is the highest-value extraction. |
+| **PriceManagementMixin** | ~140 | MEDIUM | Market board price fetching, could be shared across tools. |
+| **HarmonyStateManager** | ~150 | MEDIUM | State persistence, desktop ↔ drawer sync, external API. |
+| **RightPanelRenderer** | ~80 | LOW | Color wheel visualization, empty state. |
+
+**Post-Refactor Projection:** Main class reduced from 2,072 → ~400 lines (80% reduction)
+
+##### Shared Patterns Requiring Extraction
+
+Both components share problematic patterns that should be addressed together:
+
+1. **Desktop/Mobile Duplication** - Both tools maintain separate but nearly identical component instances for desktop vs. mobile drawer
+2. **Mixed Concerns** - UI rendering logic mixed with business logic in single classes
+3. **Child Component Sprawl** - 12-18 child component instances managed inline
+4. **State Synchronization** - Manual sync between desktop and drawer state
+
+##### Recommended Refactoring Order
+
+1. **Extract Pure Logic First** (no DOM dependencies)
+   - `ColorMixerEngine` from MixerTool
+   - `HarmonyGenerationEngine` from HarmonyTool
+
+2. **Eliminate Mobile Duplication** (highest ROI)
+   - Create shared `ResponsivePanelController` base class
+   - Extract `MobileDrawerManager` / `MobileDrawerController`
+
+3. **Extract Desktop UI Controllers**
+   - `DesktopLeftPanelManager` / `LeftPanelController`
+   - `CraftingUIRenderer` / `RightPanelRenderer`
+
+4. **Extract Shared Services**
+   - `PriceManagementMixin` (reusable across tools)
+   - State management patterns
+
+##### Effort Estimate
+
+| Phase | Files Created | Lines Changed | Estimated Effort |
+|-------|---------------|---------------|------------------|
+| Phase 1 (Pure Logic) | 2 | ~600 | 4-6 hours |
+| Phase 2 (Mobile Dedup) | 2 | ~800 | 6-8 hours |
+| Phase 3 (Desktop UI) | 4 | ~1,000 | 8-12 hours |
+| Phase 4 (Shared Services) | 2 | ~300 | 4-6 hours |
+| **Total** | **10** | **~2,700** | **22-32 hours** |
+
+**Testing Requirements:** Visual regression tests, unit tests for extracted logic, integration tests for component coordination.
+
+**Breaking Changes:** None expected - extracted classes can maintain same public interface.
 
 ---
 
