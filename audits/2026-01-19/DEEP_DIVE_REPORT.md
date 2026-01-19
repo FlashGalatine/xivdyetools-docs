@@ -489,30 +489,27 @@ if (!price && result.hq?.minListing) {
   // Same pattern for HQ prices...
 }
 
-// AFTER: Single source of truth with documented priority order
+// AFTER: Single source of truth with documented priority order (NQ only)
 export interface UniversalisItemResult {
   itemId: number;
   nq?: QualityData;
-  hq?: QualityData;
+  hq?: QualityData;  // Retained for API compatibility, but unused for dyes
 }
 
 /**
  * Extract price and worldId from a Universalis API item result
- * Priority: NQ DC → NQ World → NQ Region → HQ DC → HQ World → HQ Region
+ * Priority (NQ only): DC → World → Region
+ * Note: HQ intentionally not checked - dyes are always NQ in FFXIV
  */
 function extractPriceFromApiItem(result: UniversalisItemResult): ExtractedPriceInfo {
   let price: number | null = null;
   let worldId: number | undefined = undefined;
 
   if (result.nq?.minListing) {
-    const nqListing = result.nq.minListing;
-    if (nqListing.dc?.price) { price = nqListing.dc.price; worldId = nqListing.dc.worldId; }
-    else if (nqListing.world?.price) { price = nqListing.world.price; worldId = nqListing.world.worldId; }
-    else if (nqListing.region?.price) { price = nqListing.region.price; worldId = nqListing.region.worldId; }
-  }
-
-  if (!price && result.hq?.minListing) {
-    // Same pattern for HQ...
+    const listing = result.nq.minListing;
+    if (listing.dc?.price) { price = listing.dc.price; worldId = listing.dc.worldId; }
+    else if (listing.world?.price) { price = listing.world.price; worldId = listing.world.worldId; }
+    else if (listing.region?.price) { price = listing.region.price; worldId = listing.region.worldId; }
   }
 
   return { price, worldId };
