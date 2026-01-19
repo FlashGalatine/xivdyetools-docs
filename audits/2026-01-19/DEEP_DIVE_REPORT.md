@@ -71,7 +71,7 @@
 | ⏸️MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
 | ✅MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
 | ✅OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
-| ⏸️PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
+| ✅PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
 | ⚠️TEST-REF-001 | xivdyetools-test-utils | Long Method in setupFetchMock Handler Logic | MEDIUM | LOW |
 | ⚠️TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
 | ✅TYPES-REF-002 | xivdyetools-types | Missing Discriminated Union Audit | MEDIUM | HIGH |
@@ -415,7 +415,7 @@ Updated handlers to import from shared module:
 | **CORE-REF-002** | ✅ FIXED | Extracted duplicated price parsing logic (~65 lines total) into shared `extractPriceFromApiItem()` helper. Added `UniversalisItemResult` type for consistency. |
 | **DISCORD-REF-001** | ✅ FIXED | Extracted duplicated hex color validation (~50 lines) and dye resolution (~60 lines) into shared `src/utils/color.ts`. While full command handler abstraction was deferred, these utilities reduce duplication across 5 command handlers. |
 | **MOD-REF-001** | ⏸️ DEFERRED | `processModerateCommand` is 162 lines with 4 switch cases (pending, approve, reject, stats). Valid refactoring target to extract each case to separate handler, but requires careful testing of moderator workflows. |
-| **PRESETS-REF-001** | ⏸️ DEFERRED | Validation logic ~60% scattered across `presets.ts`, `moderation.ts`, `moderation-service.ts`, `auth.ts`. Valid target for consolidation into `validation-service.ts`, but requires comprehensive testing. |
+| **PRESETS-REF-001** | ✅ FIXED | Created centralized `validation-service.ts` with generic validators and domain-specific functions. Consolidated preset validators (name, description, dyes, tags) and moderation validators (status, reason). ~85 lines of scattered logic replaced by ~100 lines of reusable service. |
 
 #### LOGGER-REF-003 Fix: Centralized Redact Fields
 
@@ -579,6 +579,71 @@ Files modified:
 - `xivdyetools-discord-worker/src/handlers/commands/comparison.ts` (imports from color.ts, removed 45 lines)
 
 **Note:** Full command handler abstraction (user ID extraction, translator initialization, error response patterns) was not implemented as it would require a larger architectural change with limited benefit. The extracted color utilities address the most impactful duplication.
+
+#### PRESETS-REF-001 Fix: Centralized Validation Service
+
+Created `xivdyetools-presets-api/src/services/validation-service.ts` to consolidate scattered validation logic from `presets.ts` and `moderation.ts`:
+
+```typescript
+// BEFORE: Duplicated validation functions in multiple handlers
+
+// presets.ts - 4 local functions (~36 lines)
+function validateName(name: string): string | null {
+  if (name.length < 2 || name.length > 50) {
+    return 'Name must be 2-50 characters';
+  }
+  return null;
+}
+function validateDescription(description: string): string | null { ... }
+function validateDyes(dyes: unknown): string | null { ... }
+function validateTags(tags: unknown): string | null { ... }
+
+// moderation.ts - inline validation (~8 lines)
+const validStatuses: PresetStatus[] = ['approved', 'rejected', 'flagged', 'pending'];
+if (!body.status || !validStatuses.includes(body.status)) { ... }
+if (!body.reason || body.reason.length < 10 || body.reason.length > 200) { ... }
+
+// AFTER: Single source of truth with exported constants
+export const PRESET_VALIDATION_RULES = {
+  name: { minLength: 2, maxLength: 50 },
+  description: { minLength: 10, maxLength: 200 },
+  dyes: { minLength: 2, maxLength: 5 },
+  tags: { maxLength: 10, itemMaxLength: 30 },
+} as const;
+
+export const MODERATION_VALIDATION_RULES = {
+  reason: { minLength: 10, maxLength: 200 },
+  validStatuses: ['approved', 'rejected', 'flagged', 'pending'] as const,
+} as const;
+
+// Domain-specific validators using the constants
+export function validatePresetName(name: unknown): string | null;
+export function validatePresetDescription(description: unknown): string | null;
+export function validatePresetDyes(dyes: unknown): string | null;
+export function validatePresetTags(tags: unknown): string | null;
+export function validateModerationStatus(status: unknown): string | null;
+export function validateModerationReason(reason: unknown): string | null;
+
+// Derived type for moderation-allowed statuses (excludes 'hidden')
+export type ModerationStatus = (typeof MODERATION_VALIDATION_RULES.validStatuses)[number];
+```
+
+**Key features of the validation service:**
+- `PRESET_VALIDATION_RULES` / `MODERATION_VALIDATION_RULES` - Exported constants for consistent error messages and tests
+- Generic helpers: `validateStringLength()`, `validateArray()`, `validateEnum()` - Building blocks for custom validators
+- Backwards-compatible error messages - Preserved original message format for API stability
+- `ModerationStatus` type - Derived type that excludes 'hidden' from allowed moderation transitions
+
+**Benefits:**
+- **Single Source of Truth**: Validation rules defined once, error messages derived from constants
+- **Type Safety**: `ModerationStatus` type prevents setting presets to 'hidden' via moderation API
+- **Testability**: Individual validators can be unit tested independently
+- **Maintainability**: Changing validation rules (e.g., max name length) only requires updating one constant
+
+Files modified:
+- `xivdyetools-presets-api/src/services/validation-service.ts` (created - 100 lines)
+- `xivdyetools-presets-api/src/handlers/presets.ts` (imports validators, removed ~36 lines)
+- `xivdyetools-presets-api/src/handlers/moderation.ts` (imports validators, removed ~8 lines)
 
 ---
 
