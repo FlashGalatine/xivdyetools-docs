@@ -108,12 +108,12 @@
 
 ### Plan for Next Sprint (High Impact, High Effort)
 
-1. **TYPES-REF-002** - Implement discriminated unions for all response types
+1. ~~**TYPES-REF-002**~~ - ✅ FIXED: Discriminated unions for response types
 2. ~~**TYPES-BUG-011**~~ - ✅ VERIFIED: XIVAuthUser type already corrected
-3. **WEB-REF-003** - Break down large components (MixerTool, HarmonyTool)
-4. **PRESETS-OPT-003** - Add database indexes for common queries
-5. **DISCORD-OPT-001** - Refactor collection storage structure
-6. **TEST-BUG-001** - Race Condition in KV Mock TTL Expiration (HIGH)
+3. **WEB-REF-003** - Break down large components (MixerTool, HarmonyTool) - ⏸️ DEFERRED
+4. ~~**PRESETS-OPT-003**~~ - ✅ VERIFIED: Database indexes already comprehensive
+5. **DISCORD-OPT-001** - Refactor collection storage structure - ⏸️ DEFERRED
+6. ~~**TEST-BUG-001**~~ - ✅ FIXED: KV Mock TTL race condition
 
 ### Technical Debt Backlog (Lower Priority)
 
@@ -250,6 +250,84 @@ Same pattern as DISCORD-BUG-001: read-then-write without atomicity. Applied the 
 
 ---
 
+## Next Sprint Items Fixed (2026-01-19)
+
+The following items from the "Plan for Next Sprint" priority matrix have been addressed:
+
+| ID | Status | Description | Files Modified |
+|----|--------|-------------|----------------|
+| **TYPES-REF-002** | ✅ FIXED | Implemented discriminated unions for all response types. AuthResponse, RefreshResponse, UserInfoResponse, APIResponse, PresetSubmitResponse, PresetEditResponse, VoteResponse, and ModerationResponse now use `success: true` / `success: false` literal types for proper type narrowing. | `xivdyetools-types/src/auth/response.ts`, `xivdyetools-types/src/api/response.ts`, `xivdyetools-types/src/preset/response.ts`, `xivdyetools-types/src/*/index.ts` |
+| **PRESETS-OPT-003** | ✅ VERIFIED | Database indexes already comprehensive. `schema.sql` includes composite indexes for filtered+sorted queries (status+category+vote, status+vote, status+created, author+created) plus unique index on `dye_signature`. No changes needed. | `xivdyetools-presets-api/schema.sql` (no changes needed) |
+| **TEST-BUG-001** | ✅ FIXED | Race condition in KV mock TTL expiration. Added snapshot-based timestamp capture (`Date.now() / 1000` at start of operation) to prevent TOCTOU races with mocked time. Also added proper expired key cleanup in `list()`. | `xivdyetools-test-utils/src/cloudflare/kv.ts` |
+| **WEB-REF-003** | ⏸️ DEFERRED | Breaking down MixerTool (~2000 lines) and HarmonyTool (~2000 lines) into smaller components. HIGH effort requiring architectural planning. Deferred to future sprint. | — |
+| **DISCORD-OPT-001** | ⏸️ DEFERRED | Refactoring collection storage from O(n) array to indexed individual KV entries. Requires migration logic and careful atomic operation handling. HIGH effort. Deferred to future sprint. | — |
+
+### Fix Details
+
+#### TYPES-REF-002 - Discriminated Unions for Response Types
+The original response types used `success: boolean` with optional fields, which breaks TypeScript's type narrowing:
+
+```typescript
+// BEFORE: TypeScript can't narrow types
+interface AuthResponse {
+  success: boolean;
+  token?: string;    // Optional - unknown if present
+  error?: string;    // Optional - unknown if present
+}
+
+// AFTER: Discriminated union enables perfect narrowing
+type AuthResponse = AuthSuccessResponse | AuthErrorResponse;
+
+interface AuthSuccessResponse {
+  success: true;     // Literal type
+  token: string;     // Guaranteed present
+  user: AuthUser;
+  expires_at: number;
+}
+
+interface AuthErrorResponse {
+  success: false;    // Literal type
+  error: string;     // Guaranteed present
+}
+```
+
+Now consumers get full type safety:
+```typescript
+if (response.success) {
+  // TypeScript KNOWS: token, user, expires_at exist
+  console.log(response.user.username);
+} else {
+  // TypeScript KNOWS: error exists
+  console.error(response.error);
+}
+```
+
+#### TEST-BUG-001 - KV Mock TTL Race Condition
+The mock KV's TTL checking had a Time-Of-Check-To-Time-Of-Use (TOCTOU) vulnerability. In tests with mocked time (`vi.setSystemTime`), time could advance between checking expiration and returning the value:
+
+```typescript
+// BEFORE: Date.now() called multiple times
+const isExpired = (key: string): boolean => {
+  return Date.now() > expiration * 1000;  // Called here
+};
+
+get: async (key) => {
+  if (isExpired(key)) { ... }  // Then here
+  return store.get(key);        // Value could be stale
+}
+
+// AFTER: Snapshot timestamp used consistently
+get: async (key) => {
+  const nowSeconds = Date.now() / 1000;  // Capture once
+  if (isExpiredAt(key, nowSeconds)) { ... }  // Use snapshot
+  return store.get(key);
+}
+```
+
+Also added proper cleanup of expired entries in `list()` to prevent stale data accumulation.
+
+---
+
 ## Recommendations
 
 ### Cross-Cutting Concerns
@@ -264,10 +342,10 @@ Same pattern as DISCORD-BUG-001: read-then-write without atomicity. Applied the 
    - Categorize expected vs unexpected errors
    - Add error tracking integration
 
-3. **Type Safety**: The types package has several discriminated union issues that propagate to consumers. Priority:
-   - Fix AuthResponse union types first (affects auth flow)
-   - Add validation helpers for optional fields
-   - Document type constraints clearly
+3. **Type Safety**: ✅ Discriminated unions now implemented for all response types.
+   - AuthResponse, RefreshResponse, UserInfoResponse use proper unions
+   - APIResponse<T>, PresetSubmitResponse, PresetEditResponse, VoteResponse, ModerationResponse also updated
+   - Consumers now get full type narrowing with `if (response.success)`
 
 4. **Memory Management**: Rate limiters and mocks across projects share similar memory leak patterns:
    - Implement size limits on in-memory collections
