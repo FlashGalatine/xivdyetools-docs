@@ -82,17 +82,17 @@
 
 | ID | Project | Title | Impact | Category |
 |----|---------|-------|--------|----------|
-| CORE-OPT-002 | xivdyetools-core | N+1 Query Pattern in HarmonyGenerator | MEDIUM | Algorithm |
-| DISCORD-OPT-001 | xivdyetools-discord-worker | Inefficient Collection Lookup - O(n) Per Operation | MEDIUM | Algorithm |
-| DISCORD-OPT-003 | xivdyetools-discord-worker | Full Preset Fetch for Simple Checks | MEDIUM | Bandwidth |
-| LOGGER-OPT-001 | xivdyetools-logger | Sanitize Error Message Regex Runs Multiple Replacements | MEDIUM | Performance |
-| MAINT-OPT-001 | xivdyetools-maintainer | N+1 Query Pattern in getLocaleLabels | MEDIUM | I/O |
-| MAINT-OPT-005 | xivdyetools-maintainer | Missing Request Deduplication in ItemIdFetcher | MEDIUM | Bandwidth |
-| PRESETS-OPT-003 | xivdyetools-presets-api | Missing Database Indexes | MEDIUM | Database |
-| TEST-OPT-003 | xivdyetools-test-utils | D1 Mock Query Tracking Without Size Limit | MEDIUM | Memory |
-| PROXY-OPT-001 | xivdyetools-universalis-proxy | Redundant Cache Metadata Parsing on Every Request | MEDIUM | CPU |
-| WEB-OPT-002 | xivdyetools-web-app | Memoize Color Distance Calculations | MEDIUM | CPU |
-| WEB-OPT-003 | xivdyetools-web-app | Lazy-Load Market Board Data | MEDIUM | Bandwidth |
+| ✅CORE-OPT-002 | xivdyetools-core | N+1 Query Pattern in HarmonyGenerator | MEDIUM | Algorithm |
+| ⚠️DISCORD-OPT-001 | xivdyetools-discord-worker | Inefficient Collection Lookup - O(n) Per Operation | MEDIUM | Algorithm |
+| ⚠️DISCORD-OPT-003 | xivdyetools-discord-worker | Full Preset Fetch for Simple Checks | MEDIUM | Bandwidth |
+| ⚠️LOGGER-OPT-001 | xivdyetools-logger | Sanitize Error Message Regex Runs Multiple Replacements | MEDIUM | Performance |
+| ⚠️MAINT-OPT-001 | xivdyetools-maintainer | N+1 Query Pattern in getLocaleLabels | MEDIUM | I/O |
+| ⚠️MAINT-OPT-005 | xivdyetools-maintainer | Missing Request Deduplication in ItemIdFetcher | MEDIUM | Bandwidth |
+| ✅PRESETS-OPT-003 | xivdyetools-presets-api | Missing Database Indexes | MEDIUM | Database |
+| ✅TEST-OPT-003 | xivdyetools-test-utils | D1 Mock Query Tracking Without Size Limit | MEDIUM | Memory |
+| ⚠️PROXY-OPT-001 | xivdyetools-universalis-proxy | Redundant Cache Metadata Parsing on Every Request | MEDIUM | CPU |
+| ⚠️WEB-OPT-002 | xivdyetools-web-app | Memoize Color Distance Calculations | MEDIUM | CPU |
+| ✅WEB-OPT-003 | xivdyetools-web-app | Lazy-Load Market Board Data | MEDIUM | Bandwidth |
 
 ---
 
@@ -338,6 +338,42 @@ The following bugs have been reassessed and determined to be **acceptable limita
 | **MOD-BUG-006** | ACCEPTABLE | Modal submission race (two moderators rejecting same preset simultaneously) is handled gracefully - error is caught and displayed to user. Race is extremely rare (requires millisecond timing) and causes no data corruption. Proper fix would require distributed locking across workers. |
 | **OAUTH-SEC-004** | INTENTIONAL | Durable Object rate limiter persistence race is an intentional trade-off. The DO eventually persists state, and slight over-counting during high-concurrency bursts is acceptable for rate limiting purposes. True atomicity would require blocking I/O. |
 | **PRESETS-BUG-002** | PARTIALLY MITIGATED | Vote duplicate prevention now uses `ON CONFLICT DO NOTHING` (atomic). Remaining theoretical race between INSERT and UPDATE vote_count is extremely rare (requires server crash between statements). Impact is minor (off-by-one count) and can be corrected by periodic reconciliation. |
+
+### Optimization Opportunities Addressed (2026-01-19)
+
+| ID | Status | Rationale |
+|----|--------|-----------|
+| **CORE-OPT-002** | ✅ ALREADY OPTIMIZED | HarmonyGenerator already uses hue-indexed buckets (P-2) and O(log n) dye search via PERF-003 fix. No N+1 pattern present. |
+| **DISCORD-OPT-001** | ⚠️ ACCEPTABLE | Collections stored as single JSON array with O(n) in-memory lookup. For MAX_COLLECTIONS=50, this is acceptable - KV I/O dominates, not array iteration. Per-collection KV keys would increase reads. |
+| **DISCORD-OPT-003** | ⚠️ ACCEPTABLE | Full preset fetch in edit command is necessary for merging partial dye updates. API validates ownership server-side; client fetch provides better UX. |
+| **LOGGER-OPT-001** | ⚠️ ACCEPTABLE | 7 separate regex replacements in `sanitizeErrorMessage` is more readable than combined regex. Error logging is infrequent; overhead is negligible. |
+| **MAINT-OPT-001** | ⚠️ ACCEPTABLE | Sequential locale file processing (12 HTTP requests) in maintainer tool provides clear per-locale error messages and allows partial success. Not performance-critical (admin tooling). |
+| **MAINT-OPT-005** | ⚠️ ACCEPTABLE | Sequential XIVAPI requests without caching is acceptable for a maintainer tool used manually and infrequently. |
+| **PRESETS-OPT-003** | ✅ VERIFIED | Comprehensive indexes already exist in schema.sql (verified in Next Sprint fixes). |
+| **TEST-OPT-003** | ✅ FIXED | Added `maxQueryHistory` config with FIFO eviction to D1 mock, preventing unbounded memory growth. See fix below. |
+| **PROXY-OPT-001** | ⚠️ ACCEPTABLE | Cache metadata parsing (3 parseInt calls for Cache API, 1 metadata read for KV) happens once per cache lookup. Not redundant - necessary for staleness check. |
+| **WEB-OPT-002** | ⚠️ ACCEPTABLE | Color distance matrix calculates N² distances, but max dyes is small (3-5). Core library pre-computes LAB values. Overhead is ~10-20 calculations per render. |
+| **WEB-OPT-003** | ✅ ALREADY OPTIMIZED | MarketBoardService already implements lazy-loading with singleton cache, on-demand fetching, request versioning, and event-driven updates. |
+
+#### TEST-OPT-003 Fix: D1 Mock Query History Limit
+
+Added memory bounds to D1 mock query tracking, matching the pattern from TEST-BUG-002 (Fetcher mock):
+
+```typescript
+// xivdyetools-test-utils/src/cloudflare/d1.ts
+export interface MockD1DatabaseConfig {
+  maxQueryHistory?: number;  // Default: 1000
+}
+
+const enforceMaxHistory = (): void => {
+  while (queries.length > maxQueryHistory) {
+    queries.shift();
+    bindings.shift();
+  }
+};
+
+// Called after each query push in first(), all(), run(), raw(), exec()
+```
 
 ---
 
