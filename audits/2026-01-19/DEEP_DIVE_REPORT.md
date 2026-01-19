@@ -916,14 +916,109 @@ export type { HarmonyTypeInfo, ScoredDyeMatch, HarmonyConfig } from './harmony-g
 4. **Type Safety**: Explicit config interfaces document dependencies
 5. **Bundle Size**: Services can be tree-shaken if not used
 
-##### Remaining Phases (Future Work)
+##### Remaining Phases
 
 | Phase | Status | Description |
 |-------|--------|-------------|
 | Phase 1 (Pure Logic) | ✅ DONE | Extract algorithmic logic to services |
-| Phase 2 (Mobile Dedup) | ⏸️ PENDING | Eliminate desktop ↔ drawer duplication |
+| Phase 2 (Mobile Dedup) | ✅ DONE | Eliminate desktop ↔ drawer duplication |
 | Phase 3 (Desktop UI) | ⏸️ PENDING | Extract panel controllers |
 | Phase 4 (Shared Services) | ⏸️ PENDING | Price mixin, state management |
+
+##### Phase 2 Fix Details: Eliminate Desktop ↔ Drawer Duplication
+
+**Status:** ✅ FIXED
+
+The MixerTool and HarmonyTool had nearly identical code for rendering desktop panels and mobile drawer content. Phase 2 consolidates this duplication using shared "panel builder" methods that return component references, allowing both desktop and drawer code paths to use the same rendering logic.
+
+###### MixerTool Changes
+
+**Shared builder result types added:**
+```typescript
+interface DyeSelectorPanelRefs {
+  selector: DyeSelector;
+  displayContainer: HTMLElement;
+}
+interface SettingsSliderRefs {
+  slider: HTMLInputElement;
+  valueDisplay: HTMLElement;
+}
+interface FiltersPanelRefs {
+  panel: CollapsiblePanel;
+  filters: DyeFilters;
+}
+interface MarketPanelRefs {
+  panel: CollapsiblePanel;
+  marketBoard: MarketBoard;
+}
+```
+
+**Shared builder methods created (~250 lines consolidated):**
+- `buildDyeSelectorPanel()` - Builds dye selector with display container
+- `renderSelectedDyesDisplayInto(container)` - Renders selected dye cards with conditional remove buttons
+- `buildSettingsSlider()` - Builds maxResults slider with label and value display
+- `bindSettingsSliderEvents(refs, sync)` - Binds slider events with cross-sync logic
+- `buildFiltersPanel()` - Builds CollapsiblePanel with DyeFilters
+- `buildMarketPanel()` - Builds CollapsiblePanel with MarketBoard
+
+**Methods removed (replaced by shared builders):**
+- `renderMobileDyeSelector()` (~100 lines)
+- `updateMobileSelectedDyesDisplay()` (~50 lines)
+- `renderMobileSettings()` (~80 lines)
+
+**Net reduction:** ~180 lines of duplicated code
+
+###### HarmonyTool Changes
+
+**Shared builder result types added:**
+```typescript
+interface BaseDyePanelRefs {
+  selector: DyeSelector;
+  displayContainer: HTMLElement;
+}
+interface HarmonyTypeSelectorRefs {
+  container: HTMLElement;
+}
+interface CompanionSliderRefs {
+  slider: HTMLInputElement;
+  valueDisplay: HTMLElement;
+}
+interface FiltersPanelRefs {
+  panel: CollapsiblePanel;
+  filters: DyeFilters;
+}
+interface MarketPanelRefs {
+  panel: CollapsiblePanel;
+  marketBoard: MarketBoard;
+}
+```
+
+**Shared builder methods created (~300 lines consolidated):**
+- `renderCurrentDyeDisplayInto(container)` - Renders current dye display card
+- `buildBaseDyePanel()` - Builds dye selector panel for base dye selection
+- `buildHarmonyTypeSelector()` - Builds harmony type button grid
+- `updateHarmonyTypeButtonStyles(container, selectedType)` - Updates button selection styles
+- `buildCompanionSlider()` - Builds companion dyes count slider
+- `bindCompanionSliderEvents(refs, sync)` - Binds slider events with cross-sync logic
+- `buildFiltersPanel()` - Builds CollapsiblePanel with DyeFilters
+- `buildMarketPanel()` - Builds CollapsiblePanel with MarketBoard
+
+**Methods removed (replaced by shared builders):**
+- `renderMobileBaseDyeSelector()` (~65 lines)
+- `renderMobileHarmonyTypeSelector()` (~80 lines)
+- `renderMobileCompanionSlider()` (~80 lines)
+- `renderMobileFilters()` (~30 lines)
+- `renderMobileMarket()` (~30 lines)
+- Duplicated button style update code in `setConfig()` (~12 lines)
+
+**Net reduction:** ~250 lines of duplicated code
+
+###### Key Design Decisions
+
+1. **Builder pattern**: Methods return component references rather than void, allowing callers to store references for later updates
+2. **Conditional rendering**: `renderSelectedDyesDisplayInto()` uses `container === this.selectedDyesContainer` check to only show remove buttons on desktop
+3. **Cross-sync events**: Slider bindings accept a `sync` parameter to update the opposite slider (desktop ↔ drawer)
+4. **Unified style updates**: `updateHarmonyTypeButtonStyles()` handles null containers gracefully, allowing safe calls for both desktop and drawer containers
 
 ---
 
