@@ -32,17 +32,17 @@
 
 | ID | Project | Title | Severity | Type |
 |----|---------|-------|----------|------|
-| CORE-BUG-001 | xivdyetools-core | Race Condition in Pending Request Deduplication | CRITICAL | Race Condition |
-| CORE-BUG-002 | xivdyetools-core | Promise Rejection Not Properly Cleaned from Pending Map | CRITICAL | Async Handling |
-| CORE-BUG-003 | xivdyetools-core | Potential Null Reference in KDTree Nearest Neighbor | HIGH | Null Safety |
-| CORE-BUG-004 | xivdyetools-core | Unvalidated Type Cast in DyeDatabase | HIGH | Type Safety |
-| DISCORD-BUG-001 | xivdyetools-discord-worker | Race Condition in Analytics Counter Increment | MEDIUM | Race Condition |
+| ✅CORE-BUG-001 | xivdyetools-core | Race Condition in Pending Request Deduplication | CRITICAL | Race Condition |
+| ✅CORE-BUG-002 | xivdyetools-core | Promise Rejection Not Properly Cleaned from Pending Map | CRITICAL | Async Handling |
+| ✅CORE-BUG-003 | xivdyetools-core | Potential Null Reference in KDTree Nearest Neighbor | HIGH | Null Safety |
+| ✅CORE-BUG-004 | xivdyetools-core | Unvalidated Type Cast in DyeDatabase | HIGH | Type Safety |
+| ✅DISCORD-BUG-001 | xivdyetools-discord-worker | Race Condition in Analytics Counter Increment | MEDIUM | Race Condition |
 | DISCORD-BUG-002 | xivdyetools-discord-worker | Missing Error Handling in Analytics.writeDataPoint | MEDIUM | Error Handling |
-| LOGGER-BUG-001 | xivdyetools-logger | Race Condition in Concurrent perf.start() Calls | HIGH | Concurrency |
+| ✅LOGGER-BUG-001 | xivdyetools-logger | Race Condition in Concurrent perf.start() Calls | HIGH | Concurrency |
 | LOGGER-BUG-002 | xivdyetools-logger | Error Sanitization Regex Edge Cases | MEDIUM | Security |
 | MAINT-BUG-001 | xivdyetools-maintainer | Unhandled Promise Rejection in Server Health Check | MEDIUM | Async Handling |
 | MAINT-BUG-005 | xivdyetools-maintainer | Stale Session Token Caching | MEDIUM | State Management |
-| MOD-BUG-001 | xivdyetools-moderation-worker | Race Condition in Rate Limiting | HIGH | Concurrency |
+| ✅MOD-BUG-001 | xivdyetools-moderation-worker | Race Condition in Rate Limiting | HIGH | Concurrency |
 | MOD-BUG-006 | xivdyetools-moderation-worker | Race Condition in Modal Submission Processing | MEDIUM | Concurrency |
 | OAUTH-BUG-001 | xivdyetools-oauth | String Spread with charCodeAt Encoding | MEDIUM | Encoding |
 | OAUTH-SEC-004 | xivdyetools-oauth | Race Condition in Rate Limiter DO Persistence | MEDIUM | Concurrency |
@@ -52,17 +52,17 @@
 | TEST-BUG-002 | xivdyetools-test-utils | Memory Leak in Fetcher Mock Call History | MEDIUM | Memory Leak |
 | TEST-BUG-005 | xivdyetools-test-utils | Base64URL Encoding May Produce Invalid Results | MEDIUM | Encoding |
 | TYPES-BUG-002 | xivdyetools-types | Missing Discriminant Union in AuthResponse | MEDIUM | Type Safety |
-| TYPES-BUG-011 | xivdyetools-types | XIVAuthUser Type Doesn't Match Documented Response | HIGH | Type Mismatch |
-| PROXY-BUG-001 | xivdyetools-universalis-proxy | Race Condition in Response.json() Double-Parsing | HIGH | Async Handling |
-| PROXY-BUG-002 | xivdyetools-universalis-proxy | Unhandled Promise Rejection in Request Coalescer | HIGH | Error Handling |
-| WEB-BUG-001 | xivdyetools-web-app | Event Listener Accumulation Risk in DyeSelector | HIGH | Memory Leak |
+| ✅TYPES-BUG-011 | xivdyetools-types | XIVAuthUser Type Doesn't Match Documented Response | HIGH | Type Mismatch |
+| ✅PROXY-BUG-001 | xivdyetools-universalis-proxy | Race Condition in Response.json() Double-Parsing | HIGH | Async Handling |
+| ✅PROXY-BUG-002 | xivdyetools-universalis-proxy | Unhandled Promise Rejection in Request Coalescer | HIGH | Error Handling |
+| ✅WEB-BUG-001 | xivdyetools-web-app | Event Listener Accumulation Risk in DyeSelector | HIGH | Memory Leak |
 | WEB-BUG-003 | xivdyetools-web-app | Race Condition in Palette Service Import Count | MEDIUM | Race Condition |
 
 ### Refactoring Opportunities
 
 | ID | Project | Title | Priority | Effort |
 |----|---------|-------|----------|--------|
-| CORE-REF-001 | xivdyetools-core | Excessive Error Swallowing in DyeSearch | HIGH | LOW |
+| ✅CORE-REF-001 | xivdyetools-core | Excessive Error Swallowing in DyeSearch | HIGH | LOW |
 | CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
 | DISCORD-REF-001 | xivdyetools-discord-worker | Repeated Command Handler Pattern | LOW | MEDIUM |
 | DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
@@ -70,7 +70,7 @@
 | MAINT-REF-003 | xivdyetools-maintainer | Hardcoded Locale Lists in Multiple Files | MEDIUM | MEDIUM |
 | MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
 | MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
-| OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
+| ✅OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
 | PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
 | TEST-REF-001 | xivdyetools-test-utils | Long Method in setupFetchMock Handler Logic | MEDIUM | LOW |
 | TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
@@ -109,10 +109,11 @@
 ### Plan for Next Sprint (High Impact, High Effort)
 
 1. **TYPES-REF-002** - Implement discriminated unions for all response types
-2. **TYPES-BUG-011** - Fix XIVAuth type mismatch with documentation
+2. ~~**TYPES-BUG-011**~~ - ✅ VERIFIED: XIVAuthUser type already corrected
 3. **WEB-REF-003** - Break down large components (MixerTool, HarmonyTool)
 4. **PRESETS-OPT-003** - Add database indexes for common queries
 5. **DISCORD-OPT-001** - Refactor collection storage structure
+6. **TEST-BUG-001** - Race Condition in KV Mock TTL Expiration (HIGH)
 
 ### Technical Debt Backlog (Lower Priority)
 
@@ -170,6 +171,82 @@ Created shared utilities in `oauth-validation.ts`:
 - `validateCodeChallenge()` - RFC 7636 format validation
 - `validateRedirectUri()` - Origin allowlist validation
 - `ALLOWED_REDIRECT_ORIGINS` constant in `constants/oauth.ts`
+
+---
+
+## High Severity Bugs Fixed (2026-01-19)
+
+The following HIGH severity bugs have been addressed:
+
+| ID | Status | Description | Files Modified |
+|----|--------|-------------|----------------|
+| **CORE-BUG-003** | ✅ FIXED | KDTree nearestNeighbor skipped far side search when `best` was null (all nodes excluded). Now searches far side when no valid candidate found yet. | `xivdyetools-core/src/utils/kd-tree.ts` |
+| **CORE-BUG-004** | ✅ FIXED | HSV validation was optional but `dye.hsv.h` was accessed unconditionally for hue bucket indexing. Made HSV required in validation. | `xivdyetools-core/src/services/dye/DyeDatabase.ts` |
+| **LOGGER-BUG-001** | ✅ FIXED | `perf.start()` silently overwrote existing timers with same label. Now warns and returns `false` if timer already active. | `xivdyetools-logger/src/presets/browser.ts` |
+| **MOD-BUG-001** | ✅ FIXED | Rate limiter had same read-modify-write race as DISCORD-BUG-001. Applied optimistic concurrency with retries. | `xivdyetools-moderation-worker/src/middleware/rate-limit.ts` |
+| **TYPES-BUG-011** | ✅ VERIFIED | XIVAuthUser type already corrected. Type definition includes note explaining XIVAuth does NOT return `username` or `avatar_url`. | `xivdyetools-types/src/auth/xivauth.ts` (no changes needed) |
+| **PROXY-BUG-002** | ✅ FIXED | Fixed as part of PROXY-BUG-001. Deferred promise pattern ensures rejections propagate to all waiting callers. | `xivdyetools-universalis-proxy/src/services/request-coalescer.ts` |
+| **WEB-BUG-001** | ✅ FIXED | `manageBtn.addEventListener()` bypassed BaseComponent event tracking. Changed to `this.on()` for proper cleanup via `unbindAllEvents()`. | `xivdyetools-web-app/src/components/dye-selector.ts` |
+
+### Fix Details
+
+#### CORE-BUG-003 - KDTree Far Side Search
+The k-d tree's `searchNearest` method had a bug where it would skip searching the far side of the splitting plane if no valid candidate had been found on the near side:
+
+```typescript
+// BEFORE: Bug - skipped far side when best was null
+if (farChild && best) {
+  if (Math.abs(targetValue - nodeValue) <= best.distance) {
+    best = this.searchNearest(farChild, ...);
+  }
+}
+
+// AFTER: Fixed - search far side when best is null OR within distance
+if (farChild) {
+  if (!best || Math.abs(targetValue - nodeValue) <= best.distance) {
+    best = this.searchNearest(farChild, ...);
+  }
+}
+```
+
+This bug would manifest when all nodes on the near side were excluded by the `excludeData` filter, causing valid nodes on the far side to be missed.
+
+#### CORE-BUG-004 - HSV Required Validation
+The Dye interface requires HSV values (used for hue bucket indexing), but validation only checked HSV *if present*. This allowed dyes without HSV to pass validation, then crash when accessing `dye.hsv.h`:
+
+```typescript
+// BEFORE: HSV optional in validation, but required in interface
+if (dye.hsv !== undefined && dye.hsv !== null) { /* validate */ }
+
+// AFTER: HSV required
+if (dye.hsv === undefined || dye.hsv === null) {
+  this.logger.warn(`Dye ${id} missing required HSV values`);
+  return false;
+}
+```
+
+#### LOGGER-BUG-001 - perf.start() Race Condition
+The `perf.start()` method silently overwrote the start time if called twice with the same label. This caused data loss when concurrent operations used the same label:
+
+```typescript
+// BEFORE: Silent overwrite
+start(label: string): void {
+  activeTimers.set(label, performance.now());
+}
+
+// AFTER: Warn and prevent overwrite
+start(label: string): boolean {
+  if (activeTimers.has(label)) {
+    console.warn(`Timer "${label}" is already active...`);
+    return false;
+  }
+  activeTimers.set(label, performance.now());
+  return true;
+}
+```
+
+#### MOD-BUG-001 - Rate Limiter Race Condition
+Same pattern as DISCORD-BUG-001: read-then-write without atomicity. Applied the same optimistic concurrency fix with retries and version metadata.
 
 ---
 
