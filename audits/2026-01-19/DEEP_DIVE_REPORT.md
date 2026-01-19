@@ -65,17 +65,17 @@
 | ✅CORE-REF-001 | xivdyetools-core | Excessive Error Swallowing in DyeSearch | HIGH | LOW |
 | CORE-REF-002 | xivdyetools-core | Duplicate Price Parsing Logic | MEDIUM | MEDIUM |
 | DISCORD-REF-001 | xivdyetools-discord-worker | Repeated Command Handler Pattern | LOW | MEDIUM |
-| DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
+| ⚠️DISCORD-REF-004 | xivdyetools-discord-worker | God Object in rate-limiter.ts | MEDIUM | LOW |
 | LOGGER-REF-003 | xivdyetools-logger | Hardcoded Redact Fields in Multiple Locations | MEDIUM | MEDIUM |
 | MAINT-REF-003 | xivdyetools-maintainer | Hardcoded Locale Lists in Multiple Files | MEDIUM | MEDIUM |
 | MOD-REF-001 | xivdyetools-moderation-worker | Long Function - processModerateCommand | MEDIUM | MEDIUM |
-| MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
+| ✅MOD-REF-002 | xivdyetools-moderation-worker | Code Duplication in Modal Handlers | MEDIUM | LOW |
 | ✅OAUTH-REF-002 | xivdyetools-oauth | Reduce Code Duplication in OAuth Handlers | HIGH | MEDIUM |
 | PRESETS-REF-001 | xivdyetools-presets-api | Validation Logic Scattered Across Multiple Functions | MEDIUM | MEDIUM |
-| TEST-REF-001 | xivdyetools-test-utils | Long Method in setupFetchMock Handler Logic | MEDIUM | LOW |
-| TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
-| TYPES-REF-002 | xivdyetools-types | Missing Discriminated Union Audit | MEDIUM | HIGH |
-| PROXY-REF-001 | xivdyetools-universalis-proxy | Over-Broad Empty Catch Blocks | MEDIUM | LOW |
+| ⚠️TEST-REF-001 | xivdyetools-test-utils | Long Method in setupFetchMock Handler Logic | MEDIUM | LOW |
+| ⚠️TEST-REF-004 | xivdyetools-test-utils | Inconsistent Factory Function Naming | MEDIUM | LOW |
+| ✅TYPES-REF-002 | xivdyetools-types | Missing Discriminated Union Audit | MEDIUM | HIGH |
+| ⚠️PROXY-REF-001 | xivdyetools-universalis-proxy | Over-Broad Empty Catch Blocks | MEDIUM | LOW |
 | WEB-REF-003 | xivdyetools-web-app | Component Size - MixerTool and HarmonyTool Exceed 500 Lines | MEDIUM | MEDIUM |
 
 ### Optimization Opportunities
@@ -374,6 +374,35 @@ const enforceMaxHistory = (): void => {
 
 // Called after each query push in first(), all(), run(), raw(), exec()
 ```
+
+### Low Effort Refactoring Addressed (2026-01-19)
+
+| ID | Status | Rationale |
+|----|--------|-----------|
+| **DISCORD-REF-004** | ⚠️ NOT A GOD OBJECT | The `rate-limiter.ts` file (193 lines) is a focused single-responsibility module with only 2 exported functions (`checkRateLimit`, `formatRateLimitMessage`). It follows good separation of concerns with clear configuration constants and well-documented interfaces. No refactoring needed. |
+| **MOD-REF-002** | ✅ FIXED | Extracted shared modal types and helpers to `types/modal.ts`. The `ModalInteraction` interface, `ModalComponents` type, and `extractTextInputValue` helper were duplicated across `preset-rejection.ts` and `ban-reason.ts`. Added convenience helpers `getModalUserId()` and `getModalUsername()`. |
+| **TEST-REF-001** | ⚠️ ACCEPTABLE | The `fetch` method in `fetcher.ts` is ~50 lines, which is reasonable for a mock with header extraction, call recording, and response matching. Breaking it up would add complexity without significant benefit. The code is linear and well-commented. |
+| **TEST-REF-004** | ⚠️ ACCEPTABLE | Factory function naming is actually consistent: `createMock{Entity}` for primary factories, `createMock{Entities}` for plurals, `createMock{Entity}Row` for database rows, `create{Variant}{Entity}` for special variants, and `{entity}ToRow`/`rowTo{Entity}` for converters. No changes needed. |
+| **PROXY-REF-001** | ⚠️ INTENTIONAL | Empty catch blocks in `cache-service.ts` are intentional fail-soft behavior for non-critical caching operations. Cache lookup/storage failures shouldn't break the application. Adding logging would add noise for expected failures. The inline comments explain this design choice. |
+
+#### MOD-REF-002 Fix: Shared Modal Types
+
+Created `xivdyetools-moderation-worker/src/types/modal.ts` to eliminate duplicated code:
+
+```typescript
+// Shared types
+export interface ModalInteraction { ... }
+export type ModalComponents = Array<{ ... }>;
+
+// Shared helpers
+export function extractTextInputValue(components, customId): string | undefined;
+export function getModalUserId(interaction): string | undefined;
+export function getModalUsername(interaction, defaultName): string;
+```
+
+Updated handlers to import from shared module:
+- `preset-rejection.ts` - Removed local `ModalInteraction`, `ModalComponents`, `extractTextInputValue`
+- `ban-reason.ts` - Removed local `ModalInteraction`, `ModalComponents`, `extractTextInputValue`
 
 ---
 
