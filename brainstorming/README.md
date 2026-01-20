@@ -48,6 +48,15 @@ New tool proposal ("Character Color Reference"):
 - Calculate and display top 3 closest matching dyes
 - Integrate with existing context menu for cross-tool navigation
 
+### 5. [Share Button with Dynamic OpenGraph](SHARE_BUTTON_OPENGRAPH.md)
+
+Feature proposal for shareable deep-links with rich social previews:
+- Generate deep-link URLs encoding tool state (dye, algorithm, harmony type, etc.)
+- Dynamic OpenGraph metadata for Discord/Twitter/Facebook previews
+- Custom-generated preview images styled like the Results Card
+- Cloudflare Workers architecture for crawler-specific responses
+- Tool-specific URL schemas and image templates
+
 ---
 
 ## Priority Matrix
