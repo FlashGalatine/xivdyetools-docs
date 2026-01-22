@@ -147,7 +147,7 @@ We built a **new Node.js Discord bot** following the architecture documented in 
 **Bot Status:**
 - **Name:** XIV Dye Tools#3434
 - **Status:** ✅ Online and Connected
-- **Client ID:** 1433508594426445878
+- **Client ID:** your-application-id
 - **Repository:** https://github.com/FlashGalatine/xivdyetools-discord-bot
 
 **Dependencies Installed:**

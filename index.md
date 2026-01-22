@@ -28,34 +28,40 @@ This wiki-style documentation serves developers, end users, and maintainers with
 ```
                     ┌─────────────────────────────────┐
                     │        Shared Packages          │
-                    │  @xivdyetools/types (v1.1.1)    │
-                    │  @xivdyetools/logger (v1.0.2)   │
-                    │  @xivdyetools/test-utils (v1.0.3)│
+                    │  @xivdyetools/types (v1.7.0)    │
+                    │  @xivdyetools/logger (v1.1.0)   │
+                    │  @xivdyetools/test-utils (v1.1.0)│
                     └────────────────┬────────────────┘
                                      │
                     ┌────────────────▼────────────────┐
-                    │     @xivdyetools/core (v1.5.4)  │
+                    │    @xivdyetools/core (v1.15.1)  │
                     │   136 dyes, color algorithms,   │
                     │   Universalis API, 6 languages  │
                     └──┬──────────────┬───────────┬───┘
                        │              │           │
          ┌─────────────▼──┐    ┌──────▼─────┐    │
          │   Web App      │    │  Discord   │    │
-         │   (v4.0.0)     │    │  Worker    │    │
-         │   9 tools,     │    │  (v2.3.1)  │    │
-         │   12 themes    │    │  21 cmds   │    │
+         │   (v4.1.1)     │    │  Worker    │    │
+         │   9 tools,     │    │  (v2.3.4)  │    │
+         │   12 themes    │    │  17 cmds   │    │
          └───────┬────────┘    └──────┬─────┘    │
                  │                    │          │
          ┌───────▼────────┐           │   ┌──────▼──────────┐
          │  OAuth Worker  │           │   │  Presets API    │
-         │   (v2.2.2)     │◄──────────┴───│   (v1.4.5)      │
+         │   (v2.2.2)     │◄──────────┴───│   (v1.4.7)      │
          │  PKCE + JWT    │               │  D1 + Moderation │
-         └────────────────┘               └─────────────────┘
+         └────────────────┘               └──────┬──────────┘
+                 │                               │
+         ┌───────▼────────────────┐    ┌────────▼────────────┐
+         │  Universalis Proxy     │    │  Moderation Worker  │
+         │   (v1.3.0)             │    │   (v1.0.1)          │
+         │  CORS + Dual Caching   │    └─────────────────────┘
+         └────────────────────────┘
                  │
          ┌───────▼────────────────┐
-         │  Universalis Proxy     │
-         │   (v1.2.2)             │
-         │  CORS + Dual Caching   │
+         │  OpenGraph Worker      │
+         │   (v1.0.0)             │
+         │  Social media previews │
          └────────────────────────┘
 ```
 
@@ -102,20 +108,22 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
-| [@xivdyetools/core](projects/core/overview.md) | npm library | v1.5.4 | Core color algorithms, 136-dye database, Universalis API |
-| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v4.0.0 | Interactive web toolkit with 9 color tools |
-| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.3.1 | Discord bot with 21 slash commands |
+| [@xivdyetools/core](projects/core/overview.md) | npm library | v1.15.1 | Core color algorithms, 136-dye database, Universalis API |
+| [xivdyetools-web-app](projects/web-app/overview.md) | Vite + Lit | v4.1.1 | Interactive web toolkit with 9 color tools |
+| [xivdyetools-discord-worker](projects/discord-worker/overview.md) | CF Worker | v2.3.4 | Discord bot with 17 slash commands |
+| [xivdyetools-moderation-worker](projects/moderation-worker/overview.md) | CF Worker | v1.0.1 | Community preset moderation bot |
 | [xivdyetools-oauth](projects/oauth/overview.md) | CF Worker | v2.2.2 | Discord OAuth + JWT issuance |
-| [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.4.5 | Community presets with moderation |
-| [xivdyetools-universalis-proxy](projects/universalis-proxy/overview.md) | CF Worker | v1.2.2 | CORS proxy for Universalis API with dual-layer caching |
+| [xivdyetools-presets-api](projects/presets-api/overview.md) | CF Worker + D1 | v1.4.7 | Community presets with moderation |
+| [xivdyetools-universalis-proxy](projects/universalis-proxy/overview.md) | CF Worker | v1.3.0 | CORS proxy for Universalis API with dual-layer caching |
+| [xivdyetools-og-worker](projects/og-worker/overview.md) | CF Worker | v1.0.0 | Dynamic OpenGraph metadata for social media previews |
 
 ### Shared Libraries
 
 | Project | Type | Version | Purpose |
 |---------|------|---------|---------|
-| [@xivdyetools/types](projects/types/overview.md) | npm library | v1.1.1 | Shared TypeScript types with Facewear support |
-| [@xivdyetools/logger](projects/logger/overview.md) | npm library | v1.0.2 | Unified logging across environments |
-| [@xivdyetools/test-utils](projects/test-utils/overview.md) | npm library | v1.0.3 | Shared testing utilities |
+| [@xivdyetools/types](projects/types/overview.md) | npm library | v1.7.0 | Shared TypeScript types with Facewear support |
+| [@xivdyetools/logger](projects/logger/overview.md) | npm library | v1.1.0 | Unified logging across environments |
+| [@xivdyetools/test-utils](projects/test-utils/overview.md) | npm library | v1.1.0 | Shared testing utilities |
 
 ### Developer Tools
 
@@ -127,7 +135,7 @@ This wiki-style documentation serves developers, end users, and maintainers with
 
 ## Recent Updates
 
-*Last updated: January 15, 2026*
+*Last updated: January 22, 2026*
 
 ### January 2026 Highlights
 

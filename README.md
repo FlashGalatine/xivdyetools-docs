@@ -12,17 +12,17 @@ This repository contains planning documents, feature specifications, and design 
 
 | Document | Description | Status |
 |----------|-------------|--------|
-| [COMMUNITY_PRESETS_SPEC.md](./COMMUNITY_PRESETS_SPEC.md) | Community preset submission, voting, and moderation system | ✅ Complete |
-| [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) | User collections feature for organizing favorite dyes | ✅ Complete |
-| [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) | K-means++ palette extraction from images | ✅ Complete |
-| [PRESET_PALETTES.md](./PRESET_PALETTES.md) | Curated preset color palettes | ✅ Complete |
-| [BUDGET_AWARE_SUGGESTIONS.md](./BUDGET_AWARE_SUGGESTIONS.md) | Price-conscious dye recommendations | 📋 Planned |
+| [Community Presets](./specifications/community-presets.md) | Community preset submission, voting, and moderation system | ✅ Complete |
+| [Collections](./specifications/collections.md) | User collections feature for organizing favorite dyes | ✅ Complete |
+| [Multi-Color Extraction](./specifications/multi-color-extraction.md) | K-means++ palette extraction from images | ✅ Complete |
+| [Preset Palettes](./specifications/preset-palettes.md) | Curated preset color palettes | ✅ Complete |
+| [Budget-Aware Suggestions](./specifications/budget-aware-suggestions.md) | Price-conscious dye recommendations | 📋 Planned |
 
 ### Roadmaps
 
 | Document | Description |
 |----------|-------------|
-| [FEATURE_ROADMAP.md](./FEATURE_ROADMAP.md) | Planned features and development priorities |
+| [Feature Roadmap](./specifications/feature-roadmap.md) | Planned features and development priorities |
 
 ### Project-Specific Documentation
 

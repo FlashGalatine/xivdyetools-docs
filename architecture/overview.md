@@ -11,24 +11,26 @@ This document provides a high-level view of how all projects in the XIV Dye Tool
 ```mermaid
 graph TB
     subgraph "Shared Foundation"
-        TYPES["@xivdyetools/types<br/>v1.1.1<br/>─────────────<br/>Type definitions,<br/>branded types,<br/>Facewear support"]
-        LOGGER["@xivdyetools/logger<br/>v1.0.2<br/>─────────────<br/>Multi-environment<br/>logging, secret redaction"]
-        TEST["@xivdyetools/test-utils<br/>v1.0.3<br/>─────────────<br/>Mocks, factories,<br/>helpers"]
+        TYPES["@xivdyetools/types<br/>v1.7.0<br/>─────────────<br/>Type definitions,<br/>branded types,<br/>Facewear support"]
+        LOGGER["@xivdyetools/logger<br/>v1.1.0<br/>─────────────<br/>Multi-environment<br/>logging, secret redaction"]
+        TEST["@xivdyetools/test-utils<br/>v1.1.0<br/>─────────────<br/>Mocks, factories,<br/>helpers"]
     end
 
     subgraph "Core Library"
-        CORE["@xivdyetools/core<br/>v1.5.4<br/>─────────────<br/>136 dyes, color algorithms,<br/>Universalis API, 6 languages,<br/>K-means++ palette extraction"]
+        CORE["@xivdyetools/core<br/>v1.15.1<br/>─────────────<br/>136 dyes, color algorithms,<br/>Universalis API, 6 languages,<br/>K-means++ palette extraction"]
     end
 
     subgraph "Consumer Applications"
-        WEB["xivdyetools-web-app<br/>v3.2.8<br/>─────────────<br/>7 interactive tools,<br/>12 themes, PWA,<br/>Vite + Lit"]
-        DISCORD["xivdyetools-discord-worker<br/>v2.3.1<br/>─────────────<br/>21 slash commands,<br/>SVG/PNG rendering,<br/>HTTP Interactions"]
+        WEB["xivdyetools-web-app<br/>v4.1.1<br/>─────────────<br/>9 interactive tools,<br/>12 themes, PWA,<br/>Vite + Lit"]
+        DISCORD["xivdyetools-discord-worker<br/>v2.3.4<br/>─────────────<br/>17 slash commands,<br/>SVG/PNG rendering,<br/>HTTP Interactions"]
     end
 
     subgraph "Backend Services"
         OAUTH["xivdyetools-oauth<br/>v2.2.2<br/>─────────────<br/>Discord OAuth, PKCE,<br/>JWT issuance,<br/>timeout protection"]
-        PRESETS["xivdyetools-presets-api<br/>v1.4.5<br/>─────────────<br/>Community presets,<br/>D1 database,<br/>Moderation pipeline"]
-        PROXY["xivdyetools-universalis-proxy<br/>v1.2.2<br/>─────────────<br/>CORS proxy,<br/>Dual-layer caching,<br/>Request coalescing"]
+        PRESETS["xivdyetools-presets-api<br/>v1.4.7<br/>─────────────<br/>Community presets,<br/>D1 database,<br/>Moderation pipeline"]
+        PROXY["xivdyetools-universalis-proxy<br/>v1.3.0<br/>─────────────<br/>CORS proxy,<br/>Dual-layer caching,<br/>Request coalescing"]
+        MODBOT["xivdyetools-moderation-worker<br/>v1.0.1<br/>─────────────<br/>Moderation bot,<br/>Preset review"]
+        OG["xivdyetools-og-worker<br/>v1.0.0<br/>─────────────<br/>OpenGraph metadata,<br/>Social previews"]
     end
 
     subgraph "External Services"
@@ -96,11 +98,13 @@ Layer 4: External Services
 Layer 3: Backend Services (Cloudflare Workers)
 ├── xivdyetools-oauth → JWT issuance
 ├── xivdyetools-presets-api → Community presets
-└── xivdyetools-universalis-proxy → Market data caching
+├── xivdyetools-universalis-proxy → Market data caching
+├── xivdyetools-moderation-worker → Preset moderation bot
+└── xivdyetools-og-worker → Social media previews
 
 Layer 2: Consumer Applications
-├── xivdyetools-web-app → Browser-based tools (7 tools)
-└── xivdyetools-discord-worker → Discord bot (21 commands)
+├── xivdyetools-web-app → Browser-based tools (9 tools)
+└── xivdyetools-discord-worker → Discord bot (17 commands)
 
 Layer 1: Core Library
 └── @xivdyetools/core → Color algorithms, dye database
@@ -126,7 +130,7 @@ Layer 0: Shared Foundation
 
 ## Project Summaries
 
-### @xivdyetools/core (v1.5.4)
+### @xivdyetools/core (v1.15.1)
 
 **Purpose**: Core TypeScript library providing color algorithms and the 136-dye database.
 
@@ -146,47 +150,48 @@ Layer 0: Shared Foundation
 
 ---
 
-### xivdyetools-web-app (v3.2.8)
+### xivdyetools-web-app (v4.1.1)
 
 **Purpose**: Browser-based interactive toolkit for exploring FFXIV dye colors.
 
-**7 Tools**:
-1. **Dye Mixer** - Create gradients between two dyes
-2. **Color Matcher** - Find closest dye to any color
-3. **Color Harmony Explorer** - Discover harmonious combinations
-4. **Dye Comparison** - Side-by-side dye analysis
-5. **Accessibility Checker** - Colorblindness simulation
-6. **Preset Browser** - Community preset discovery
-7. **Budget Suggestions** - Find affordable dye alternatives
+**9 Tools**:
+1. **Palette Extractor** - Extract colors from images and find matching dyes
+2. **Gradient Builder** - Create color gradients between dyes
+3. **Color Harmony Explorer** - Discover harmonious dye combinations
+4. **Dye Mixer** - RGB color blending between dyes
+5. **Swatch Matcher** - Match character colors to dyes
+6. **Dye Comparison** - Side-by-side dye analysis
+7. **Accessibility Checker** - Colorblindness simulation
+8. **Community Presets** - Browse and share dye presets
+9. **Budget Suggestions** - Find affordable dye alternatives
 
-**Recent Features**:
-- Dye action dropdown context menu
-- Slot selection modal for full Comparison/Mixer
-- Duplicate detection with toast notifications
-- SVG icon consolidation (~10KB bundle savings)
-- Theme factory pattern (createThemePalette)
+**v4.0.0 Highlights**:
+- Glassmorphism UI redesign with 12 themes
+- Tool renaming for clarity
+- New Dye Mixer and Swatch Matcher tools
+- Lit.js web components architecture
 
 **Technology**: Vite, Lit web components, Tailwind CSS, 12 themes
 
 ---
 
-### xivdyetools-discord-worker (v2.3.1)
+### xivdyetools-discord-worker (v2.3.4)
 
 **Purpose**: Discord bot bringing dye tools to servers via slash commands.
 
-**21 Commands** organized into categories:
+**17 Commands** organized into categories:
 - **Color Tools**: `/harmony`, `/match`, `/match_image`, `/mixer`
 - **Dye Database**: `/dye search`, `/dye info`, `/dye list`, `/dye random`
 - **Analysis**: `/comparison`, `/accessibility`
 - **User Data**: `/favorites`, `/collection`
-- **Community**: `/preset list`, `/preset show`, `/preset submit`, `/preset vote`, `/preset ban_user`, `/preset unban_user`
-- **Utility**: `/language`, `/manual`, `/about`, `/stats`
+- **Community**: `/preset list`, `/preset show`, `/preset random`, `/preset submit`, `/preset vote`
+- **Utility**: `/language`, `/manual`, `/about`
 
-**Recent Features**:
-- User ban system for content moderation
-- KV schema versioning for future migrations
-- Fixed analytics tracking
-- Webhook auth security fix
+**Features**:
+- SVG→PNG rendering via resvg-wasm
+- Image processing via Photon WASM
+- Per-user analytics and rate limiting
+- Multi-language support (6 languages)
 
 **Technology**: Cloudflare Workers, HTTP Interactions, Hono, resvg-wasm, Photon WASM
 
@@ -210,7 +215,7 @@ Layer 0: Shared Foundation
 
 ---
 
-### xivdyetools-presets-api (v1.4.5)
+### xivdyetools-presets-api (v1.4.7)
 
 **Purpose**: REST API for community dye preset management.
 
@@ -233,7 +238,7 @@ Layer 0: Shared Foundation
 
 ---
 
-### xivdyetools-universalis-proxy (v1.2.2)
+### xivdyetools-universalis-proxy (v1.3.0)
 
 **Purpose**: CORS proxy for Universalis API with intelligent caching.
 
@@ -252,13 +257,48 @@ Layer 0: Shared Foundation
 
 ---
 
+### xivdyetools-moderation-worker (v1.0.1)
+
+**Purpose**: Separate Discord bot for community preset moderation.
+
+**Commands**:
+- `/preset moderate [preset_id]` - Review pending presets
+- `/preset ban_user <user>` - Ban user from preset system
+- `/preset unban_user <user>` - Unban user
+
+**Features**:
+- Approve/reject presets with reasons (notifies author)
+- Revert flagged edits to previous versions
+- Multi-language support (6 languages)
+- Full audit logging of moderation actions
+
+**Technology**: Cloudflare Workers, Hono
+
+---
+
+### xivdyetools-og-worker (v1.0.0)
+
+**Purpose**: Dynamic OpenGraph metadata for social media previews.
+
+**Features**:
+- Crawler detection (Discord, Twitter/X, Facebook, LinkedIn, Slack, Telegram, iMessage)
+- Dynamic OG image generation for tools (Harmony, Gradient, Mixer, Swatch)
+- SVG→PNG rendering via resvg-wasm
+- Embedded fonts for text rendering
+
+**Routes**: `/og/harmony/*`, `/og/gradient/*`, `/og/mixer/*`, `/og/swatch/*`
+
+**Technology**: Cloudflare Workers, Hono, resvg-wasm
+
+---
+
 ### Shared Packages
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| **@xivdyetools/types** | v1.1.1 | Branded types (HexColor, DyeId), Facewear ID support |
-| **@xivdyetools/logger** | v1.0.2 | Unified logging, secret redaction patterns |
-| **@xivdyetools/test-utils** | v1.0.3 | Cloudflare bindings mocks, domain factories, test helpers |
+| **@xivdyetools/types** | v1.7.0 | Branded types (HexColor, DyeId), Facewear ID support |
+| **@xivdyetools/logger** | v1.1.0 | Unified logging, secret redaction patterns |
+| **@xivdyetools/test-utils** | v1.1.0 | Cloudflare bindings mocks, domain factories, test helpers |
 
 ---
 

@@ -350,6 +350,6 @@ Use existing datacenter list from `xivdyetools-core`:
 
 ## Related Documents
 
-- [FEATURE_ROADMAP.md](./FEATURE_ROADMAP.md) - Overall feature planning
-- [COLLECTIONS_SPEC.md](./COLLECTIONS_SPEC.md) - Collections feature (for reference)
-- [MULTI_COLOR_EXTRACTION.md](./MULTI_COLOR_EXTRACTION.md) - Palette extraction (for reference)
+- [FEATURE_ROADMAP.md](./feature-roadmap.md) - Overall feature planning
+- [COLLECTIONS_SPEC.md](./collections.md) - Collections feature (for reference)
+- [MULTI_COLOR_EXTRACTION.md](./multi-color-extraction.md) - Palette extraction (for reference)

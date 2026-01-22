@@ -2,7 +2,7 @@
 
 **Single source of truth for all XIV Dye Tools project versions**
 
-*Last Updated: January 15, 2026*
+*Last Updated: January 22, 2026*
 
 ---
 
@@ -12,12 +12,14 @@
 
 | Project | Version | Package Name | Platform | Status |
 |---------|---------|--------------|----------|--------|
-| **Core Library** | v1.5.4 | `@xivdyetools/core` | npm | Active |
-| **Web Application** | v4.0.0 | — | Cloudflare Pages | Active |
-| **Discord Bot** | v2.3.1 | — | Cloudflare Workers | Active |
+| **Core Library** | v1.15.1 | `@xivdyetools/core` | npm | Active |
+| **Web Application** | v4.1.1 | — | Cloudflare Pages | Active |
+| **Discord Bot** | v2.3.4 | — | Cloudflare Workers | Active |
+| **Moderation Bot** | v1.0.1 | — | Cloudflare Workers | Active |
 | **OAuth Worker** | v2.2.2 | — | Cloudflare Workers | Active |
-| **Presets API** | v1.4.5 | — | Cloudflare Workers | Active |
-| **Universalis Proxy** | v1.2.2 | — | Cloudflare Workers | Active |
+| **Presets API** | v1.4.7 | — | Cloudflare Workers | Active |
+| **Universalis Proxy** | v1.3.0 | — | Cloudflare Workers | Active |
+| **OpenGraph Worker** | v1.0.0 | — | Cloudflare Workers | Active |
 
 ### Developer Tools
 
@@ -29,9 +31,9 @@
 
 | Package | Version | Package Name | Platform | Status |
 |---------|---------|--------------|----------|--------|
-| **Types** | v1.1.1 | `@xivdyetools/types` | npm | Active |
-| **Logger** | v1.0.2 | `@xivdyetools/logger` | npm | Active |
-| **Test Utils** | v1.0.3 | `@xivdyetools/test-utils` | npm | Active |
+| **Types** | v1.7.0 | `@xivdyetools/types` | npm | Active |
+| **Logger** | v1.1.0 | `@xivdyetools/logger` | npm | Active |
+| **Test Utils** | v1.1.0 | `@xivdyetools/test-utils` | npm | Active |
 
 ### Deprecated
 
@@ -47,7 +49,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.5.4 | Dec 2025 | Current release |
+| v1.15.1 | Jan 2026 | Current release |
+| v1.5.4 | Dec 2025 | Previous stable |
 | v1.5.3 | Dec 2025 | Pre-computed lowercase names, simplified findClosestNonFacewearDye |
 | v1.5.2 | Dec 2025 | Input validation, batch API URL validation, 100-item limit |
 | v1.5.0 | Dec 2025 | Generic LRU cache consolidation |
@@ -61,6 +64,7 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v4.1.1 | Jan 2026 | Current release, bug fixes and polish |
 | v4.0.0 | Jan 2026 | **Major release**: Tool renaming (Color Matcher → Palette Extractor, Dye Mixer → Gradient Builder, Preset Browser → Community Presets), new Dye Mixer (RGB blending), new Swatch Matcher, 9 tools total, Glassmorphism UI, 12 themes, Lit.js web components |
 | v3.2.8 | Dec 2025 | Previous stable release |
 | v3.2.7 | Dec 2025 | Theme factory pattern (createThemePalette) |
@@ -79,7 +83,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v2.3.1 | Dec 2025 | Current release |
+| v2.3.4 | Jan 2026 | Current release |
+| v2.3.1 | Dec 2025 | Previous stable |
 | v2.3.0 | Dec 2025 | KV schema versioning, analytics tracking fix, webhook auth security fix |
 | v2.2.0 | Dec 2025 | User ban system (`/preset ban_user`, `/preset unban_user`) |
 | v2.1.0 | Dec 2025 | Moderation infrastructure |
@@ -102,7 +107,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.4.5 | Dec 2025 | Current release |
+| v1.4.7 | Jan 2026 | Current release |
+| v1.4.5 | Dec 2025 | Previous stable |
 | v1.4.4 | Dec 2025 | Standardized API responses, cascade delete integration tests |
 | v1.4.3 | Dec 2025 | UTF-8 safe truncation for Discord embeds |
 | v1.4.1 | Dec 2025 | Perspective API 5s timeout protection |
@@ -115,7 +121,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.2.2 | Dec 2025 | Current release, 5MB response size limit |
+| v1.3.0 | Jan 2026 | Current release |
+| v1.2.2 | Dec 2025 | Previous stable, 5MB response size limit |
 | v1.2.0 | Dec 2025 | Memory leak fix (60s entry cleanup), input validation (100 items max, ID range 1-1M) |
 | v1.1.0 | Dec 2025 | Dual-layer caching (Cache API + KV), request coalescing, stale-while-revalidate |
 | v1.0.0 | Dec 2025 | Initial release with CORS proxy |
@@ -124,7 +131,8 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.1.1 | Dec 2025 | Current release, branded types runtime validation guidance |
+| v1.7.0 | Jan 2026 | Current release |
+| v1.1.1 | Dec 2025 | Previous stable, branded types runtime validation guidance |
 | v1.1.0 | Dec 2025 | Facewear ID support (synthetic IDs ≤ -1000) |
 | v1.0.0 | Nov 2025 | Initial release |
 
@@ -132,8 +140,30 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.0.2 | Dec 2025 | Current release, Authorization pattern fix |
+| v1.1.0 | Jan 2026 | Current release |
+| v1.0.2 | Dec 2025 | Previous stable, Authorization pattern fix |
 | v1.0.1 | Dec 2025 | Secret redaction pattern fixes |
+| v1.0.0 | Nov 2025 | Initial release |
+
+### xivdyetools-moderation-worker
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.0.1 | Jan 2026 | Current release |
+| v1.0.0 | Dec 2025 | Initial release, separate moderation bot for community presets |
+
+### xivdyetools-og-worker
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.0.0 | Jan 2026 | Initial release, dynamic OpenGraph metadata for social media previews |
+
+### @xivdyetools/test-utils
+
+| Version | Date | Highlights |
+|---------|------|------------|
+| v1.1.0 | Jan 2026 | Current release |
+| v1.0.3 | Dec 2025 | Previous stable |
 | v1.0.0 | Nov 2025 | Initial release |
 
 ---

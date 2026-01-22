@@ -9,6 +9,7 @@
 | Guide | Description |
 |-------|-------------|
 | [Local Setup](local-setup.md) | Set up your development environment |
+| [Monorepo Setup](monorepo-setup.md) | Understanding the multi-project structure |
 | [Contributing](contributing.md) | Contribution workflow and guidelines |
 
 ---

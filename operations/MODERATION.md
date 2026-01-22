@@ -225,6 +225,6 @@ Logs can be viewed in the Cloudflare Workers dashboard or via `wrangler tail`.
 
 ## Related Documentation
 
-- [Community Presets Specification](../specifications/COMMUNITY_PRESETS_SPEC.md)
+- [Community Presets Specification](../specifications/community-presets.md)
 - [Discord Worker Deployment](../developer-guides/deployment.md)
 - [Environment Variables](../developer-guides/environment-variables.md)

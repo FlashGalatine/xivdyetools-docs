@@ -1,6 +1,6 @@
 # Moderation Worker Overview
 
-**xivdyetools-moderation-worker** v1.0.0 - Serverless Discord bot for preset moderation
+**xivdyetools-moderation-worker** v1.0.1 - Serverless Discord bot for preset moderation
 
 ---
 
@@ -204,7 +204,7 @@ Uses the same `BOT_API_SECRET` as the main discord-worker to authenticate with t
 | Aspect | discord-worker | moderation-worker |
 |--------|----------------|-------------------|
 | **Purpose** | Public user commands | Moderator-only commands |
-| **Commands** | 21 slash commands | 3 subcommands |
+| **Commands** | 17 slash commands | 3 subcommands |
 | **Installation** | Any server | Admin servers only |
 | **Channel** | Any channel | Designated moderation channel |
 | **Image rendering** | SVG/PNG via resvg-wasm | None (text only) |

@@ -44,7 +44,7 @@ Bring dye tools directly to your Discord server with **17 slash commands**:
 
 ## Coming Soon
 
-**Budget-Aware Dye Suggestions** - Find affordable alternatives to expensive dyes based on current market prices. [View Specification](xivdyetools-docs/BUDGET_AWARE_SUGGESTIONS.md)
+**Budget-Aware Dye Suggestions** - Find affordable alternatives to expensive dyes based on current market prices. [View Specification](../specifications/budget-aware-suggestions.md)
 
 ---
 
