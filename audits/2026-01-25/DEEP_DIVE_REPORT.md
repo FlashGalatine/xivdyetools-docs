@@ -17,26 +17,26 @@
 | BUG-003 | [XIVAPI No Timeout](bugs/BUG-003-maintainer-xivapi-no-timeout.md) | HIGH | Resource Management | ✅ RESOLVED |
 | BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed (PROXY-BUG-001) |
 | BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak | ✅ Fixed (PROXY-CRITICAL-001) |
-| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | Backlog |
-| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | Backlog |
+| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | ✅ RESOLVED (2026-01-26) |
+| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | ✅ Won't Fix - Idiomatic |
 
 ### Refactoring Opportunities
 
 | ID | Title | Priority | Effort | Status |
 |----|-------|----------|--------|--------|
-| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW | ✅ COMPLETED |
-| REFACTOR-002 | [Consolidate Rate Limiting](refactoring/REFACTOR-002-consolidate-rate-limiting.md) | HIGH | MEDIUM | ⏸️ DEFERRED |
-| REFACTOR-003 | [Shared Auth Patterns](refactoring/REFACTOR-003-shared-auth-patterns.md) | MEDIUM | MEDIUM | ⏸️ DEFERRED |
-| REFACTOR-004 | [Deduplicate Checksum](refactoring/REFACTOR-004-deduplicate-checksum.md) | LOW | LOW | ✅ COMPLETED |
+| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW | ✅ COMPLETED (2026-01-25) |
+| REFACTOR-002 | [Consolidate Rate Limiting](refactoring/REFACTOR-002-consolidate-rate-limiting.md) | HIGH | MEDIUM | ✅ COMPLETED (2026-01-25) |
+| REFACTOR-003 | [Shared Auth Patterns](refactoring/REFACTOR-003-shared-auth-patterns.md) | MEDIUM | MEDIUM | ✅ COMPLETED (2026-01-26) |
+| REFACTOR-004 | [Deduplicate Checksum](refactoring/REFACTOR-004-deduplicate-checksum.md) | LOW | LOW | ✅ COMPLETED (2026-01-25) |
 
 ### Optimization Opportunities
 
-| ID | Title | Impact | Category |
-|----|-------|--------|----------|
-| OPT-001 | [LRU Cache Concurrency](optimization/OPT-001-lru-cache-concurrency.md) | MEDIUM | Algorithm |
-| OPT-002 | N+1 KV Queries in Analytics | LOW | I/O |
-| OPT-003 | Random Cleanup Timing | LOW | Algorithm |
-| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm |
+| ID | Title | Impact | Category | Status |
+|----|-------|--------|----------|--------|
+| OPT-001 | [LRU Cache Concurrency](optimization/OPT-001-lru-cache-concurrency.md) | MEDIUM | Algorithm | ✅ COMPLETED (AsyncLRUCache) |
+| OPT-002 | N+1 KV Queries in Analytics | LOW | I/O | ✅ COMPLETED (2026-01-25) |
+| OPT-003 | Random Cleanup Timing | LOW | Algorithm | ✅ COMPLETED (2026-01-25) |
+| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm | ✅ Won't Fix - Tiny dataset |
 
 ## Priority Matrix
 
@@ -46,14 +46,17 @@
 - ~~**BUG-003**: Add timeout to XIVAPI requests (30 minutes)~~ ✅ RESOLVED 2026-01-25
 
 ### Plan for Next Sprint (High Impact, High Effort)
-- **REFACTOR-002**: Consolidate rate limiting (4-6 hours) - ⏸️ DEFERRED (needs architectural decision)
-- **OPT-001**: LRU cache concurrency improvements (2-3 hours)
+- ~~**REFACTOR-002**: Consolidate rate limiting (4-6 hours)~~ ✅ COMPLETED 2026-01-25 - @xivdyetools/rate-limiter package created
+- ~~**OPT-001**: LRU cache concurrency improvements (2-3 hours)~~ ✅ COMPLETED - AsyncLRUCache implemented
 - ~~**BUG-001/002**: Address base64 duplication and document KV race condition~~ ✅ Documented/Tracked
 
 ### Technical Debt Backlog (Lower Priority)
-- **REFACTOR-003**: Shared auth patterns - ⏸️ DEFERRED
-- **OPT-002-004**: Micro-optimizations
-- **BUG-006-007**: Edge case fixes (BUG-004/005 already fixed)
+- ~~**REFACTOR-003**: Shared auth patterns~~ ✅ COMPLETED 2026-01-26 - @xivdyetools/auth package created
+- ~~**OPT-002**: N+1 KV Queries~~ ✅ COMPLETED 2026-01-25
+- ~~**OPT-003**: Random cleanup timing~~ ✅ COMPLETED 2026-01-25 - Jitter implemented in request-coalescer
+- **OPT-004**: Array Search O(n) - ✅ Won't Fix (dataset max 20-50 items, O(n) is optimal)
+- ~~**BUG-006**: Null handling in HarmonyGenerator~~ ✅ RESOLVED 2026-01-26
+- **BUG-007**: Empty array check - ✅ Won't Fix (code is already idiomatic)
 
 ## Code Quality Observations
 

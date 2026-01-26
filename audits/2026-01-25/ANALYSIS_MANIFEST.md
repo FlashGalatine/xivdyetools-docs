@@ -50,7 +50,7 @@ See individual files in `bugs/` directory.
 | BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed |
 | BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak | ✅ Fixed |
 | BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | ✅ RESOLVED (2026-01-26) |
-| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | Backlog |
+| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | ✅ Won't Fix - Idiomatic |
 
 ### Refactoring
 
@@ -71,8 +71,8 @@ See individual files in `optimization/` directory.
 |----|-------|--------|----------|--------|
 | OPT-001 | LRU Cache Concurrency | MEDIUM | Algorithm | ✅ COMPLETED (AsyncLRUCache) |
 | OPT-002 | N+1 KV Queries in Analytics | LOW | I/O | ✅ COMPLETED (2026-01-25) |
-| OPT-003 | Random Cleanup Timing | LOW | Algorithm | Backlog |
-| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm | Backlog |
+| OPT-003 | Random Cleanup Timing | LOW | Algorithm | ✅ COMPLETED (2026-01-25) |
+| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm | ✅ Won't Fix - Tiny dataset |
 
 ## Summary Statistics
 
