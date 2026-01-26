@@ -53,3 +53,26 @@ class KVRateLimiter implements IRateLimiter { }
 - Medium risk: Rate limiting is security-critical
 - Requires coordination across multiple projects
 - Good test coverage essential
+
+## Status
+**DEFERRED** (2026-01-25)
+
+**Analysis Notes:**
+The 4 implementations use fundamentally different backends with different trade-offs:
+
+| Project | Backend | Atomicity | Persistence | Complexity |
+|---------|---------|-----------|-------------|------------|
+| oauth | Durable Objects | ✅ Atomic | ✅ Persistent | High |
+| presets-api | In-memory Map | ✅ Atomic | ❌ Ephemeral | Low |
+| moderation-worker | KV + versioning | ⚠️ Optimistic | ✅ Persistent | Medium |
+| discord-worker | KV + JSON | ⚠️ Race-prone | ✅ Persistent | Low |
+
+**Why Deferred:**
+1. Each implementation is tailored to its specific use case
+2. True consolidation requires creating a new `@xivdyetools/rate-limiter` package
+3. Architectural decision needed: standardize on DO (reliable) vs KV (simpler) vs Memory (fast)
+4. Existing implementations work correctly with documented limitations
+
+**Recommended Path:**
+- Phase 3 (2+ weeks): Create shared abstraction with multiple backend implementations
+- For now: Document race conditions (already done via BUG-002) and accept trade-offs

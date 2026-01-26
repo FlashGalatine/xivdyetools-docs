@@ -56,12 +56,12 @@ See individual files in `bugs/` directory.
 
 See individual files in `refactoring/` directory.
 
-| ID | Title | Priority | Effort |
-|----|-------|----------|--------|
-| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW |
-| REFACTOR-002 | Consolidate Rate Limiting | HIGH | MEDIUM |
-| REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM |
-| REFACTOR-004 | Deduplicate Checksum | LOW | LOW |
+| ID | Title | Priority | Effort | Status |
+|----|-------|----------|--------|--------|
+| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW | ⚡ PARTIAL |
+| REFACTOR-002 | Consolidate Rate Limiting | HIGH | MEDIUM | ⏸️ DEFERRED |
+| REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM | ⏸️ DEFERRED |
+| REFACTOR-004 | Deduplicate Checksum | LOW | LOW | ✅ COMPLETED |
 
 ### Optimization
 

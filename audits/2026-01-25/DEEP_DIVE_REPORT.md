@@ -22,12 +22,12 @@
 
 ### Refactoring Opportunities
 
-| ID | Title | Priority | Effort |
-|----|-------|----------|--------|
-| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW |
-| REFACTOR-002 | [Consolidate Rate Limiting](refactoring/REFACTOR-002-consolidate-rate-limiting.md) | HIGH | MEDIUM |
-| REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM |
-| REFACTOR-004 | Deduplicate Checksum | LOW | LOW |
+| ID | Title | Priority | Effort | Status |
+|----|-------|----------|--------|--------|
+| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW | ⚡ PARTIAL |
+| REFACTOR-002 | [Consolidate Rate Limiting](refactoring/REFACTOR-002-consolidate-rate-limiting.md) | HIGH | MEDIUM | ⏸️ DEFERRED |
+| REFACTOR-003 | [Shared Auth Patterns](refactoring/REFACTOR-003-shared-auth-patterns.md) | MEDIUM | MEDIUM | ⏸️ DEFERRED |
+| REFACTOR-004 | [Deduplicate Checksum](refactoring/REFACTOR-004-deduplicate-checksum.md) | LOW | LOW | ✅ COMPLETED |
 
 ### Optimization Opportunities
 
@@ -41,18 +41,19 @@
 ## Priority Matrix
 
 ### Immediate Action (High Impact, Low Effort)
-- **REFACTOR-001**: Consolidate base64 utilities (2-3 hours)
+- ~~**REFACTOR-001**: Consolidate base64 utilities (2-3 hours)~~ ⚡ PARTIAL - oauth deduplicated, cross-project needs new package
+- ~~**REFACTOR-004**: Deduplicate checksum utility~~ ✅ COMPLETED 2026-01-25
 - ~~**BUG-003**: Add timeout to XIVAPI requests (30 minutes)~~ ✅ RESOLVED 2026-01-25
 
 ### Plan for Next Sprint (High Impact, High Effort)
-- **REFACTOR-002**: Consolidate rate limiting (4-6 hours)
+- **REFACTOR-002**: Consolidate rate limiting (4-6 hours) - ⏸️ DEFERRED (needs architectural decision)
 - **OPT-001**: LRU cache concurrency improvements (2-3 hours)
 - ~~**BUG-001/002**: Address base64 duplication and document KV race condition~~ ✅ Documented/Tracked
 
 ### Technical Debt Backlog (Lower Priority)
-- **REFACTOR-003**: Shared auth patterns
+- **REFACTOR-003**: Shared auth patterns - ⏸️ DEFERRED
 - **OPT-002-004**: Micro-optimizations
-- **BUG-004-007**: Edge case fixes
+- **BUG-006-007**: Edge case fixes (BUG-004/005 already fixed)
 
 ## Code Quality Observations
 

@@ -42,3 +42,24 @@ export { hmacSign, hmacVerify } from './hmac';
 ## Risk Assessment
 - Low risk: Functions are well-tested individually
 - Breaking change: Projects need to update imports
+
+## Status
+**PARTIAL** (2026-01-25)
+
+**Completed:**
+- ✅ Exported `base64UrlDecode` from jwt-service.ts (OAUTH-REF-003)
+- ✅ Updated state-signing.ts to import from jwt-service instead of duplicating
+- ✅ Reduced duplicates from 4 → 3 locations
+
+**Remaining:**
+- ⏸️ presets-api/auth.ts still has its own implementation (different worker, no shared dependency)
+- ⏸️ Full consolidation requires new `@xivdyetools/crypto` package
+
+**Why Not Fully Consolidated:**
+1. `@xivdyetools/test-utils` is a devDependency (can't use in production)
+2. oauth and presets-api are separate Cloudflare Workers (no shared runtime)
+3. Creating a new production package adds ecosystem complexity
+
+**Recommended Path:**
+- If more crypto utilities need sharing, create `@xivdyetools/crypto` package
+- For now, the within-project deduplication removes the most significant duplication
