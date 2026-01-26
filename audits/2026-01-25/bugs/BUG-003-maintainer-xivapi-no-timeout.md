@@ -46,3 +46,8 @@ const response = await fetchWithTimeout(
 - Works perfectly when XIVAPI is responsive
 - Only manifests under network issues
 - No automated tests for timeout scenarios
+
+## Status
+**RESOLVED** (2026-01-25)
+
+**Resolution Notes:** Updated `xivapiService.ts` to use `fetchWithTimeout()` utility with 10 second timeout. Requests now fail gracefully instead of hanging indefinitely.

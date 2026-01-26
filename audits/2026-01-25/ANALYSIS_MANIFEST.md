@@ -42,15 +42,15 @@ Categories investigated:
 
 See individual files in `bugs/` directory.
 
-| ID | Title | Severity | Type |
-|----|-------|----------|------|
-| BUG-001 | Base64URL Decode Duplication | HIGH | Code Duplication |
-| BUG-002 | KV Race Condition in Rate Limiting | HIGH | Concurrency |
-| BUG-003 | XIVAPI No Timeout in Maintainer | HIGH | Resource Management |
-| BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety |
-| BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak |
-| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case |
-| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity |
+| ID | Title | Severity | Type | Status |
+|----|-------|----------|------|--------|
+| BUG-001 | Base64URL Decode Duplication | HIGH | Code Duplication | TRACKED (REFACTOR-001) |
+| BUG-002 | KV Race Condition in Rate Limiting | HIGH | Concurrency | ACCEPTED |
+| BUG-003 | XIVAPI No Timeout in Maintainer | HIGH | Resource Management | ✅ RESOLVED |
+| BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed |
+| BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak | ✅ Fixed |
+| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | Backlog |
+| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | Backlog |
 
 ### Refactoring
 

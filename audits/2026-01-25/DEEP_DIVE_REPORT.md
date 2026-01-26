@@ -10,15 +10,15 @@
 
 ### Hidden Bugs
 
-| ID | Title | Severity | Type |
-|----|-------|----------|------|
-| BUG-001 | [Base64URL Decode Duplication](bugs/BUG-001-base64url-decode-duplication.md) | HIGH | Code Duplication |
-| BUG-002 | [KV Race Condition](bugs/BUG-002-kv-race-condition.md) | HIGH | Concurrency |
-| BUG-003 | [XIVAPI No Timeout](bugs/BUG-003-maintainer-xivapi-no-timeout.md) | HIGH | Resource Management |
-| BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety |
-| BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak |
-| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case |
-| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity |
+| ID | Title | Severity | Type | Status |
+|----|-------|----------|------|--------|
+| BUG-001 | [Base64URL Decode Duplication](bugs/BUG-001-base64url-decode-duplication.md) | HIGH | Code Duplication | TRACKED (REFACTOR-001) |
+| BUG-002 | [KV Race Condition](bugs/BUG-002-kv-race-condition.md) | HIGH | Concurrency | ACCEPTED |
+| BUG-003 | [XIVAPI No Timeout](bugs/BUG-003-maintainer-xivapi-no-timeout.md) | HIGH | Resource Management | ✅ RESOLVED |
+| BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed (PROXY-BUG-001) |
+| BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak | ✅ Fixed (PROXY-CRITICAL-001) |
+| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | Backlog |
+| BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | Backlog |
 
 ### Refactoring Opportunities
 
@@ -42,12 +42,12 @@
 
 ### Immediate Action (High Impact, Low Effort)
 - **REFACTOR-001**: Consolidate base64 utilities (2-3 hours)
-- **BUG-003**: Add timeout to XIVAPI requests (30 minutes)
+- ~~**BUG-003**: Add timeout to XIVAPI requests (30 minutes)~~ ✅ RESOLVED 2026-01-25
 
 ### Plan for Next Sprint (High Impact, High Effort)
 - **REFACTOR-002**: Consolidate rate limiting (4-6 hours)
 - **OPT-001**: LRU cache concurrency improvements (2-3 hours)
-- **BUG-001/002**: Address base64 duplication and document KV race condition
+- ~~**BUG-001/002**: Address base64 duplication and document KV race condition~~ ✅ Documented/Tracked
 
 ### Technical Debt Backlog (Lower Priority)
 - **REFACTOR-003**: Shared auth patterns
@@ -72,9 +72,9 @@
 ## Recommendations
 
 ### Phase 1 (Critical - 1-2 days)
-1. Fix BUG-003: Add timeout to XIVAPI requests
+1. ~~Fix BUG-003: Add timeout to XIVAPI requests~~ ✅ RESOLVED 2026-01-25
 2. Start REFACTOR-001: Create shared crypto module
-3. Document BUG-002: Add team awareness of KV race conditions
+3. ~~Document BUG-002: Add team awareness of KV race conditions~~ ✅ Documented
 
 ### Phase 2 (Important - 1 week)
 4. Complete REFACTOR-001: Migrate all projects to shared base64

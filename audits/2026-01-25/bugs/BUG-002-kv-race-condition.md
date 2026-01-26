@@ -49,3 +49,8 @@ export class RateLimiter implements DurableObject {
 - Documented but accepted trade-off for availability
 - Race window is small (~10ms)
 - Impact is minor (allows 2x burst occasionally)
+
+## Status
+**ACCEPTED** - This is a known architectural limitation documented with `DISCORD-BUG-001` and `MOD-BUG-001` labels in the codebase.
+
+**Resolution Notes:** The race condition is an accepted trade-off for availability. KV optimistic concurrency is sufficient for rate limiting use cases. Durable Objects would provide atomic guarantees but add complexity and cost. Current implementation is defensive with retry logic.

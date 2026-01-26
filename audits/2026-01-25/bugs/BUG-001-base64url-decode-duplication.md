@@ -54,3 +54,8 @@ export function base64UrlDecodeBytes(str: string): Uint8Array {
 - Each implementation works correctly in isolation
 - No cross-project integration tests
 - Code review doesn't typically compare across repositories
+
+## Status
+**TRACKED** - This is a code duplication issue, not a runtime bug. See [REFACTOR-001](../refactoring/REFACTOR-001-consolidate-base64-utils.md) for the consolidation plan.
+
+**Resolution Notes:** All implementations are functionally correct. Consolidation is recommended for maintainability but is not a security or stability issue.
