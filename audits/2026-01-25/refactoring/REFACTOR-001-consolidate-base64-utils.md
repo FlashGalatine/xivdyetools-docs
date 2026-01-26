@@ -7,59 +7,71 @@
 Code Duplication
 
 ## Location
-- xivdyetools-oauth/src/services/jwt-service.ts
-- xivdyetools-oauth/src/utils/state-signing.ts
-- xivdyetools-presets-api/src/middleware/auth.ts
-- xivdyetools-test-utils/src/utils/crypto.ts
+~~Original locations (now migrated):~~
+- ~~xivdyetools-oauth/src/services/jwt-service.ts~~
+- ~~xivdyetools-oauth/src/utils/state-signing.ts~~
+- ~~xivdyetools-presets-api/src/middleware/auth.ts~~
+- ~~xivdyetools-test-utils/src/utils/crypto.ts~~
+
+**New canonical location:**
+- `@xivdyetools/crypto` package
 
 ## Current State
-4 independent implementations of base64URL encode/decode functions spread across projects.
+~~4 independent implementations of base64URL encode/decode functions spread across projects.~~
 
-## Issues
-- Maintenance burden (4 places to fix bugs)
-- Risk of inconsistent behavior
-- ~200 lines of duplicated code
-- No single source of truth
+**RESOLVED**: All implementations consolidated into `@xivdyetools/crypto` package.
 
-## Proposed Refactoring
-Create shared `@xivdyetools/crypto` module or extend test-utils:
+## Issues (Resolved)
+- ~~Maintenance burden (4 places to fix bugs)~~ → Single source of truth
+- ~~Risk of inconsistent behavior~~ → All projects import from same package
+- ~~\~200 lines of duplicated code~~ → Reduced to ~15 lines in crypto package
+- ~~No single source of truth~~ → `@xivdyetools/crypto` is canonical
+
+## Implementation (Completed)
+Created `@xivdyetools/crypto` module:
 
 ```typescript
 // @xivdyetools/crypto/src/index.ts
-export { base64UrlEncode, base64UrlDecode } from './base64';
-export { hmacSign, hmacVerify } from './hmac';
+export { base64UrlEncode, base64UrlEncodeBytes, base64UrlDecode, base64UrlDecodeBytes } from './base64';
+export { hexToBytes, bytesToHex } from './hex';
 ```
 
-## Benefits
+## Benefits Realized
 - Single source of truth for crypto utilities
 - Easier to audit security-critical code
 - Consistent behavior across all projects
-- Reduced code size
+- Reduced total duplicated code by ~130 lines
 
-## Effort Estimate
-**LOW** (2-3 hours)
+## Effort
+**Actual:** ~2 hours (as estimated)
 
 ## Risk Assessment
-- Low risk: Functions are well-tested individually
-- Breaking change: Projects need to update imports
+- Low risk confirmed: Existing tests pass
+- Projects updated imports successfully
 
 ## Status
-**PARTIAL** (2026-01-25)
+**✅ COMPLETED** (2026-01-25)
 
-**Completed:**
-- ✅ Exported `base64UrlDecode` from jwt-service.ts (OAUTH-REF-003)
-- ✅ Updated state-signing.ts to import from jwt-service instead of duplicating
-- ✅ Reduced duplicates from 4 → 3 locations
+### Migration Timeline:
+1. **Phase 1** (earlier today): Internal deduplication within oauth
+   - Exported `base64UrlDecode` from jwt-service.ts
+   - Updated state-signing.ts to import from jwt-service
+2. **Phase 2** (this session): Full consolidation
+   - Created `@xivdyetools/crypto` package (v1.0.0)
+   - Migrated oauth to import from crypto package (v2.3.3)
+   - Migrated presets-api to import from crypto package (v1.4.9)
+   - Migrated test-utils to re-export from crypto package (v1.1.1)
 
-**Remaining:**
-- ⏸️ presets-api/auth.ts still has its own implementation (different worker, no shared dependency)
-- ⏸️ Full consolidation requires new `@xivdyetools/crypto` package
+### Affected Versions:
+| Project | Version | Changes |
+|---------|---------|---------|
+| @xivdyetools/crypto | 1.0.0 | New package |
+| xivdyetools-oauth | 2.3.3 | Imports from crypto |
+| xivdyetools-presets-api | 1.4.9 | Imports from crypto |
+| @xivdyetools/test-utils | 1.1.1 | Re-exports from crypto |
 
-**Why Not Fully Consolidated:**
-1. `@xivdyetools/test-utils` is a devDependency (can't use in production)
-2. oauth and presets-api are separate Cloudflare Workers (no shared runtime)
-3. Creating a new production package adds ecosystem complexity
-
-**Recommended Path:**
-- If more crypto utilities need sharing, create `@xivdyetools/crypto` package
-- For now, the within-project deduplication removes the most significant duplication
+### Note on NPM Publishing:
+Current implementation uses `file:` references for local development.
+When publishing to NPM:
+1. Publish `@xivdyetools/crypto` to NPM
+2. Update references from `file:../xivdyetools-crypto` to `^1.0.0`

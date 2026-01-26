@@ -44,7 +44,7 @@ See individual files in `bugs/` directory.
 
 | ID | Title | Severity | Type | Status |
 |----|-------|----------|------|--------|
-| BUG-001 | Base64URL Decode Duplication | HIGH | Code Duplication | TRACKED (REFACTOR-001) |
+| BUG-001 | Base64URL Decode Duplication | HIGH | Code Duplication | ✅ RESOLVED (REFACTOR-001) |
 | BUG-002 | KV Race Condition in Rate Limiting | HIGH | Concurrency | ACCEPTED |
 | BUG-003 | XIVAPI No Timeout in Maintainer | HIGH | Resource Management | ✅ RESOLVED |
 | BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed |
@@ -58,7 +58,7 @@ See individual files in `refactoring/` directory.
 
 | ID | Title | Priority | Effort | Status |
 |----|-------|----------|--------|--------|
-| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW | ⚡ PARTIAL |
+| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW | ✅ COMPLETED |
 | REFACTOR-002 | Consolidate Rate Limiting | HIGH | MEDIUM | ⏸️ DEFERRED |
 | REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM | ⏸️ DEFERRED |
 | REFACTOR-004 | Deduplicate Checksum | LOW | LOW | ✅ COMPLETED |

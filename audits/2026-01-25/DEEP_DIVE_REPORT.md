@@ -12,7 +12,7 @@
 
 | ID | Title | Severity | Type | Status |
 |----|-------|----------|------|--------|
-| BUG-001 | [Base64URL Decode Duplication](bugs/BUG-001-base64url-decode-duplication.md) | HIGH | Code Duplication | TRACKED (REFACTOR-001) |
+| BUG-001 | [Base64URL Decode Duplication](bugs/BUG-001-base64url-decode-duplication.md) | HIGH | Code Duplication | ✅ RESOLVED (REFACTOR-001) |
 | BUG-002 | [KV Race Condition](bugs/BUG-002-kv-race-condition.md) | HIGH | Concurrency | ACCEPTED |
 | BUG-003 | [XIVAPI No Timeout](bugs/BUG-003-maintainer-xivapi-no-timeout.md) | HIGH | Resource Management | ✅ RESOLVED |
 | BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed (PROXY-BUG-001) |
@@ -24,7 +24,7 @@
 
 | ID | Title | Priority | Effort | Status |
 |----|-------|----------|--------|--------|
-| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW | ⚡ PARTIAL |
+| REFACTOR-001 | [Consolidate Base64 Utils](refactoring/REFACTOR-001-consolidate-base64-utils.md) | HIGH | LOW | ✅ COMPLETED |
 | REFACTOR-002 | [Consolidate Rate Limiting](refactoring/REFACTOR-002-consolidate-rate-limiting.md) | HIGH | MEDIUM | ⏸️ DEFERRED |
 | REFACTOR-003 | [Shared Auth Patterns](refactoring/REFACTOR-003-shared-auth-patterns.md) | MEDIUM | MEDIUM | ⏸️ DEFERRED |
 | REFACTOR-004 | [Deduplicate Checksum](refactoring/REFACTOR-004-deduplicate-checksum.md) | LOW | LOW | ✅ COMPLETED |
@@ -41,7 +41,7 @@
 ## Priority Matrix
 
 ### Immediate Action (High Impact, Low Effort)
-- ~~**REFACTOR-001**: Consolidate base64 utilities (2-3 hours)~~ ⚡ PARTIAL - oauth deduplicated, cross-project needs new package
+- ~~**REFACTOR-001**: Consolidate base64 utilities (2-3 hours)~~ ✅ COMPLETED 2026-01-25 - @xivdyetools/crypto package created
 - ~~**REFACTOR-004**: Deduplicate checksum utility~~ ✅ COMPLETED 2026-01-25
 - ~~**BUG-003**: Add timeout to XIVAPI requests (30 minutes)~~ ✅ RESOLVED 2026-01-25
 
