@@ -109,7 +109,7 @@ Devalue 5.1.0-5.6.1 vulnerable to memory exhaustion DoS.
 
 ### Technical Debt Backlog
 7. ~~Add pre-commit hooks to prevent secret commits~~ - DONE (2026-01-26)
-8. Document rate limiting race condition trade-offs
+8. ~~Document rate limiting race condition trade-offs~~ - DONE (2026-01-26)
 9. Implement token rotation in maintainer tool
 
 ## Recommendations
@@ -118,7 +118,7 @@ Devalue 5.1.0-5.6.1 vulnerable to memory exhaustion DoS.
 2. **Dependency Updates**: Set up automated dependency scanning (Dependabot/Renovate) - ✅ IMPLEMENTED (2026-01-26)
 3. **Pre-commit Hooks**: Add secret detection hooks (git-secrets, detect-secrets) - ✅ IMPLEMENTED (2026-01-26)
 4. **Monitoring**: Implement alerting for rate limiter KV errors - ✅ IMPLEMENTED (2026-01-26)
-5. **Documentation**: Document security trade-offs in architecture docs
+5. **Documentation**: Document security trade-offs in architecture docs - ✅ IMPLEMENTED (2026-01-26)
 
 ## Next Steps
 
