@@ -49,7 +49,7 @@ See individual files in `bugs/` directory.
 | BUG-003 | XIVAPI No Timeout in Maintainer | HIGH | Resource Management | ✅ RESOLVED |
 | BUG-004 | RequestCoalescer Unsafe Type Cast | MEDIUM | Type Safety | ✅ Fixed |
 | BUG-005 | RequestCoalescer Memory Leak | MEDIUM | Resource Leak | ✅ Fixed |
-| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | Backlog |
+| BUG-006 | Null Handling in HarmonyGenerator | MEDIUM | Edge Case | ✅ RESOLVED (2026-01-26) |
 | BUG-007 | Empty Array Check in RateLimitService | LOW | Code Clarity | Backlog |
 
 ### Refactoring
@@ -58,21 +58,21 @@ See individual files in `refactoring/` directory.
 
 | ID | Title | Priority | Effort | Status |
 |----|-------|----------|--------|--------|
-| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW | ✅ COMPLETED |
-| REFACTOR-002 | Consolidate Rate Limiting | HIGH | MEDIUM | ⏸️ DEFERRED |
-| REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM | ⏸️ DEFERRED |
-| REFACTOR-004 | Deduplicate Checksum | LOW | LOW | ✅ COMPLETED |
+| REFACTOR-001 | Consolidate Base64 Utils | HIGH | LOW | ✅ COMPLETED (2026-01-25) |
+| REFACTOR-002 | Consolidate Rate Limiting | HIGH | MEDIUM | ✅ COMPLETED (2026-01-25) |
+| REFACTOR-003 | Shared Auth Patterns | MEDIUM | MEDIUM | ✅ COMPLETED (2026-01-26) |
+| REFACTOR-004 | Deduplicate Checksum | LOW | LOW | ✅ COMPLETED (2026-01-25) |
 
 ### Optimization
 
 See individual files in `optimization/` directory.
 
-| ID | Title | Impact | Category |
-|----|-------|--------|----------|
-| OPT-001 | LRU Cache Concurrency | MEDIUM | Algorithm |
-| OPT-002 | N+1 KV Queries in Analytics | LOW | I/O |
-| OPT-003 | Random Cleanup Timing | LOW | Algorithm |
-| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm |
+| ID | Title | Impact | Category | Status |
+|----|-------|--------|----------|--------|
+| OPT-001 | LRU Cache Concurrency | MEDIUM | Algorithm | ✅ COMPLETED (AsyncLRUCache) |
+| OPT-002 | N+1 KV Queries in Analytics | LOW | I/O | ✅ COMPLETED (2026-01-25) |
+| OPT-003 | Random Cleanup Timing | LOW | Algorithm | Backlog |
+| OPT-004 | Array Search O(n) in UserStorage | LOW | Algorithm | Backlog |
 
 ## Summary Statistics
 
