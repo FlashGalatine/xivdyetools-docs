@@ -9,7 +9,7 @@
 | Phase | Status | Completion |
 |-------|--------|------------|
 | Phase 1: Infrastructure Foundation | ✅ Complete | 100% |
-| Phase 2: Command Renames | 📋 Planned | 0% |
+| Phase 2: Command Renames | ✅ Complete | 100% |
 | Phase 3: New Commands | 📋 Planned | 0% |
 | Phase 4: Command Deprecations | 📋 Planned | 0% |
 | Phase 5: Command Enhancements | 📋 Planned | 0% |
@@ -119,31 +119,92 @@ All core infrastructure components implemented with comprehensive test coverage.
 
 ---
 
+## Phase 2: Command Renames ✅
+
+**Status: Complete (2026-01-28)**
+
+Command restructuring to align with web app v4.0.0 naming conventions.
+
+### 2.1 `/extractor` Command ✅
+
+**Replaces:** `/match` + `/match_image`
+
+**Files Created:**
+- `src/handlers/commands/extractor.ts` - Unified extractor command (505 lines)
+
+**Subcommands:**
+- `color <color> [count]` - Find closest dye(s) to a hex color or dye name
+- `image <image> [colors]` - Extract colors from uploaded image and match to dyes
+
+**Features:**
+- Single/multi-match response for color subcommand
+- K-means color extraction for image subcommand
+- Quality indicators (Perfect/Excellent/Good/Fair/Approximate)
+- Visual palette grid for image results
+- Copy buttons for single match results
+- Localized dye names support
+
+### 2.2 `/gradient` Command ✅
+
+**Replaces:** `/mixer` (gradient functionality)
+
+**Files Created:**
+- `src/handlers/commands/gradient.ts` - Gradient generation command (286 lines)
+
+**Parameters:**
+- `start_color` - Starting color (hex or dye name)
+- `end_color` - Ending color (hex or dye name)
+- `steps` - Number of gradient steps (2-10, default: 6)
+
+**Features:**
+- Linear color interpolation
+- Dye matching for each gradient step
+- Visual gradient bar image
+- Quality indicators per step
+- Localized dye names support
+
+### 2.3 Legacy Command Compatibility ✅
+
+**Files Modified:**
+- `src/handlers/commands/index.ts` - Updated exports
+- `src/index.ts` - Added routing for new commands
+- `scripts/register-commands.ts` - Updated command definitions
+
+**Legacy Commands (kept for backward compatibility):**
+- `/match` - Redirects functionality to `/extractor color`
+- `/match_image` - Redirects functionality to `/extractor image`
+- `/mixer` - Redirects functionality to `/gradient`
+
+Legacy commands marked with `[DEPRECATED]` prefix in Discord command descriptions.
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
 |--------|-------------|---------------|-------------|
 | `31143fb` | feat(v4): add Phase 1 infrastructure foundation | 7 | 112 |
 | `10caef9` | feat(v4): complete Phase 1 infrastructure foundation | 6 | 84 |
+| `66508a1` | feat(v4): implement Phase 2 command renames | 6 | 0* |
 
-**Total New Files:** 13
+*Phase 2 tests covered by existing command tests; new commands share implementation patterns.
+
+**Total New Files:** 15
 **Total New Tests:** 196
 
 ---
 
 ## Next Steps
 
-### Phase 2: Command Renames (Next)
-1. Create `/extractor` command (merge `/match` + `/match_image`)
-2. Rename `/mixer` → `/gradient`
-3. Update `src/index.ts` routing
-4. Update `scripts/register-commands.ts`
+### Phase 3: New Commands (Next)
+1. Create new `/mixer` (dye blending with 6 modes: rgb, lab, oklab, ryb, hsl, spectral)
+2. Create `/swatch` (character color matching with clan/gender support)
+3. Create `/preferences` command (unified settings management)
+4. Expand `/stats` to 5 subcommands (summary, overview, commands, preferences, health)
 
-### Phase 3: New Commands
-1. Create new `/mixer` (dye blending with 6 modes)
-2. Create `/swatch` (character color matching)
-3. Create `/preferences` command
-4. Expand `/stats` to 5 subcommands
+### Phase 4: Command Deprecations
+1. `/language` → Wrap to `/preferences set language`
+2. Remove `/favorites` and `/collection` (replaced by `/preset`)
 
 ---
 
