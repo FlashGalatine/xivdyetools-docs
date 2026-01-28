@@ -14,7 +14,7 @@
 | Phase 4: Command Deprecations | ✅ Complete | 100% |
 | Phase 5: Command Enhancements | ✅ Complete | 100% |
 | Phase 6: Localization Updates | ✅ Complete | 100% |
-| Phase 7: Changelog Announcements | 📋 Planned | 0% |
+| Phase 7: Changelog Announcements | ✅ Complete | 100% |
 | Phase 8: Registration & Deployment | 📋 Planned | 0% |
 
 ---
@@ -459,6 +459,66 @@ Comprehensive localization updates across all 6 supported languages (en, ja, de,
 
 ---
 
+## Phase 7: Changelog Announcements ✅
+
+**Status: Complete (2026-01-28)**
+
+GitHub webhook endpoint that automatically posts changelog updates to Discord when CHANGELOG-laymans.md is modified on the main branch.
+
+### 7.1 GitHub Webhook Types ✅
+
+**Files Created:**
+- `src/types/github.ts` - TypeScript types for GitHub push webhook payload (`GitHubPushPayload`, `GitHubCommit`)
+
+### 7.2 HMAC-SHA256 Verification ✅
+
+**Files Created:**
+- `src/utils/github-verify.ts` - `verifyGitHubSignature()` function
+
+**Features:**
+- Web Crypto API for HMAC-SHA256 computation (native in Cloudflare Workers)
+- Timing-safe comparison using `crypto.subtle.timingSafeEqual` with XOR fallback
+- Validates `X-Hub-Signature-256` header format (`sha256=<hex>`)
+
+### 7.3 Changelog Parser ✅
+
+**Files Created:**
+- `src/services/changelog-parser.ts` - `parseLatestVersion()` function
+
+**Features:**
+- Parses `## [x.y.z] - YYYY-MM-DD` version headers
+- Extracts `### Section` subsections with bullet items
+- Returns structured `ChangelogEntry` (version, date, sections[])
+- Only extracts the first (latest) version block
+
+### 7.4 Announcement Service ✅
+
+**Files Created:**
+- `src/services/announcements.ts` - `formatAnnouncementEmbed()` + `sendAnnouncement()`
+
+**Features:**
+- Rich Discord embed with title, sections, footer (repo link + date)
+- Discord blurple color (`0x5865F2`)
+- 4096-char description truncation safety
+- Uses existing `sendMessage()` from discord-api utils
+
+### 7.5 Env & Route Integration ✅
+
+**Files Modified:**
+- `src/types/env.ts` - Added `GITHUB_WEBHOOK_SECRET?`, `ANNOUNCEMENT_CHANNEL_ID?`
+- `src/index.ts` - Added `POST /webhooks/github` route
+
+**Route Flow:**
+1. Verify `GITHUB_WEBHOOK_SECRET` is configured
+2. Read raw body, validate size (10KB limit)
+3. Verify HMAC-SHA256 signature via `X-Hub-Signature-256`
+4. Parse `GitHubPushPayload`, check `refs/heads/main`
+5. Check if any commit added/modified `CHANGELOG-laymans.md`
+6. Fetch raw changelog from `raw.githubusercontent.com`
+7. Parse latest version, format embed, send to `ANNOUNCEMENT_CHANNEL_ID`
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
@@ -470,14 +530,16 @@ Comprehensive localization updates across all 6 supported languages (en, ja, de,
 | `ef7dd35` | feat(v4): implement Phase 4 command deprecations | 4 | 0*** |
 | `e2568c8` | feat(v4): implement Phase 5 command enhancements | 6 | 0**** |
 | `e8c355b` | feat(v4): implement Phase 6 localization updates | 8 | 0***** |
+| `3051cd4` | feat: add changelog announcement system via GitHub webhooks (Phase 7) | 6 | 0****** |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
 **Phase 3 commands integrate with tested Phase 1 infrastructure services.
 ***Phase 4 modifies existing tested commands; no new test files needed.
 ****Phase 5 visual enhancements use tested SVG infrastructure.
 *****Phase 6 locale changes are data files; validated via JSON parsing.
+******Phase 7 webhook/parser verified via TypeScript compilation; manual testing with curl recommended.
 
-**Total New Files:** 21
+**Total New Files:** 25
 **Total New Tests:** 196
 **Total Lines Added (Phase 6):** ~1,434 (8 files, 0 new)
 
@@ -485,12 +547,7 @@ Comprehensive localization updates across all 6 supported languages (en, ja, de,
 
 ## Next Steps
 
-### Phase 7: Changelog Announcements (Next)
-1. GitHub webhook handler
-2. Changelog parser
-3. Discord announcement formatting
-
-### Phase 8: Registration & Deployment
+### Phase 8: Registration & Deployment (Next)
 1. Final command registration update
 2. Version bump to 4.0.0
 
