@@ -10,7 +10,7 @@
 |-------|--------|------------|
 | Phase 1: Infrastructure Foundation | ✅ Complete | 100% |
 | Phase 2: Command Renames | ✅ Complete | 100% |
-| Phase 3: New Commands | 📋 Planned | 0% |
+| Phase 3: New Commands | ✅ Complete | 100% |
 | Phase 4: Command Deprecations | 📋 Planned | 0% |
 | Phase 5: Command Enhancements | 📋 Planned | 0% |
 | Phase 6: Localization Updates | 📋 Planned | 0% |
@@ -179,6 +179,113 @@ Legacy commands marked with `[DEPRECATED]` prefix in Discord command description
 
 ---
 
+## Phase 3: New Commands ✅
+
+**Status: Complete (2026-01-28)**
+
+Four new V4 commands implemented with comprehensive features.
+
+### 3.1 `/preferences` Command ✅
+
+**Files Created:**
+- `src/handlers/commands/preferences.ts` - Unified settings management (430 lines)
+
+**Subcommands:**
+- `show` - Display all current preferences with values and defaults
+- `set <key> <value>` - Set a preference value with validation
+- `reset [key]` - Reset one or all preferences to defaults
+
+**Features:**
+- 8 configurable preference keys: language, blending, matching, count, clan, gender, world, market
+- Visual display with emojis for each preference category
+- Validation error messages with valid options listed
+- Shows affected commands when setting preferences
+
+### 3.2 `/mixer` Command (NEW) ✅
+
+**Replaces:** Nothing (old `/mixer` is now `/gradient`)
+
+**Files Created:**
+- `src/handlers/commands/mixer-v4.ts` - Dye blending command (329 lines)
+- `src/services/color-blending.ts` - Color blending algorithms (580 lines)
+
+**Parameters:**
+- `dye1` - First dye to blend (hex or dye name)
+- `dye2` - Second dye to blend (hex or dye name)
+- `mode` - Blending algorithm (optional, uses preference default)
+- `count` - Number of closest dye matches (1-10)
+
+**Blending Modes:**
+- **RGB** - Simple additive channel averaging
+- **LAB** - Perceptually uniform CIELAB blending
+- **OKLAB** - Modern perceptual (fixes LAB blue→purple issue)
+- **RYB** - Traditional artist's color wheel mixing
+- **HSL** - Hue-Saturation-Lightness interpolation
+- **Spectral** - Kubelka-Munk pigment physics simulation
+
+**Features:**
+- Full color space conversions (sRGB ↔ Linear, RGB ↔ XYZ ↔ LAB, RGB ↔ OKLAB)
+- Finds closest FFXIV dye(s) to blended result
+- Quality indicators for match accuracy
+- Localized dye names support
+
+### 3.3 `/swatch` Command ✅
+
+**Files Created:**
+- `src/handlers/commands/swatch.ts` - Character color matching (652 lines)
+
+**Subcommands:**
+- `color <type> <index>` - Match by color index (0-191 or 0-95)
+- `grid <type> <row> <col>` - Match by grid position
+
+**Color Types:**
+- Skin Tone (race-specific)
+- Hair Color (race-specific)
+- Eye Color (shared)
+- Hair Highlight (shared)
+- Lip Color Dark/Light (shared)
+- Tattoo/Limbal Ring (shared)
+- Face Paint Dark/Light (shared)
+
+**Features:**
+- Supports all 16 FFXIV clans across 8 races
+- Gender variants for skin/hair colors
+- Integrates with `CharacterColorService` from `@xivdyetools/core`
+- Maps preference clan names to CharacterColorService SubRace types
+- Configurable matching algorithm and result count
+- Quality indicators for match accuracy
+
+### 3.4 `/stats` Expansion ✅
+
+**Files Modified:**
+- `src/handlers/commands/stats.ts` - Expanded to 516 lines
+
+**Subcommands:**
+- `summary` - **Public** - Basic bot info, features, links
+- `overview` - **Admin** - Usage volume, user counts, success rates
+- `commands` - **Admin** - Top 10 commands, least used, V4 migration tracking
+- `preferences` - **Admin** - Preference adoption rates (sampled from KV)
+- `health` - **Admin** - KV latency, Analytics Engine status, external services
+
+**Features:**
+- V4 vs Legacy command usage comparison
+- Preference adoption statistics via KV sampling
+- System health monitoring with status indicators
+- Color-coded embeds based on status
+
+### 3.5 Command Registration ✅
+
+**Files Modified:**
+- `scripts/register-commands.ts` - Added 280 lines of new command definitions
+
+**New Registrations:**
+- `/mixer` - Updated to new dye blending (not deprecated gradient)
+- `/preferences` - With show/set/reset subcommands
+- `/swatch` - With color/grid subcommands
+- `/stats` - With 5 subcommands
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
@@ -186,25 +293,28 @@ Legacy commands marked with `[DEPRECATED]` prefix in Discord command description
 | `31143fb` | feat(v4): add Phase 1 infrastructure foundation | 7 | 112 |
 | `10caef9` | feat(v4): complete Phase 1 infrastructure foundation | 6 | 84 |
 | `66508a1` | feat(v4): implement Phase 2 command renames | 6 | 0* |
+| `7511289` | feat(v4): implement Phase 3 new commands | 9 | 0** |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
+**Phase 3 commands integrate with tested Phase 1 infrastructure services.
 
-**Total New Files:** 15
+**Total New Files:** 19
 **Total New Tests:** 196
+**Total Lines Added (Phase 3):** ~2,700
 
 ---
 
 ## Next Steps
 
-### Phase 3: New Commands (Next)
-1. Create new `/mixer` (dye blending with 6 modes: rgb, lab, oklab, ryb, hsl, spectral)
-2. Create `/swatch` (character color matching with clan/gender support)
-3. Create `/preferences` command (unified settings management)
-4. Expand `/stats` to 5 subcommands (summary, overview, commands, preferences, health)
-
-### Phase 4: Command Deprecations
+### Phase 4: Command Deprecations (Next)
 1. `/language` → Wrap to `/preferences set language`
 2. Remove `/favorites` and `/collection` (replaced by `/preset`)
+
+### Phase 5: Command Enhancements
+1. `/harmony` - V4 color wheel visualization
+2. `/comparison` - Add LAB values
+3. `/dye info` - Visual result card
+4. `/dye random` - Visual infographic
 
 ---
 
