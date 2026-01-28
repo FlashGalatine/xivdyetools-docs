@@ -11,7 +11,7 @@
 | Phase 1: Infrastructure Foundation | ✅ Complete | 100% |
 | Phase 2: Command Renames | ✅ Complete | 100% |
 | Phase 3: New Commands | ✅ Complete | 100% |
-| Phase 4: Command Deprecations | 📋 Planned | 0% |
+| Phase 4: Command Deprecations | ✅ Complete | 100% |
 | Phase 5: Command Enhancements | 📋 Planned | 0% |
 | Phase 6: Localization Updates | 📋 Planned | 0% |
 | Phase 7: Changelog Announcements | 📋 Planned | 0% |
@@ -286,6 +286,66 @@ Four new V4 commands implemented with comprehensive features.
 
 ---
 
+## Phase 4: Command Deprecations ✅
+
+**Status: Complete (2026-01-28)**
+
+Soft deprecation of legacy commands with migration guidance to newer alternatives.
+
+### 4.1 `/language` Deprecation ✅
+
+**Strategy:** Wrap to `/preferences` with deprecation notice
+
+**Files Modified:**
+- `src/handlers/commands/language.ts` - Rewritten for delegation (269 lines)
+
+**Changes:**
+- Now delegates to unified preferences system (`setPreference()`, `resetPreference()`)
+- All responses show yellow deprecation notice (color: `0xfee75c`)
+- Deprecation message: "Use `/preferences set language <code>` instead"
+- Footer text guides users to new command
+- Functionality preserved for smooth migration
+
+### 4.2 `/favorites` Deprecation ✅
+
+**Strategy:** Soft deprecation pointing to `/preset`
+
+**Files Modified:**
+- `src/handlers/commands/favorites.ts` - Rewritten with deprecation (361 lines)
+
+**Changes:**
+- All responses include deprecation notice
+- Commands still functional for existing users
+- Yellow embed color throughout
+- Footer guidance: "Use /preset create to save dyes in the new system"
+- Subcommands affected: `add`, `remove`, `list`, `clear`
+
+### 4.3 `/collection` Deprecation ✅
+
+**Strategy:** Soft deprecation pointing to `/preset`
+
+**Files Modified:**
+- `src/handlers/commands/collection.ts` - Rewritten with deprecation (624 lines)
+
+**Changes:**
+- All responses include deprecation notice
+- Commands still functional for existing users
+- Yellow embed color throughout
+- Footer guidance: "Use /preset for managing dye presets"
+- Subcommands affected: `create`, `delete`, `add`, `remove`, `show`, `list`, `rename`
+
+### 4.4 Command Registration Updates ✅
+
+**Files Modified:**
+- `scripts/register-commands.ts` - Added deprecation prefixes
+
+**Discord Command Descriptions:**
+- `/language` → `[DEPRECATED: Use /preferences] Manage your language preference`
+- `/favorites` → `[DEPRECATED: Use /preset] Manage your favorite dyes`
+- `/collection` → `[DEPRECATED: Use /preset] Manage your dye collections`
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
@@ -294,23 +354,21 @@ Four new V4 commands implemented with comprehensive features.
 | `10caef9` | feat(v4): complete Phase 1 infrastructure foundation | 6 | 84 |
 | `66508a1` | feat(v4): implement Phase 2 command renames | 6 | 0* |
 | `7511289` | feat(v4): implement Phase 3 new commands | 9 | 0** |
+| `ef7dd35` | feat(v4): implement Phase 4 command deprecations | 4 | 0*** |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
 **Phase 3 commands integrate with tested Phase 1 infrastructure services.
+***Phase 4 modifies existing tested commands; no new test files needed.
 
 **Total New Files:** 19
 **Total New Tests:** 196
-**Total Lines Added (Phase 3):** ~2,700
+**Total Lines Modified (Phase 4):** ~1,250 (4 files)
 
 ---
 
 ## Next Steps
 
-### Phase 4: Command Deprecations (Next)
-1. `/language` → Wrap to `/preferences set language`
-2. Remove `/favorites` and `/collection` (replaced by `/preset`)
-
-### Phase 5: Command Enhancements
+### Phase 5: Command Enhancements (Next)
 1. `/harmony` - V4 color wheel visualization
 2. `/comparison` - Add LAB values
 3. `/dye info` - Visual result card
