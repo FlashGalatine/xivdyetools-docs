@@ -13,7 +13,7 @@
 | Phase 3: New Commands | ✅ Complete | 100% |
 | Phase 4: Command Deprecations | ✅ Complete | 100% |
 | Phase 5: Command Enhancements | ✅ Complete | 100% |
-| Phase 6: Localization Updates | 📋 Planned | 0% |
+| Phase 6: Localization Updates | ✅ Complete | 100% |
 | Phase 7: Changelog Announcements | 📋 Planned | 0% |
 | Phase 8: Registration & Deployment | 📋 Planned | 0% |
 
@@ -417,6 +417,48 @@ Visual and technical improvements to existing commands.
 
 ---
 
+## Phase 6: Localization Updates ✅
+
+**Status: Complete (2026-01-28)**
+
+Comprehensive localization updates across all 6 supported languages (en, ja, de, fr, ko, zh).
+
+### 6.1 New Locale Sections ✅
+
+**Files Modified:**
+- `src/locales/{en,ja,de,fr,ko,zh}.json` - All 6 locale files updated
+
+**Sections Added (per locale):**
+- `extractor` - Color extractor command strings (replaces `match` usage in extractor.ts)
+- `gradient` - Gradient command strings (replaces `mixer` usage in gradient.ts)
+- `mixer` - Updated for new dye blending command (6 blending modes + descriptions)
+- `swatch` - Character color matching (9 color types, clan, gender)
+- `preferences` - Unified settings (show/set/reset, 8 preference keys + descriptions)
+- `stats` - Stats subcommands (summary, overview, commands, preferences, health)
+- `status` - Progress feedback messages (analyzing, rendering, fetching, etc.)
+- `pagination` - Navigation labels (page, first, previous, next, last, showing)
+- `components` - Interactive component labels (select menus, toggles, copy buttons)
+- `matching` - Matching method names and descriptions (6 methods)
+
+### 6.2 Locale Key Renames ✅
+
+**Command Handler Updates:**
+- `src/handlers/commands/extractor.ts` - `match.*` → `extractor.*` (5 key references)
+- `src/handlers/commands/gradient.ts` - `mixer.*` → `gradient.*`, `match.*` → `extractor.*` (7 key references)
+
+### 6.3 Manual Section Updates ✅
+
+**Updated in all 6 locales:**
+- `manual.match` → `manual.extractor` (new command syntax)
+- `manual.mixer` → Updated for dye blending (not gradient)
+- Added: `manual.gradient`, `manual.swatch`, `manual.preferences`
+
+### 6.4 Deprecated Sections Retained ✅
+
+**Decision:** `favorites` and `collection` locale sections kept (commands still functional with soft deprecation notices). Will be removed when commands are fully retired.
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
@@ -427,26 +469,23 @@ Visual and technical improvements to existing commands.
 | `7511289` | feat(v4): implement Phase 3 new commands | 9 | 0** |
 | `ef7dd35` | feat(v4): implement Phase 4 command deprecations | 4 | 0*** |
 | `e2568c8` | feat(v4): implement Phase 5 command enhancements | 6 | 0**** |
+| `e8c355b` | feat(v4): implement Phase 6 localization updates | 8 | 0***** |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
 **Phase 3 commands integrate with tested Phase 1 infrastructure services.
 ***Phase 4 modifies existing tested commands; no new test files needed.
 ****Phase 5 visual enhancements use tested SVG infrastructure.
+*****Phase 6 locale changes are data files; validated via JSON parsing.
 
 **Total New Files:** 21
 **Total New Tests:** 196
-**Total Lines Added (Phase 5):** ~790 (6 files, 2 new)
+**Total Lines Added (Phase 6):** ~1,434 (8 files, 0 new)
 
 ---
 
 ## Next Steps
 
-### Phase 6: Localization Updates (Next)
-1. Add new locale sections for swatch, preferences, stats commands
-2. Rename locale keys (match.* → extractor.*, old mixer.* → gradient.*)
-3. Remove deprecated locale sections (favorites, collection)
-
-### Phase 7: Changelog Announcements
+### Phase 7: Changelog Announcements (Next)
 1. GitHub webhook handler
 2. Changelog parser
 3. Discord announcement formatting
