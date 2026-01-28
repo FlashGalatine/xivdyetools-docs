@@ -15,7 +15,7 @@
 | Phase 5: Command Enhancements | ✅ Complete | 100% |
 | Phase 6: Localization Updates | ✅ Complete | 100% |
 | Phase 7: Changelog Announcements | ✅ Complete | 100% |
-| Phase 8: Registration & Deployment | 📋 Planned | 0% |
+| Phase 8: Registration & Deployment | ✅ Complete | 100% |
 
 ---
 
@@ -517,6 +517,47 @@ GitHub webhook endpoint that automatically posts changelog updates to Discord wh
 6. Fetch raw changelog from `raw.githubusercontent.com`
 7. Parse latest version, format embed, send to `ANNOUNCEMENT_CHANNEL_ID`
 
+## Phase 8: Registration & Deployment ✅
+
+**Status: Complete (2026-01-28)**
+
+Final command registration cleanup and version bump to v4.0.0.
+
+### 8.1 Command Registration Cleanup ✅
+
+**Files Modified:**
+- `scripts/register-commands.ts` - Removed deprecated commands, cleaned up comments
+
+**Commands Removed (4):**
+- `/match` → Replaced by `/extractor color`
+- `/match_image` → Replaced by `/extractor image`
+- `/favorites` → Replaced by `/preset`
+- `/collection` → Replaced by `/preset`
+
+**Final v4.0.0 Command Set (15 commands):**
+| # | Command | Type |
+|---|---------|------|
+| 1 | `/about` | General |
+| 2 | `/harmony` | Color Analysis |
+| 3 | `/dye` | Color Analysis (4 subcommands) |
+| 4 | `/extractor` | Extraction (2 subcommands) |
+| 5 | `/gradient` | Color Gradient |
+| 6 | `/mixer` | Dye Blending |
+| 7 | `/accessibility` | Utility |
+| 8 | `/manual` | Utility |
+| 9 | `/stats` | Stats (5 subcommands) |
+| 10 | `/preferences` | Settings (3 subcommands) |
+| 11 | `/swatch` | Character Colors (2 subcommands) |
+| 12 | `/comparison` | Comparison |
+| 13 | `/language` | Deprecated (wraps preferences) |
+| 14 | `/preset` | Community (6 subcommands) |
+| 15 | `/budget` | Market (3 subcommands) |
+
+### 8.2 Version Bump ✅
+
+**Files Modified:**
+- `package.json` - Version bumped from `2.3.9` → `4.0.0`
+
 ---
 
 ## Git Commits
@@ -531,6 +572,7 @@ GitHub webhook endpoint that automatically posts changelog updates to Discord wh
 | `e2568c8` | feat(v4): implement Phase 5 command enhancements | 6 | 0**** |
 | `e8c355b` | feat(v4): implement Phase 6 localization updates | 8 | 0***** |
 | `3051cd4` | feat: add changelog announcement system via GitHub webhooks (Phase 7) | 6 | 0****** |
+| `a0a37aa` | feat: finalize v4.0.0 command registration and version bump (Phase 8) | 2 | 0******* |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
 **Phase 3 commands integrate with tested Phase 1 infrastructure services.
@@ -538,18 +580,24 @@ GitHub webhook endpoint that automatically posts changelog updates to Discord wh
 ****Phase 5 visual enhancements use tested SVG infrastructure.
 *****Phase 6 locale changes are data files; validated via JSON parsing.
 ******Phase 7 webhook/parser verified via TypeScript compilation; manual testing with curl recommended.
+*******Phase 8 is registration/config only; no new logic to test.
 
 **Total New Files:** 25
 **Total New Tests:** 196
-**Total Lines Added (Phase 6):** ~1,434 (8 files, 0 new)
+**Total Commits:** 9
 
 ---
 
-## Next Steps
+## 🎉 Migration Complete!
 
-### Phase 8: Registration & Deployment (Next)
-1. Final command registration update
-2. Version bump to 4.0.0
+All 8 phases of the v2.x → v4.0.0 migration are complete. The bot is ready for deployment.
+
+**Deployment checklist:**
+- [ ] Set new env vars: `GITHUB_WEBHOOK_SECRET`, `ANNOUNCEMENT_CHANNEL_ID`
+- [ ] Run `npm run register-commands` to update Discord commands
+- [ ] Deploy with `npm run deploy:production`
+- [ ] Configure GitHub webhook pointing to `/webhooks/github`
+- [ ] Verify all 15 commands work in Discord
 
 ---
 
