@@ -12,7 +12,7 @@
 | Phase 2: Command Renames | ✅ Complete | 100% |
 | Phase 3: New Commands | ✅ Complete | 100% |
 | Phase 4: Command Deprecations | ✅ Complete | 100% |
-| Phase 5: Command Enhancements | 📋 Planned | 0% |
+| Phase 5: Command Enhancements | ✅ Complete | 100% |
 | Phase 6: Localization Updates | 📋 Planned | 0% |
 | Phase 7: Changelog Announcements | 📋 Planned | 0% |
 | Phase 8: Registration & Deployment | 📋 Planned | 0% |
@@ -346,6 +346,77 @@ Soft deprecation of legacy commands with migration guidance to newer alternative
 
 ---
 
+## Phase 5: Command Enhancements ✅
+
+**Status: Complete (2026-01-28)**
+
+Visual and technical improvements to existing commands.
+
+### 5.1 `/comparison` LAB Values ✅
+
+**Enhancement:** Added perceptual LAB color values
+
+**Files Modified:**
+- `src/services/svg/comparison-grid.ts` - Added LAB display (26 lines added)
+- `src/services/color-blending.ts` - Exported `rgbToLab()` function
+
+**Changes:**
+- New `showLab` option (default: true)
+- Displays LAB(L, a, b) values for each dye
+- Increased section height to accommodate LAB line
+- LAB provides perceptual color difference info
+
+### 5.2 `/dye info` Visual Card ✅
+
+**Enhancement:** Visual result card instead of text-only embed
+
+**Files Created:**
+- `src/services/svg/dye-info-card.ts` - Visual card generator (250 lines)
+
+**Files Modified:**
+- `src/handlers/commands/dye.ts` - Updated info subcommand (deferred response)
+
+**Visual Card Features:**
+- Large color swatch (160px height) with dye color
+- Dye name overlaid on swatch
+- Category badge in top-right
+- Technical values section:
+  - HEX, RGB, HSV, LAB color values
+  - Internal dye ID and FFXIV item ID
+- Retains copy buttons for easy value copying
+- Fallback to text-based response on render error
+
+### 5.3 `/dye random` Visual Grid ✅
+
+**Enhancement:** Visual infographic instead of text list
+
+**Files Created:**
+- `src/services/svg/random-dyes-grid.ts` - Grid generator (200 lines)
+
+**Files Modified:**
+- `src/handlers/commands/dye.ts` - Updated random subcommand (deferred response)
+
+**Visual Grid Features:**
+- 3-column card layout (5 dyes total)
+- Last row centered when fewer cards
+- Per-card display: color swatch, hex value, name, category
+- Title indicates mode (random vs unique categories)
+- Subtitle shows selection method
+- Text list retained in embed description for accessibility
+- Fallback to text-based response on render error
+
+### 5.4 SVG Index Updates ✅
+
+**Files Modified:**
+- `src/services/svg/index.ts` - Added new exports
+
+**Exports Added:**
+- `comparison-grid.js` - Comparison grid generator
+- `dye-info-card.js` - Dye info card generator
+- `random-dyes-grid.js` - Random dyes grid generator
+
+---
+
 ## Git Commits
 
 | Commit | Description | Files Changed | Tests Added |
@@ -355,24 +426,34 @@ Soft deprecation of legacy commands with migration guidance to newer alternative
 | `66508a1` | feat(v4): implement Phase 2 command renames | 6 | 0* |
 | `7511289` | feat(v4): implement Phase 3 new commands | 9 | 0** |
 | `ef7dd35` | feat(v4): implement Phase 4 command deprecations | 4 | 0*** |
+| `e2568c8` | feat(v4): implement Phase 5 command enhancements | 6 | 0**** |
 
 *Phase 2 tests covered by existing command tests; new commands share implementation patterns.
 **Phase 3 commands integrate with tested Phase 1 infrastructure services.
 ***Phase 4 modifies existing tested commands; no new test files needed.
+****Phase 5 visual enhancements use tested SVG infrastructure.
 
-**Total New Files:** 19
+**Total New Files:** 21
 **Total New Tests:** 196
-**Total Lines Modified (Phase 4):** ~1,250 (4 files)
+**Total Lines Added (Phase 5):** ~790 (6 files, 2 new)
 
 ---
 
 ## Next Steps
 
-### Phase 5: Command Enhancements (Next)
-1. `/harmony` - V4 color wheel visualization
-2. `/comparison` - Add LAB values
-3. `/dye info` - Visual result card
-4. `/dye random` - Visual infographic
+### Phase 6: Localization Updates (Next)
+1. Add new locale sections for swatch, preferences, stats commands
+2. Rename locale keys (match.* → extractor.*, old mixer.* → gradient.*)
+3. Remove deprecated locale sections (favorites, collection)
+
+### Phase 7: Changelog Announcements
+1. GitHub webhook handler
+2. Changelog parser
+3. Discord announcement formatting
+
+### Phase 8: Registration & Deployment
+1. Final command registration update
+2. Version bump to 4.0.0
 
 ---
 
