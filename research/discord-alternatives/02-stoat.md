@@ -17,143 +17,17 @@ Stoat (rebranded from Revolt in late 2025) is an open-source, community-driven c
 
 ---
 
-## Bot API — Deep Dive
+## Detailed Design Documents
 
-### Bot Creation & Authentication
-- Bots are created via the Stoat web interface (server settings → Manage bots).
-- Each bot gets a **token** (identical concept to Discord bot tokens).
-- The `Bot` class exposes an `interactionsUrl` property — an optional HTTP endpoint for receiving interactions. This is analogous to Discord's HTTP interactions model but its maturity is unclear.
-- Bots authenticate with header: `x-bot-token: <token>` (via `revolt-api` client) or `x-session-token` for user accounts.
+This research is split into focused sub-documents:
 
-### REST API Endpoints (from OpenAPI spec)
-
-**Bot Management:**
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/bots/create` | Create a new bot |
-| GET | `/bots/{bot}` | Get owned bot details |
-| PATCH | `/bots/{bot}` | Edit bot (name, public, interactionsUrl, etc.) |
-| DELETE | `/bots/{bot}` | Delete bot |
-| GET | `/bots/@me` | List all bots you own |
-| POST | `/bots/{bot}/invite` | Invite bot to a server/group |
-
-**Messaging:**
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/channels/{id}/messages` | Send a message |
-| GET | `/channels/{id}/messages` | Fetch messages |
-| PATCH | `/channels/{id}/messages/{msg}` | Edit a message |
-| DELETE | `/channels/{id}/messages/{msg}` | Delete a message |
-| POST | `/channels/{id}/search` | Search messages |
-
-**Reactions:**
-| Method | Endpoint | Description |
-|---|---|---|
-| PUT | `/channels/{id}/messages/{msg}/reactions/{emoji}` | Add reaction |
-| DELETE | `/channels/{id}/messages/{msg}/reactions/{emoji}` | Remove reaction |
-
-**Webhooks:**
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/channels/{id}/webhooks` | Create a webhook for 3rd-party integration |
-| GET | `/channels/{id}/webhooks` | List webhooks for a channel |
-
-### Command Model
-- **No native slash commands.** Bots respond to message events, typically using prefix commands (e.g., `!dye search white`).
-- The `interactionsUrl` property on the Bot class hints at a future HTTP interactions model, but it is currently underdocumented.
-- **Practical approach:** Use prefix-based commands (like Discord bots before slash commands existed) and/or message content parsing.
-
-### SendableEmbed Structure
-Stoat embeds are simpler than Discord's:
-```typescript
-interface SendableEmbed {
-  title?: string;        // Heading text
-  description?: string;  // Body text (Markdown supported)
-  url?: string;          // Hyperlink on title
-  icon_url?: string;     // Small icon image
-  colour?: string;       // Any valid CSS color (e.g., "#FF5733")
-  media?: string;        // File ID from upload — renders as image
-}
-```
-
-**What's missing vs. Discord embeds:**
-- No `fields` array (key-value pairs) — must format as Markdown in `description`
-- No `footer` — append to description
-- No `author` section — use `icon_url` + title
-- No `thumbnail` — only `media` (full-width image)
-- No `timestamp`
-
-**Key advantage:** The `media` field accepts a file ID directly in the embed, meaning you can show an image *inside* the embed without a separate attachment reference. This is actually cleaner than Discord's `attachment://` pattern.
-
-### Image / File Upload Pipeline
-
-Files are uploaded to Stoat's **Autumn** CDN service in a two-step process:
-
-```typescript
-// Step 1: Upload file to Autumn CDN
-// POST to the Autumn upload URL (obtained from API's root / endpoint → features.autumn.url)
-const formData = new FormData();
-formData.append("file", pngBuffer, { filename: "result.png", contentType: "image/png" });
-const uploadResponse = await fetch(`${autumnUrl}/attachments`, {
-  method: "POST",
-  body: formData
-});
-const { id: fileId } = await uploadResponse.json();
-
-// Step 2: Send message with attachment
-await api.post(`/channels/${channelId}/messages`, {
-  content: "Here's your dye result!",
-  attachments: [fileId],       // Array of file IDs
-  embeds: [{
-    title: "Harmony Wheel — Triadic",
-    description: "Based on **Pure White**\nHEX: `#FFFFFF`",
-    colour: "#FFFFFF",
-    media: fileId              // OR embed the image directly in the embed
-  }]
-});
-```
-
-**Using revolt-uploader (convenience library):**
-```typescript
-import { Uploader } from "revolt-uploader";
-const uploader = new Uploader(client);
-
-// Upload from buffer, file path, or URL
-const attachmentId = await uploader.uploadFile("/path/to/image.png", "result.png");
-const attachmentId = await uploader.uploadUrl("https://example.com/image.png", "result.png");
-const attachmentId = await uploader.upload(bufferOrStream, "result.png");
-
-// Send with message
-channel.sendMessage({
-  content: "Result:",
-  attachments: [attachmentId]
-});
-```
-
-**Note:** The Autumn CDN URL recently changed. Bots should dynamically fetch it from the API root endpoint's `features.autumn.url` field rather than hardcoding it.
-
-### Message Sending — Full Parameter Reference
-```typescript
-// POST /channels/{id}/messages
-{
-  content?: string;                    // Text content
-  attachments?: string[];              // Array of Autumn file IDs
-  embed?: SendableEmbed;               // Single embed
-  embeds?: SendableEmbed[];            // Multiple embeds
-  replies?: MessageReply[];            // Reply references
-  masquerade?: {                       // Override display name/avatar
-    name?: string;
-    avatar?: string;
-  };
-  interactions?: {                     // Preset reactions
-    reactions?: string[];              // Emoji to add as reactions
-    restrict_reactions?: boolean;      // Only allow preset reactions
-  };
-}
-```
-
-### Masquerade Feature
-Stoat has a unique **masquerade** feature that lets bots change their display name and avatar per-message. This could be useful for visual variety (e.g., showing a dye color as the avatar).
+| Document | Contents |
+|---|---|
+| **[02a — API Reference](./02a-stoat-api.md)** | Bot API deep dive: REST endpoints, SendableEmbed structure, file uploads (Autumn CDN), masquerade feature, reactions as interactions (button replacement) |
+| **[02b — Command Design](./02b-stoat-commands.md)** | Dye input resolution (replacing autocomplete), `!xivdye`/`!xd` prefix & syntax, greedy argument parsing, `>` separator, ephemeral message hybrid approach, deferred responses (⏳ loading), help & discoverability (4-layer system) |
+| **[02c — Infrastructure](./02c-stoat-infrastructure.md)** | Storage backend (SQLite + Upstash Redis + LRU cache), image attachment handling (`!xivdye extract` with sharp), rate limiting (4-tier), webhook ingestion (HTTP server for GitHub & preset webhooks) |
+| **[02d — Stats & Admin](./02d-stoat-admin.md)** | Stats commands (5 subcommands, SQLite-powered), admin commands (7 operational tools), authorization model (ULID-based), analytics tracking, data retention |
+| **[02e — Testing Strategy](./02e-stoat-testing.md)** | Test framework (Vitest), revolt.js mocks, in-memory SQLite, Redis mocks, Autumn CDN mocks, unit/integration/E2E test categories, CI/CD pipeline, coverage configuration |
 
 ---
 
@@ -222,7 +96,7 @@ revolt.js WebSocket → Thin listener (Fly.io, ~128MB RAM)
 
 ---
 
-## Migration Plan
+## Migration Summary
 
 ### What Can Be Reused Directly (85%+)
 - All `@xivdyetools/core` logic (dye database, color math, matching algorithms)
@@ -239,24 +113,36 @@ revolt.js WebSocket → Thin listener (Fly.io, ~128MB RAM)
 | **Response formatter** | Medium | Discord embeds → Stoat SendableEmbed (simpler structure) |
 | **File upload** | Low-Medium | FormData to Autumn CDN + attachment ID, or revolt-uploader |
 | **PNG rendering** | Low | Swap `@resvg/resvg-wasm` → `@resvg/resvg-js` (Node.js native) |
-| **Image processing** | Low | Swap `@cf-wasm/photon` → `@aspect-build/photon` or sharp |
-| **Storage** | Medium | CF KV → SQLite (better-sqlite3) or Redis for preferences |
+| **Image processing** | Low | Swap `@cf-wasm/photon` → sharp |
+| **Storage** | Medium | CF KV → SQLite + Upstash Redis ([details](./02c-stoat-infrastructure.md)) |
 | **Hosting/deployment** | Medium | wrangler → Dockerfile + Fly.io/Railway |
-| **Autocomplete** | N/A | Not available — users type full command arguments |
-| **Ephemeral messages** | Low | Not available — use DMs or timed self-deleting messages |
-| **Button components** | Low | Not available — provide values inline in the embed description |
+
+For detailed migration design, see:
+- [Command design](./02b-stoat-commands.md) — prefix parsing, dye resolution, ephemeral handling
+- [Infrastructure](./02c-stoat-infrastructure.md) — storage, image processing, rate limiting, webhooks
+- [Stats & admin](./02d-stoat-admin.md) — analytics, admin commands
+- [Testing](./02e-stoat-testing.md) — test framework, mocks, CI/CD
 
 ### Estimated Effort: **3-4 weeks**
 
 ### Suggested Implementation Order
-1. Scaffold project, set up revolt.js with bot token, connect to test server
-2. Implement `!ping` → verify message send/receive pipeline
-3. Port `!dye info` — tests embed formatting + image upload pipeline end-to-end
-4. Port remaining image commands (harmony, gradient, comparison, etc.)
-5. Port text-only commands (mixer, extractor color, swatch)
-6. Port budget commands (Universalis integration)
-7. Port preferences system (new storage backend)
-8. Port preset commands (Preset API integration)
+1. **Scaffold & connect** — Project setup, revolt.js WebSocket, `!xivdye ping` / `!xd ping`
+2. **Command parser** — `!xivdye` / `!xd` prefix detection, subcommand routing, greedy dye name parsing, `>` separator
+3. **Dye input resolver** — Multi-strategy resolution (ItemID, exact, localized, partial, disambiguation)
+4. **`!xd info`** — End-to-end test: resolve dye → generate SVG → render PNG → upload to Autumn → send embed with media + preset reactions (🎨🔢📊❓)
+5. **Reaction handler** — Listen for `MessageReact`, dispatch by emoji, context cache for message→dye mapping
+6. **Loading indicator** — ⏳ react/unreact pattern for all image commands
+7. **Port image commands** — harmony, gradient, comparison, accessibility, dye random, preset show
+8. **Port text commands** — mixer, extractor color, swatch, dye search, dye list
+9. **Budget commands** — Universalis integration, `!xivdye budget world` DM confirmation
+10. **Preferences system** — New storage backend (SQLite/Redis), DM-based show/set
+11. **Help system** — `!xivdye help` DM, ❓ reaction contextual help, inline error hints, about quick-start
+12. **Preset commands** — Preset API integration, submit/vote/edit
+13. **Stats & admin** — `!xd stats` (public + admin subcommands), `!xd admin` operational commands, analytics tracking in command dispatcher
+14. **Webhook ingestion** — HTTP server (Hono/Fastify), GitHub push handler, preset submission handler
+15. **Testing** — Vitest setup, revolt.js mocks, in-memory SQLite tests, CI pipeline (tests gate deploy)
+
+> **Note:** Testing is listed last but should be done **alongside each step** — write tests as you build each module. Step 15 is for finalizing CI/CD integration, coverage thresholds, and the E2E smoke test.
 
 ---
 

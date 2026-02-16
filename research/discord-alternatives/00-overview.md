@@ -50,7 +50,7 @@ The bot's feature set imposes specific technical requirements on any alternative
 
 | Priority | Platform | Type | Status | Document |
 |---|---|---|---|---|
-| **1st** | **Stoat** (formerly Revolt) | Open-source, self-hostable | Active, growing | [02-stoat.md](./02-stoat.md) |
+| **1st** | **Stoat** (formerly Revolt) | Open-source, self-hostable | Active, growing | [02-stoat.md](./02-stoat.md) (overview) + [API](./02a-stoat-api.md), [Commands](./02b-stoat-commands.md), [Infra](./02c-stoat-infrastructure.md), [Admin](./02d-stoat-admin.md), [Testing](./02e-stoat-testing.md) |
 | 2nd | **Telegram** | Centralized, mainstream | Active, mature bot API | [01-telegram.md](./01-telegram.md) |
 | 3rd | **Matrix** | Decentralized protocol | Active, mature ecosystem | [03-matrix.md](./03-matrix.md) |
 | — | **Guilded** | Discord-like, Roblox-owned | **Shutting down (2025)** | Excluded — not viable |
