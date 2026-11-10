@@ -1,104 +1,42 @@
-# XIV Dye Tools Documentation
+# XIV Dye Tools Documentation (Deprecated)
 
-> Feature specifications, roadmaps, and design documents for the XIV Dye Tools ecosystem.
+> [!WARNING]
+> **This repository is deprecated and no longer maintained.**
+> All XIV Dye Tools documentation now lives in the `docs/` folder of the
+> [xivdyetools monorepo](https://github.com/FlashGalatine/xivdyetools/tree/main/docs).
+> Please read, link to, and contribute to the docs there instead.
 
-## Overview
+**Start here:** [xivdyetools/docs/index.md](https://github.com/FlashGalatine/xivdyetools/blob/main/docs/index.md)
 
-This repository contains planning documents, feature specifications, and design documentation for the XIV Dye Tools project family. These documents guide development and serve as reference material.
+The files in this repository are a frozen snapshot from before the move. They may be out of date.
+Do not open issues or pull requests here.
 
-## Contents
+## Where everything moved
 
-### Feature Specifications
+| Old location (this repo) | New location (monorepo) |
+|--------------------------|-------------------------|
+| `README.md`, `index.md` | [docs/index.md](https://github.com/FlashGalatine/xivdyetools/blob/main/docs/index.md) and [docs/README.md](https://github.com/FlashGalatine/xivdyetools/blob/main/docs/README.md) |
+| `architecture/` | [docs/architecture/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/architecture) |
+| `projects/` | [docs/projects/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/projects) |
+| `developer-guides/` | [docs/developer-guides/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/developer-guides) |
+| `user-guides/` | [docs/user-guides/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/user-guides) |
+| `maintainer/` | [docs/maintainer/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/maintainer) |
+| `operations/` | [docs/operations/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/operations) |
+| `specifications/` | [docs/specifications/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/specifications) |
+| `reference/` | [docs/reference/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/reference) |
+| `research/` | [docs/research/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/research) |
+| `audits/` | [docs/audits/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/audits) |
+| `historical/` | [docs/historical/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/historical) |
+| `brainstorming/` | [docs/historical/20260108-Brainstorm/](https://github.com/FlashGalatine/xivdyetools/tree/main/docs/historical/20260108-Brainstorm) |
+| `versions.md` | [docs/versions.md](https://github.com/FlashGalatine/xivdyetools/blob/main/docs/versions.md) |
 
-| Document | Description | Status |
-|----------|-------------|--------|
-| [Community Presets](./specifications/community-presets.md) | Community preset submission, voting, and moderation system | ✅ Complete |
-| [Collections](./specifications/collections.md) | User collections feature for organizing favorite dyes | ✅ Complete |
-| [Multi-Color Extraction](./specifications/multi-color-extraction.md) | K-means++ palette extraction from images | ✅ Complete |
-| [Preset Palettes](./specifications/preset-palettes.md) | Curated preset color palettes | ✅ Complete |
-| [Budget-Aware Suggestions](./specifications/budget-aware-suggestions.md) | Price-conscious dye recommendations | 📋 Planned |
+The separate `xivdyetools-*` repositories that these docs covered have also been merged into the
+[xivdyetools monorepo](https://github.com/FlashGalatine/xivdyetools).
 
-### Roadmaps
+## Support
 
-| Document | Description |
-|----------|-------------|
-| [Feature Roadmap](./specifications/feature-roadmap.md) | Planned features and development priorities |
-
-### Project-Specific Documentation
-
-| Folder | Description |
-|--------|-------------|
-| [maintainer/](./maintainer/) | Maintainer guides including the Dye Maintainer Tool |
-| [operations/](./operations/) | Operational guides (moderation, secret rotation) |
-| [20251207-DiscordBotMigration/](./20251207-DiscordBotMigration/) | Discord bot migration from Gateway to HTTP Interactions |
-| [20251207-PresetRefinements/](./20251207-PresetRefinements/) | Preset system refinements and improvements |
-| [historical/](./historical/) | Archived documentation from previous development phases |
-
-## Related Projects
-
-This documentation covers the following projects:
-
-### Applications
-
-| Project | Version | Description |
-|---------|---------|-------------|
-| **xivdyetools-core** | v1.5.4 | Core color algorithms and dye database (npm library) |
-| **xivdyetools-web-app** | v4.0.0 | Interactive web-based color tools (9 tools) |
-| **xivdyetools-discord-worker** | v2.3.1 | Serverless Discord bot (Cloudflare Workers) |
-| **xivdyetools-oauth** | v2.2.2 | Discord OAuth authentication worker |
-| **xivdyetools-presets-api** | v1.4.5 | Community presets REST API |
-
-### Shared Libraries
-
-| Project | Version | Description |
-|---------|---------|-------------|
-| **@xivdyetools/types** | v1.1.1 | Shared TypeScript type definitions |
-| **@xivdyetools/logger** | v1.0.2 | Unified logging across environments |
-| **@xivdyetools/test-utils** | v1.0.3 | Shared testing utilities |
-
-### Developer Tools
-
-| Project | Version | Description |
-|---------|---------|-------------|
-| **xivdyetools-maintainer** | v1.0.0 | GUI for adding new dyes (Vue 3 + Express) |
-
-> **Note**: The original `xivdyetools-discord-bot` (Discord.js + Gateway) has been deprecated and replaced by `xivdyetools-discord-worker`.
-
-## Contributing
-
-When adding new documentation:
-
-1. Use clear, descriptive filenames (e.g., `FEATURE_NAME_SPEC.md`)
-2. Include a header with status, date, and author
-3. Follow the existing format for consistency
-4. Update this README if adding new categories
-
-### Document Template
-
-```markdown
-# Feature Name
-
-**Status**: Draft | In Progress | Complete
-**Date**: YYYY-MM-DD
-**Author**: Your Name
-
-## Overview
-
-Brief description of the feature.
-
-## Requirements
-
-- Requirement 1
-- Requirement 2
-
-## Design
-
-Technical design details...
-
-## Implementation Notes
-
-Any implementation-specific details...
-```
+- **Issues**: [xivdyetools GitHub Issues](https://github.com/FlashGalatine/xivdyetools/issues)
+- **Discord**: [Join Server](https://discord.gg/5VUSKTZCe5)
 
 ## License
 
@@ -107,26 +45,3 @@ MIT © 2025 Flash Galatine
 ## Legal Notice
 
 **This is a fan-made tool and is not affiliated with or endorsed by Square Enix Co., Ltd. FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.**
-
-## Connect With Me
-
-**Flash Galatine** | Balmung (Crystal)
-
-🎮 **FFXIV**: [Lodestone Character](https://na.finalfantasyxiv.com/lodestone/character/7677106/)
-📝 **Blog**: [Project Galatine](https://blog.projectgalatine.com/)
-💻 **GitHub**: [@FlashGalatine](https://github.com/FlashGalatine)
-🐦 **X / Twitter**: [@FlashGalatine](https://x.com/FlashGalatine)
-📺 **Twitch**: [flashgalatine](https://www.twitch.tv/flashgalatine)
-🌐 **BlueSky**: [projectgalatine.com](https://bsky.app/profile/projectgalatine.com)
-❤️ **Patreon**: [ProjectGalatine](https://patreon.com/ProjectGalatine)
-☕ **Ko-Fi**: [flashgalatine](https://ko-fi.com/flashgalatine)
-💬 **Discord**: [Join Server](https://discord.gg/5VUSKTZCe5)
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/FlashGalatine/xivdyetools/issues)
-- **Discord**: [Join Server](https://discord.gg/5VUSKTZCe5)
-
----
-
-**Made with ❤️ for the FFXIV community**
